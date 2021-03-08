@@ -1,0 +1,176 @@
+@media (max-width: 1000px) {
+}
+@media only screen 
+and (min-device-width: 768px) 
+and (max-device-width: 1024px) 
+and (-webkit-min-device-pixel-ratio: 1) {
+  h1 {
+    font-size: 0.75em;
+  }
+  div.banner img {
+    transform: scale(0.7);
+  }
+  .abs h1, h2.season {
+    font-size: 5em !important;
+    text-align: center;
+  }
+  iframe {
+    display: none;
+  }
+}
+@media (max-width: 660px) {
+  body, html {
+    margin: 0;
+    padding: 0;
+  }
+  iframe {
+    display: none;
+  }
+  div.banner img {
+    transform: scale(0.4);
+    transform-origin: -3.5% 50%;
+  }
+  .tos-wr, .pol-wr {
+    padding: 1rem;
+  }
+  .abs h1, h2.season {
+    font-size: 3.5em !important;
+  }
+  .pane-s, .content-s, .content-wrapper {
+    overflow-x: hidden;
+    font-size: 0.75em;
+    width: 100% !important;
+  }
+  .pane-s, .content-s, .season-item, div.pane-s, div.content-s, .modal-dialog, .content-wrapper, .t-wrap {
+    max-width: 95% !important;
+    top: auto !important;
+  }
+  .season-item > .float-left, .season-item > .float-right {
+    width: 100% !important;
+    border: 0.25em solid rgba(148,49,91,0.1) !important;
+    border-radius: 1em !important;
+  }
+  h2.season.login {
+    text-shadow: 0 0 6px #fff !important;
+  }
+  .content-s.list-items {
+    padding: 1rem;
+  }
+  .tutorials-list.animation {
+    border-radius: 0;
+  }
+  .tutorials-list.animation svg {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: fixed;
+  }
+  .t-wrap {
+    padding: 1rem !important;
+  }
+  .title.tutorial {
+    padding: 0.5rem;
+  }
+  pre {
+    overflow-x: scroll !important;
+  }
+  .puzzle-tpl .content {
+    min-width: 100%;
+    max-width: 100%;
+    overflow-x: scroll;
+  }
+  .leaderboard, .leaderboard thead, .leaderboard tr, .leaderboard th, .leaderboard td {
+    max-width: fit-content !important;
+  }
+  .pane-s > h1, .pane-s > h2, .pane-s > h3, .pane-s > div {
+    margin: auto;
+    padding: 0.25rem;
+  }
+  .pane-s.leaders {
+    overflow-x: scroll;
+  }
+  .observer-register {
+    padding: 1.25rem !important;
+  }
+  .instr-n, .instr-n li {
+    word-wrap: break-word;
+  }
+  .observer-profile {
+    padding: 0.5em !important;
+  }
+  .sealed.jumbotron {
+    padding: 1.5rem;
+  }
+  .profile {
+    display: inline-block;
+    max-width: 100% !important;
+  }
+  .avatar-i {
+    max-width: 150px !important;
+    float: none !important;
+    margin-left: auto !important;
+    margin: auto;
+    margin-bottom: 0.5em;
+    display: block;
+  }
+  h2.season {
+    text-align: center;
+    width: auto !important;
+  }
+  .card-body {
+    padding: 0;
+  }
+  .badges {
+    width: 95vw !important;
+  }
+  .skills, .truth {
+    width: 85% !important;
+  }
+  .truth, .truth-shard.nft, .tools {
+    margin: auto;
+  }
+  .truth-shard.nft, .img-wr {
+    max-width: 250px;
+  }
+  .tools {
+    width: 80% !important;
+  }
+  .cipher-tools, .proving-tools {
+    padding: 1rem;
+  }
+  .img-wr.lg {
+    max-width: 100% !important;
+    margin-bottom: 1em !important;
+  }
+  .uskill .pwrap > span {
+    width: 100% !important;
+    display: block;
+    word-break: keep-all;
+  }
+  .pwrap {
+    max-width: 95% !important;
+    font-size: 1.25rem;
+  }
+  .uskill .pwrap > div {
+    position: relative !important;
+    top: -20px !important;
+    left: 20px !important;
+  }
+  p {
+    font-size: 1rem;
+  }
+  .btn.ctrl {
+    margin: auto !important;
+    margin-bottom: 4rem !important;
+  }
+  .accum .left {
+    max-width: 100% !important;
+  }
+  .descr-f {
+    font-size: 1.25rem;
+  }
+  .none-shall-pass {
+    top: 40%;
+  }
+}

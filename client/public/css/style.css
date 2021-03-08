@@ -1,0 +1,303 @@
+@font-face {
+  font-family: 'ShareTechMono';
+  src: url('../font/ShareTechMono-Regular.ttf') format('truetype');
+}
+
+html, body {
+  font-family: 'ShareTechMono', sans-serif;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+p::selection, div::selection, ul::selection, li::selection, table::selection, th::selection, tr::selection, td::selection, br::selection, span::selection, strong::selection, h1::selection, h2::selection, h3::selection, h4::selection, h5::selection, label::selection, a::selection {
+  background: rgba(230,0,115,0.3);
+}
+
+.blood, a, a:focus, a:active, a:visited, a:hover {
+  color: #ff7070;
+}
+
+.night {
+  color: #000000;
+}
+
+a:hover {
+  opacity: 0.75;
+}
+
+#nav {
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  margin-bottom: 0.5em;
+  min-height: 50px;
+  margin-bottom: 2em;
+  position: relative;
+  width: 100vw;
+}
+
+#nav.open {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 2em;
+  background-color: rgba(51,51,51,0.9);
+  z-index: 1000;
+}
+
+#nav ul {
+  list-style: none;
+}
+
+.hidden {
+  display: none;
+}
+
+div.pane-s {
+  margin-top: 1em;
+}
+
+div.pane-s, div.content-s {
+  max-width: 80vw;
+  margin: auto;
+  display: block;
+  border-radius: 2rem;
+  font-size: 1.25em;
+}
+
+div.pane-s.tutorial,
+div.content-s.tutorial {
+  width: 50vw;
+}
+
+pre:not(.log) {
+  line-height:1.2em;
+  background:linear-gradient(180deg,#ccc 0,#ccc 1.2em,#eee 0);
+  background-size:2.4em 2.4em;
+  background-origin:content-box;
+  padding: 1em;
+  text-align:justify;
+  display: inline-block;
+  color: #0a4862;
+  background-color: #73c8eb;
+  border-color: #3bb3e3;
+  border-radius: 0.5em;
+}
+
+strong {
+  color: #3bb3e3;
+  font-weight: 500;
+}
+
+strong .sub-p {
+  color: #fff700;
+}
+
+.cyan {
+  color: #47b0a9;
+}
+
+.cyan-bg {
+  background-color: #0a4862;
+  color: #3bb3e3;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.jaundice {
+  color: #fff700;
+}
+
+.jaundice-bg {
+  background-color: #fff700;
+}
+
+.btn-primary {
+  background-color: #3bb3e3;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary, .btn-primary.disabled, .btn-primary:disabled {
+  background-color: #0a4862;
+  border-color: #0a4862;
+}
+
+.btn-inverse:hover, .btn-inverse:focus, .btn-inverse:active, .btn-inverse.active, .open > .dropdown-toggle.btn-inverse {
+  background-color: #333333;
+  border-color: #333333;
+  color: #ffffff;
+}
+
+.btn.disabled, .btn:disabled  {
+  opacity: 0.4;
+}
+
+.btn {
+  border: none;
+}
+
+.custom-select.is-invalid, .form-control.is-invalid, .was-validated .custom-select:invalid, .was-validated .form-control:invalid {
+  border-color: #ff7070;
+}
+
+.bg-success {
+  background-color: #47b0a9 !important;
+}
+
+h3.title.tutorial {
+  font-style: italic;
+}
+
+div.pane-s.home {
+  background-image: url('../img/70b45e53738c932605aa1d5cbfebb78d9983731547096b929e5f2dfbcec08008.png');
+  width: 80vw;
+  height: calc(100vh - 100px);
+  z-index: 100;
+  background-position: center;
+  background-color: #333;
+  box-shadow: 0 0 5px 10px #333;
+}
+
+#cli {
+  width: 75%;
+}
+
+.modal-content {
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em;
+}
+
+.modal-dialog {
+  box-shadow: 0 0 5px 10px #333;
+  -webkit-box-shadow: 0 0 5px 10px #333;
+  -moz-box-shadow: 0 0 5px 10px #333;
+  border-radius: 1em;
+}
+
+.modal-title, .modal-body, .close, .close-x {
+  color: #ffffff;
+}
+
+.modal-header {
+  border-bottom: 1px solid #000000;
+}
+
+.modal-body {
+  background-image: url('https://uanon.s3.amazonaws.com/backgrounds/4aefac88b597b312f457af4c6eb210bfeb2b614d861a9d8a380990e96c8823ab.png');
+  background-size: cover;
+  background-repeat: repeat;
+  border-radius: 0 0 1em 1em;
+}
+
+/* .modal-mask {
+  background-image: url('../img/70b45e53738c932605aa1d5cbfebb78d9983731547096b929e5f2dfbcec08008.png');
+  background-position: center;
+} */
+
+.close-x {
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 1.25em;
+  padding: 0.25em;
+}
+
+/* Season */
+
+/* Season - 0 (Tutorial) */
+.content-wrapper {
+  max-width: 50vw;
+  margin: auto;
+  position: relative;
+  top: 10vh;
+  padding: 4em;
+  box-shadow: 0 0 5px 10px #333;
+  -webkit-box-shadow: 0 0 5px 10px #333;
+  -moz-box-shadow: 0 0 5px 10px #333;
+  background-color: rgba(148,49,91,0.1);
+  border-radius: 1em;
+}
+.tutorials-list.animation {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  z-index: -1000;
+}
+img.tutorial-5 {
+  max-width: 100%;
+  height: auto;
+}
+ul.instr-n {
+  list-style: none;
+  padding: 1em;
+  border-radius: 0.5em;
+  background-image: url('https://uanon.s3.amazonaws.com/backgrounds/4aefac88b597b312f457af4c6eb210bfeb2b614d861a9d8a380990e96c8823ab.png');
+  background-repeat: repeat;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border: 1px solid #000;
+  background-color: #333333;
+}
+
+ul.instr-c {
+  list-style: none;
+  padding: 1px;
+  border-radius: 0.5em;
+  background-repeat: repeat;
+  background-color: rgba(230,0,115,0.2);
+  margin-bottom: 2em;
+  /* -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border: 1px solid #333333;
+  background-color: #333333; */
+  box-shadow: 0 0 5px 10px #333;
+  -webkit-box-shadow: 0 0 5px 10px #333;
+  -moz-box-shadow: 0 0 5px 10px #333;
+}
+
+ul.instr-c.t-1 {
+  padding: 1em;
+}
+
+.content pre {
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+}
+
+.jumbotron {
+  border-radius: 1em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  background-color: rgba(230,0,115,0.3);
+  background-repeat: repeat;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+}
+
+img.media-img.tutorial {
+  border-radius: 4px;
+  box-shadow: 0 0 5px 10px #333;
+  -webkit-box-shadow: 0 0 5px 10px #333;
+  -moz-box-shadow: 0 0 5px 10px #333;
+}
+
+ul.instr-n li {
+  color: #eee;
+}
