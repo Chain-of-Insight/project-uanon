@@ -3,20 +3,20 @@
     <h1>Leaders</h1>
     <h3 class="blood">{{ msg }}</h3>
 
-    <div class="loading" v-if="!pg.length && ld">
+    <div class="loading" v-if="!r.length && ld">
       <p v-if="ld">Loading...</p>
     </div>
-    <div class="loading" v-if="!pg.length && !ld">
+    <div class="loading" v-if="!r.length && !ld">
       <p class="none-shall-pass">None are worthy</p>
     </div>
 
-    <div class="page-l" v-if="pg.length">
-      <select class="form-control question item" v-model="s" v-if="pg.length && s">
+    <div class="page-l" v-if="r.length">
+      <select class="form-control question item" v-model="s" v-if="pg.length && s" @change="pLen();">
         <option v-for="(z, i) in sz" :key="i" :value="z">{{z}}</option>
       </select>
     </div>
     
-    <table class="leaderboard table" v-if="pg.length">
+    <table class="leaderboard table" v-if="r.length">
       <thead>
         <tr>
           <th class="h blood" scope="col">Rank</th>
@@ -26,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="leader-item" :class="{diamond: (parseInt(player.rank)==1), gold: (parseInt(player.rank)==2), silver: (parseInt(player.rank)==3), last: i==(pg.length-1), even: (p<1)?i>3&&i%2==0:i%2==0}" v-for="(player, i) in pg" :key="i" @click="g(player.tzAddress);">
+        <tr class="leader-item" :class="{diamond: (parseInt(player.rank)==1), gold: (parseInt(player.rank)==2), silver: (parseInt(player.rank)==3), last: i==(pg.length-1), even: (p<1)?i>3&&i%2==0:i%2==0}" v-for="(player, i) in pg" :key="i" @click="g(player.tzAddress, player.agentName);">
           <th scope="row" :title="a[parseInt((player.rank-1))]" v-if="(parseInt(player.rank)<=3)">
             <span>{{player.rank}}</span>
             <i v-if="(parseInt(player.rank)==1)" class="elo-swag fas fa-crown"></i>
@@ -37,14 +37,16 @@
             <span>{{player.rank}}</span>
           </th>
           <td :title="player.tzAddress" v-if="player.userName">{{player.userName}}</td>
-          <td :title="player.tzAddress" v-else>{{player.agentName}}</td>
-          <td :title="c.TEAM_MAP[player.teamName.toLowerCase()].description">{{player.teamName}}</td>
+          <td :title="player.tzAddress" v-if="!player.userName && player.agentName">{{player.agentName}}</td>
+          <td :title="player.tzAddress" v-if="!player.userName && !player.agentName">n/a</td>
+          <td v-if="c.TEAM_MAP[player.teamName.toLowerCase()]" :title="c.TEAM_MAP[player.teamName.toLowerCase()].description">{{player.teamName}}</td>
+          <td v-else>404</td>
           <!-- <td>&nbsp;</td> -->
         </tr>
       </tbody>
     </table>
 
-    <div class="controls paging" v-if="pg.length">
+    <div class="controls paging" v-if="r.length">
       <div class="ctrl-left float-left">
         <button class="btn btn-inverse" :disabled="p < 1" @click="p = 0;">«</button>
         <button class="btn btn-primary" :disabled="p < 1" @click="--p;">Previous</button>
@@ -79,10 +81,20 @@ export default {
     msg: 'Selbstuberwindung'
   }),
   mounted: async function () {
+    let s = localStorage.getItem('_obsL');
+    if (s) {
+      s = JSON.parse(s);
+      if (typeof s == 'number') {
+        this.s = s;
+      }
+    }
     await this.l();
   },
   methods: {
-    g: function (p = null) {
+    g: function (p = null, pp = null) {
+      if (!pp || pp == 'n/a') {
+        return;
+      }
       if (typeof p !== 'string') {
         return;
       } else if (p.length !== 36) {
@@ -106,6 +118,12 @@ export default {
           }
         }
       }
+    },
+    pLen: function () {
+      if (this.s) {
+        this.p = 0;
+        localStorage.setItem('_obsL', JSON.stringify(this.s));
+      }
     }
   },
   computed: {
@@ -119,7 +137,7 @@ export default {
       if (this.p == 0) {
         p = this.r.slice(0, this.s);
       } else {
-        s = (this.p * this.s) + 1;
+        s = (this.p * this.s);
         e = (this.p * this.s) + this.s;
         p = this.r.slice(s,e);
       }
