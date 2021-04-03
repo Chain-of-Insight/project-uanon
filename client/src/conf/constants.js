@@ -6,7 +6,7 @@ const DEFAULT_FIELD_SIZE = 1;
 const DEFAULT_VISIBLE_PROPS = ['title','description','secret','previous','payload','hint','files'];
 const DEFAULT_STORAGE_BASE = process.env.VUE_APP_STORAGE_BASE;
 const DEFAULT_STORAGE_DOWNLOAD = 'index.zip';
-const deployed = ['tutorial'];
+const deployed = ['tutorial', 'spring'];
 const TEAMS = {
   '5ff7b2944650b50b77b641f9': {id:'5ff7b2944650b50b77b641f9', name: 'Nation', description: 'So he that can find no other way for correcting the errors of his people but by taking from them the conveniences of life, shows that he knows not what it is to govern a free nation.'},
   '5ff7b3204650b50b77b641fa': {id:'5ff7b3204650b50b77b641fa', name: 'Rebel', description: 'As soon as it is possible to disobey with impunity, disobedience is legitimate.'},
@@ -28,7 +28,8 @@ const notify = {
   DEFAULT_ACCESS_KEY_ACQUIRED: "Access key acquired",
   DEFAULT_NAVIGATION: "Loading...",
   DEFAULT_LOG_GEN: "Generating logs...",
-  DEFAULT_DOWNLOAD_COMPLETE: "Download complete"
+  DEFAULT_DOWNLOAD_COMPLETE: "Download complete",
+  DEFAULT_DESKTOP_WELCOME: "Thank for choosing U-buntu v1.99!"
 };
 
 const externals = {
@@ -85,6 +86,25 @@ const externals = {
           prosaic: 'b341e5c08a130abf24b210dae4ecc38db47e24889768b4dfda41bc78d0b22252.png',
           common2: '3793a40d19570feb51ad40bad70ef446a5ed27fc8322a059d238bae9c935ac98.png',
           common1: 'eab38edf6f04740bf5fadd22ad9e1a4b686fa9c12263b41805687c624d40bc9d.png'
+        }
+      },
+      spring: {
+        path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/QmR5f8azs8ctcJ29MERvVZk6gRAFFxGuEzirEAcvXJbWkA/',
+        image: {
+          ascended: 'ascended.png',
+          lost: 'lost.png',
+          secret: 'secret.png',
+          cruel: 'cruel.png',
+          common2: 'common2.png',
+          common1: 'common1.png'
+        },
+        model: {
+          ascended: 'ascended.glb',
+          lost: 'lost.glb',
+          secret: 'secret.glb',
+          cruel: 'cruel.glb',
+          common2: 'common2.glb',
+          common1: 'common1.glb'
         }
       }
     }

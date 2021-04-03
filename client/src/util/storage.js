@@ -87,6 +87,11 @@ function updateAscensions(realm, asc) {
     switch (realm.toLowerCase()) {
       case 'tutorial+': {
         store.ascensions['tutorial+'] = asc;
+        break;
+      }
+      case 'spring+': {
+        store.ascensions['spring+'] = asc;
+        break;
       }
     }
     let update = JSON.stringify(store);

@@ -10,7 +10,10 @@
   <div class="content-s home season-content" v-if="a && p">
     <router-link :to="l[i].p" v-for="(s, i) in d" :key="i">
       <div class="season-item" v-if="l[i]" :style="'background-image: url(' + l[i].b + ');'">
-        <h2 class="season">Season {{s}}</h2>
+        <div v-if="i==1" class="season 991" :id="'si-'+i">
+          <h2 class="season 991">Season {{s}}</h2>
+        </div>
+        <h2 class="season" v-else>Season {{s}}</h2>
       </div>
     </router-link>
   </div>
@@ -50,17 +53,21 @@
 <script>
 import * as Auth from '../../util/auth';
 import * as api from '../../util/api';
+// import * as Config from '../../conf/constants';
 
 import { isLoggedIn } from 'axios-jwt';
 
-const DEPLOYED = [0];
+const DEPLOYED = [0,1];
 
 export default {
   name: 'Home',
   data: () => ({
     a: isLoggedIn(),
     d: DEPLOYED,
-    l: [{p: '/learn', b: '/img/3450804e9328585e42a89335475f2317785c6f09feac8e5c0b5ada225ec4fd2b.png'}],
+    l: [
+      {p: '/learn', b: '/img/3450804e9328585e42a89335475f2317785c6f09feac8e5c0b5ada225ec4fd2b.png'},
+      {p: '/discover', b: '/img/d81c85d1b7926c06ce180214bdfe19e059f2fdd38938d97275016dbea3a2389c.jpg'}
+    ],
     o: null,
     p: null,
     api: api,
@@ -232,6 +239,12 @@ h2.login, h2.register {
   margin: auto;
   width: 100%;
   text-align: center;
+}
+#si-1 {
+  background-image: url('https://uanon.s3.amazonaws.com/backgrounds/d0f95f8b4df94d55f7bee5fe04a82e808695ee60ebbb6f9daa1740f2f73f1889.png');
+  background-size: 302px 167px;
+  min-height: 600px;
+  background-repeat: repeat;
 }
 @keyframes glow {
   from {

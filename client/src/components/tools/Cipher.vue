@@ -450,7 +450,7 @@ export default {
               console.warn('Error hashing data');
             }
           } catch(e) {
-            console.log(e);
+            console.warn(e);
           }
           
           break;

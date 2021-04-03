@@ -202,7 +202,7 @@ export default {
 <style scoped>
 .observer-profile {
   padding: 4em;
-  max-width: 1080px;
+  max-width: 1200px;
   width: 80vw;
   min-height: 80vh;
   margin: auto;
@@ -320,7 +320,9 @@ img.ubadge {
   background-repeat: no-repeat;
   margin-top: 2em;
 }
-
+div.truth {
+  display: inline-flex;
+}
 /***
  * BADGES
  */

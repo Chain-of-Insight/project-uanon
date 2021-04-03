@@ -1,21 +1,16 @@
 <template>
-  <div id="uterm" class="console" :class="{'open': open, 'closed': !open, 'sm': (ss == 35), 'x-sm': (ss == 25), 'xx-sm': (ss == 15)}">
+  <div id="uterm" class="console open">
     <div class="console-inner">
       <p class="title-bar">
         <span class="ws"></span>
         <span class="icon icon-terminal1"></span>
-        <span class="float-right close-x" @click="close();">&times;</span>
-        <span class="float-right plus-s" @click="plusS();" v-if="ss">&#43;</span>
-        <span class="float-right plus-s greyed" v-if="!ss">&#43;</span>
-        <span class="float-right minus-s" @click="minusS();" v-if="ss !== 15">&#8722;</span>
-        <span class="float-right minus-s greyed" v-if="ss == 15">&#8722;</span>
       </p>
       <div class="uwrapper">
         <div id="log">
           <p class="log-item" v-for="(l, i) in log" :key="i" v-html="l"></p>
         </div>
         <div class="cli-input">
-          <span class="cyan">{{uni}}</span>@{{r}}:<span class="jaundice">~/{{i}}</span><span> $ </span>
+          <span class="cyan">{{uni}}</span>@printempo:<span class="jaundice">~/{{i}}</span><span> $ </span>
           <input 
             type="search" 
             id="cli"
@@ -28,12 +23,10 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="open-c helper" v-if="!open">
-    <div class="open-c inner" v-if="!q">
-      <p class="helper-bar float-right" @click="toggle();">
-        <span class="icon icon-terminal2"></span>
-      </p>
+    <div class="uranon2 disp" v-if="rr.length">
+      <br/>
+      <br/>
+      <img :class="'ur-'+i" v-for="(r, i) in rr" :key="i" :src="r">
     </div>
   </div>
 </template>
@@ -53,7 +46,6 @@ export default {
     l: Boolean,
     p: Object,
     q: Boolean,
-    dl: Boolean,
     tx: Boolean,
     un: String
   },
@@ -69,6 +61,7 @@ export default {
     iu: false,
     ss: null,
     si: [35,25,15],
+    rr: [],
     api: api,
     cmd: ['info', 'download', 'submit', 'next', 'prev', 'clear', 'help'],
     uni: null,
@@ -85,6 +78,13 @@ export default {
     } else {
       this.uni = this.un;
     }
+    if (this.p.id) {
+      this.rr = [
+        Config.DEFAULT_STORAGE_BASE + '/' + this.p.id + '/linux.png',
+        Config.DEFAULT_STORAGE_BASE + '/' + this.p.id + '/macos.png',
+        Config.DEFAULT_STORAGE_BASE + '/' + this.p.id + '/windows.png'
+      ];
+    }
     // Listen for console display
     document.onkeypress = (e) => {
       e = e || window.event;
@@ -94,6 +94,7 @@ export default {
       }
     };
     // Autofocus event
+    this.$refs.cli.focus();
     document.getElementById('uterm').addEventListener('click', (e) => {
       if (e.target) {
         if (e.target.id == 'uterm' || e.target.classList.contains('title-bar')) {
@@ -115,46 +116,6 @@ export default {
     });
   },
   methods: {
-    toggle: function () {
-      this.open = !this.open;
-      this.$emit('copen', this.open);
-      if (this.open) {
-        setTimeout(() => {
-          this.input = null;
-          this.$refs.cli.focus();
-        }, 0);
-      }
-    },
-    plusS: function () {
-      if (this.ss) {
-        let i = this.si.indexOf(this.ss);
-        if ((i-1) >= 0) {
-          this.ss = this.si[i-1];
-          this.do.store.consoleSize((i-1));
-        } else if (i == 0) {
-          this.ss = null;
-          this.do.store.consoleSize(null, true);
-        }
-      }
-      // console.log('plus', [this.ss, this.si]);
-    },
-    minusS: function () {
-      if (!this.ss) {
-        this.ss = this.si[0];
-        this.do.store.consoleSize(0);
-      } else {
-        let i = this.si.indexOf(this.ss);
-        if ((i+1) < this.si.length) {
-          this.ss = this.si[i+1];
-          this.do.store.consoleSize((i+1));
-        }
-      }
-      // console.log('minus', [this.ss, this.si]);
-    },
-    close: function () {
-      this.open = false;
-      this.$emit('copen', this.open);
-    },
     /**
      * @param {Object | KeyboardEvent} e : Keypressed Event
      */
@@ -251,8 +212,6 @@ export default {
           return invalidMsg;
         } else if (!this.p['files']) {
           return invalidMsg;
-        } else if (this.dl === true) {
-          return invalidMsg;
         }
         let id = this.p.id;
         if (!id || typeof id !== 'string') {
@@ -288,7 +247,7 @@ export default {
         this.log = [];
       } else if (cmd.substr(0, 4).toLowerCase() == "next") {
         this.clog.push(cmd);
-        if (!can.go && location.href.indexOf('rites-of-spring') == -1) {
+        if (!can.go) {
           if (!this.do.store.existsItem(this.p.secret, this.r)) {
             return Config.notify.DEFAULT_NO_ACCESS;
           }
@@ -297,14 +256,12 @@ export default {
         let c = location.href, a = c.split('/'), b = a[(a.length - 1)], u;
         a[(a.length - 1)] = parseInt(b) + 1;
 
-        if (b == "rites-of-spring") {
-          u = c.replace('spring/rites-of-spring', 'discover');
-          return location.href = u;
-        }
-
-        if (a[(a.length - 2)] == 'discover') {
-          u = a.slice(0,(a.length - 2)).join('/') + '/' + this.r + '/1';
-          // console.log('Realm =>', this.r);
+        if (b == 'discover') {
+          u = u.split('/');
+          u[u.length - 1] = this.r;
+          u.push('1');
+          u = u.join('/');
+          // console.log('Realm =>', this.r)
           // console.log('Route =>', [u, can.go]);
           return location.href = u;
         }
@@ -314,7 +271,7 @@ export default {
           if (this.r == 'tutorial') {
             u = u.replace(this.r, 'learn');
           } else if (this.r == 'spring') {
-            u += '/rites-of-spring';
+            u = u.replace(this.r, 'discover');
           }
         } else {
           u = a.join('/');
@@ -391,51 +348,17 @@ export default {
           ig.push(' <span class="cyan-bg">Payload:</span>                 ' + this.p.payload.value);
         }
         if (this.p.payload.format) {
-          if (this.r == "spring" && this.i == 6) {
-            let arr = [
-              '<span class="cyan-bg">Format:</span> Each person, 1st input - ' + this.p.payload.format.person1.input1,
-              '<span class="cyan-bg">Format:</span> Each person, 2nd input - ' + this.p.payload.format.person1.input2,
-              '<span class="cyan-bg">Format:</span> Each person, 3rd input - ' + this.p.payload.format.person1.input3,
-              '<span class="cyan-bg">Format:</span> Each person, 4th input - ' + this.p.payload.format.person1.input4,
-              '<span class="cyan-bg">Format:</span> Each person, 5th input - ' + this.p.payload.format.person1.input5,
-            ];
-            for (let i = 0; i < arr.length; i++) {
-              ig.push(arr[i]);
-            }
-          } else {
-            ig.push(' <span class="cyan-bg">Format:</span>                  ' + this.p.payload.format);
-          }
+          ig.push(' <span class="cyan-bg">Format:</span>                  ' + this.p.payload.format);
         }
       }
       if (this.p.format) {
         ig.push(' <span class="cyan-bg">Format:</span>                    ' + this.p.format);
       }
-      if (this.r == 'spring+' && this.p.morals) {
-        if (Array.isArray(this.p.morals)) {
-          if (this.p.morals.length) {
-            ig.push(' <span class="cyan-bg">Fear<span class="jaundice">->format</span>:</span>                      ' + this.p.morals[0].format);
-          }
-        }
-      }
       if (this.p.hint) {
-        if (Array.isArray(this.p.hint)) {
-          for (let i = 0; i < this.p.hint.length; i++) {
-            ig.push(' <span class="cyan-bg">Hint ' + (i+1) + ':</span>                      ' + this.p.hint[i]);
-          }
-        } else {
-          ig.push(' <span class="cyan-bg">Hint:</span>                      ' + this.p.hint);
-        }
+        ig.push(' <span class="cyan-bg">Hint:</span>                      ' + this.p.hint);
       }
-      if (this.dl !== true) {
-        if (this.p.files) {
-          if (Array.isArray(this.p.files)) {
-            for (let i = 0; i < this.p.files.length; i++) {
-              ig.push(' <span class="cyan-bg">Attachment ' + (i+1) + ':</span>               ' + String(this.p.files[i]));
-            }
-          } else {
-            ig.push(' <span class="cyan-bg">Attachments:</span>               ' + String(this.p.files));
-          }
-        }
+      if (this.p.files) {
+        ig.push(' <span class="cyan-bg">Attachments:</span>               ' + String(this.p.files));
       }
       return ig;
     },
@@ -472,27 +395,12 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    min-height: 55vh;
-    max-height: 55vh;
+    min-height: 100vh;
+    max-height: 100vh;
     overflow-y: auto;
     width: auto;
     background-color: rgba(0,0,0,0.9);
     z-index: 1000;
-  }
-  .console.sm {
-    min-height: 35vh;
-    max-height: 35vh;
-  }
-  .console.x-sm {
-    min-height: 25vh;
-    max-height: 25vh;
-  }
-  .console.xx-sm {
-    min-height: 15vh;
-    max-height: 15vh;
-  }
-  .console.closed {
-    display: none;
   }
   .console.open {
     display: block;
@@ -517,19 +425,6 @@ export default {
     margin-bottom: 1em;
     z-index: 1000;
   }
-  .close-x, .plus-s, .minus-s {
-    font-size: 2em;
-    margin-right: 0.5em;
-    color: #ff7070;
-    top: -7px;
-    position: relative;
-    cursor: pointer;
-  }
-  .plus-s.greyed, .minus-s.greyed {
-    color: #ffb6c1;
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
   .icon.icon-terminal1 {
     position: relative;
     top: 7px;
@@ -552,21 +447,12 @@ export default {
     position: relative;
     top: 40px;
   }
-  .helper-bar {
-    position: fixed;
-    bottom: 30px;
-    right: 2em;
-    border-radius: 20%;
-    background-color: rgba(148,49,91,0.1);
-    -moz-box-shadow: inset 0 0 10px #000000;
-    -webkit-box-shadow: inset 0 0 10px #000000;
-    box-shadow: inset 0 0 10px #000000;
-    padding: 0.25em;
-    cursor: pointer;
-    border: 1px solid rgba(255,112,112,0.25);
+  .disp {
+    margin-top: 2em;
   }
-  .helper-bar:hover {
-    box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);
-    text-shadow: 0 0 20px #eee, 0 0 30px #eee, 0 0 40px #ff7070, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff7070;
+  .disp img {
+    max-height: 400px;
+    width: auto;
+    z-index: -1;
   }
 </style>

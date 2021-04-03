@@ -480,7 +480,7 @@ export default {
         }
       }
     },
-    nm: function () {//here
+    nm: function () {
       let r = true;
       for (let i = 0; i < this.id.length; i++) {
         if (!this.id[i]) {
@@ -679,6 +679,9 @@ input.profile, select.profile.item {
   -o-animation: mythos ease 160s;
   -ms-animation: mythos ease 160s;
   animation-iteration-count: infinite;
+}
+.sealed.jumbotron {
+  margin-top: 0;
 }
 .sealed .title-bar h3 {
   background: -webkit-linear-gradient(#ff7070, #333);

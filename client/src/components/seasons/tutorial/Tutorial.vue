@@ -256,7 +256,7 @@ export default {
       let n = document.getElementById('nav');
       n.style.top = '-3px';
       n.style.left = '-3px';
-      await this.$nextTick(function () {
+      await this.$nextTick(() => {
         setTimeout(() => {
           window.generateGrid();
           window.shuffle();

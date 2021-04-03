@@ -17,9 +17,35 @@ export default {
     a: Boolean, // Autoplay
     l: Boolean  // Loop
   },
+  emits: ['fin'],
+  data: () => ({
+    d: null
+  }),
+  mounted: async function () {
+    let o;
+    this.$watch('p', (n, og) => {
+      if (n !== o) {
+        this.$refs.m.load();
+      }
+      o = og;
+    });
+    this.$refs.m.onloadedmetadata = () => {
+      this.d = this.$refs.m.duration * 1000;
+      if (this.a)  {
+        setTimeout(() => {
+          this.$emit('fin', true);
+        }, this.d);
+      }
+    };
+  },
   methods: {
     play: function () {
       this.$refs.m.play();
+      if (this.d) {
+        setTimeout(() => {
+          this.$emit('fin', true);
+        }, this.d);
+      }
     },
     pause: function () {
       this.$refs.m.pause();

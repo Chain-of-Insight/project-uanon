@@ -292,7 +292,7 @@ export default {
       try {
         this.v.truth = this.h.v(p, pub, s, d);
       } catch (e) {
-        console.log(e);
+        console.warn(e);
         this.v.truth = false;
       }
     },

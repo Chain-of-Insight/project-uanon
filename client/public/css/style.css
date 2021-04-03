@@ -3,6 +3,11 @@
   src: url('../font/ShareTechMono-Regular.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Special Elite';
+  src: url('../font/SpecialElite-Regular.ttf') format('truetype');
+}
+
 html, body {
   font-family: 'ShareTechMono', sans-serif;
 }
@@ -88,6 +93,10 @@ pre:not(.log) {
   background-color: #73c8eb;
   border-color: #3bb3e3;
   border-radius: 0.5em;
+}
+
+pre.line-17 {
+  line-height:17px;
 }
 
 strong {
@@ -300,4 +309,44 @@ img.media-img.tutorial {
 
 ul.instr-n li {
   color: #eee;
+}
+
+.wander h1, .wander h3 {
+  background: linear-gradient(#fff, #ff7070);
+  background: -webkit-linear-gradient(#fff, #ff7070);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0px 0px 6px #ff7070;
+}
+
+.wander p {
+  max-width: 600px;
+  line-height: 10px;
+  font-style: italic;
+  display: block;
+  text-shadow: 0px 0px 6px #ff7070;
+}
+
+.wander p:nth-child(even) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+#id-8UB3F9RJ ul {
+  list-style: none;
+  padding: 0;
+}
+#id-8UB3F9RJ ul li {
+  margin-bottom: 1rem;
+  padding: 1em;
+  border-radius: 2em;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+}
+#id-8UB3F9RJ ul li:nth-child(even) {
+  background-color: rgb(148,49,91);
+}
+#id-8UB3F9RJ ul li:nth-child(odd) {
+  background-color: #333333;
 }

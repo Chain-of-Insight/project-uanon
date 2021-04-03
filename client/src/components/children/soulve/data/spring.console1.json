@@ -1,0 +1,129 @@
+{
+  "info": [
+    {
+      "id": "c2d7f6aa704ef94ccddadeaf3d8088d0e79fa27e70ac42da5cdb0a7d5f83d750",
+      "index": 2,
+      "title": "Kreslenie ämnen",
+      "previous": "71c5c7899b4f7d0e0492eaf214e8967a7bc570d931a67864143279ebcae77bf8",
+      "secret": "b8ae84dc9ba611054012013e647e5551c1a1e712016b6590ee5db836a0d7a347",
+      "operation": {"testnet":"ooRtFuJ3AyfPWKr6vrftLpuTuHxNWUWbmyJKzzAJT6ymoFyE3kd", "mainnet": ""},
+      "description": "Обнаружен раздел パッケージなし：ヘッダー",
+      "payload": {
+        "value": "forbindelse",
+        "format": "to mots верхний регистр"
+      },
+      "template": null
+    },
+    {
+      "id": "c2d7f6aa704ef94ccddadeaf3d8088d0e79fa27e70ac42da5cdb0a7d5f83d750",
+      "index": 2,
+      "title": "Dessin polotovarov",
+      "previous": "71c5c7899b4f7d0e0492eaf214e8967a7bc570d931a67864143279ebcae77bf8",
+      "secret": "b8ae84dc9ba611054012013e647e5551c1a1e712016b6590ee5db836a0d7a347",
+      "operation": {"testnet":"ooRtFuJ3AyfPWKr6vrftLpuTuHxNWUWbmyJKzzAJT6ymoFyE3kd", "mainnet": ""},
+      "description": "Αντιμετωπίστηκε una sektion без заголовка entête",
+      "payload": {
+        "value": "konexioa",
+        "format": "två ord majiscule"
+      },
+      "template": null
+    },
+    {
+      "id": "c2d7f6aa704ef94ccddadeaf3d8088d0e79fa27e70ac42da5cdb0a7d5f83d750",
+      "index": 2,
+      "title": "Ritämnen",
+      "previous": "71c5c7899b4f7d0e0492eaf214e8967a7bc570d931a67864143279ebcae77bf8",
+      "secret": "b8ae84dc9ba611054012013e647e5551c1a1e712016b6590ee5db836a0d7a347",
+      "operation": {"testnet":"ooRtFuJ3AyfPWKr6vrftLpuTuHxNWUWbmyJKzzAJT6ymoFyE3kd", "mainnet": ""},
+      "description": "Am întâlnit o sezione χωρίς πακέτο: गीत",
+      "payload": {
+        "value": "konekto",
+        "format": "deux vortojn majuskla"
+      },
+      "template": null
+    },
+    {
+      "id": "c2d7f6aa704ef94ccddadeaf3d8088d0e79fa27e70ac42da5cdb0a7d5f83d750",
+      "index": 2,
+      "title": "Tekenen espacios vide",
+      "previous": "71c5c7899b4f7d0e0492eaf214e8967a7bc570d931a67864143279ebcae77bf8",
+      "secret": "b8ae84dc9ba611054012013e647e5551c1a1e712016b6590ee5db836a0d7a347",
+      "operation": {"testnet":"ooRtFuJ3AyfPWKr6vrftLpuTuHxNWUWbmyJKzzAJT6ymoFyE3kd", "mainnet": ""},
+      "description": "Napotkałem seksjon sans pachet: antet",
+      "payload": {
+        "value": "जडान",
+        "format": "două cuvinte matua nui"
+      },
+      "template": null
+    },
+    {
+      "id": "c2d7f6aa704ef94ccddadeaf3d8088d0e79fa27e70ac42da5cdb0a7d5f83d750",
+      "index": 2,
+      "title": "Desenho polotovarov",
+      "previous": "71c5c7899b4f7d0e0492eaf214e8967a7bc570d931a67864143279ebcae77bf8",
+      "secret": "b8ae84dc9ba611054012013e647e5551c1a1e712016b6590ee5db836a0d7a347",
+      "operation": {"testnet":"ooRtFuJ3AyfPWKr6vrftLpuTuHxNWUWbmyJKzzAJT6ymoFyE3kd", "mainnet": ""},
+      "description": "Narazili na sekciu med ingen pakke: salmo",
+      "payload": {
+        "value": "conexão",
+        "format": "to ord versal"
+      },
+      "template": null
+    },
+    {
+      "id": "c2d7f6aa704ef94ccddadeaf3d8088d0e79fa27e70ac42da5cdb0a7d5f83d750",
+      "index": 2,
+      "title": "Vide marrazten",
+      "previous": "71c5c7899b4f7d0e0492eaf214e8967a7bc570d931a67864143279ebcae77bf8",
+      "secret": "b8ae84dc9ba611054012013e647e5551c1a1e712016b6590ee5db836a0d7a347",
+      "operation": {"testnet":"ooRtFuJ3AyfPWKr6vrftLpuTuHxNWUWbmyJKzzAJT6ymoFyE3kd", "mainnet": ""},
+      "description": "Encontrou uma oddelku maya xidhmada: nagłówek",
+      "payload": {
+        "value": "Connection",
+        "format": "Deux słowa, Großbuchstaben"
+      },
+      "template": null
+    },
+    {
+      "id": "c2d7f6aa704ef94ccddadeaf3d8088d0e79fa27e70ac42da5cdb0a7d5f83d750",
+      "index": 2,
+      "title": "Desenarea ブランク",
+      "previous": "71c5c7899b4f7d0e0492eaf214e8967a7bc570d931a67864143279ebcae77bf8",
+      "secret": "b8ae84dc9ba611054012013e647e5551c1a1e712016b6590ee5db836a0d7a347",
+      "operation": {"testnet":"ooRtFuJ3AyfPWKr6vrftLpuTuHxNWUWbmyJKzzAJT6ymoFyE3kd", "mainnet": ""},
+      "description": "කොටසක් හමුවිය なしで प्याकेज: толгой",
+      "payload": {
+        "value": "Встречал раздел avec ingen pachet: गीत",
+        "format": "două cuvinte cu maiuskulaz"
+      },
+      "template": null
+    }
+  ],
+  "download": [
+    "Ŝarĝante...",
+    "Φόρτωση...",
+    "Загрузка...",
+    "Chargement...",
+    "Carregando...",
+    "Ładowanie...",
+    "01001100 01101111 01100001 01100100 01101001 01101110 01100111 00101110 00101110 00101110"
+  ],
+  "downloaded": [
+    "Download compleet",
+    "Pobieranie completa",
+    "letöltés ολοκληρώθηκε",
+    "Telechargement klar",
+    "डाउनलोड गर्नुहोस् ferdig",
+    "Integrum descarga",
+    "Nedladdning abgeschlossen"
+  ],
+  "season": [
+    "spring",
+    "printemps",
+    "primăvară",
+    "vår",
+    "άνοιξη",
+    "printempo",
+    "puna"
+  ]
+}

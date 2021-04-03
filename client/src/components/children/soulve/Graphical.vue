@@ -10,8 +10,8 @@
                   <span>Forging truth...</span>
                 </div>
                 <div class="modal-header">
-                  <h4 class="modal-title" v-if="tt && !p.description">{{tt}}</h4>
-                  <h4 class="modal-title" v-if="tt && p.description">{{tt}} — {{p.description}}</h4>
+                  <h4 class="modal-title" v-if="tt && !p.description || dd == false">{{tt}}</h4>
+                  <h4 class="modal-title" v-if="tt && p.description && dd !== false">{{tt}} — {{p.description}}</h4>
                   <div type="button" class="close" @click="close();">
                     <span class="close-x" aria-hidden="true">&times;</span>
                   </div>
@@ -19,7 +19,8 @@
                 <div class="modal-body" v-if="st == 0">
                   <ul class="n-fields ul form-group">
                     <li class="tutorials-list li" v-for="(f, n) in input" :key="n">
-                      <label :for="'input-' + n">Solution {{(n + 1)}}:</label>
+                      <label :for="'input-' + n" v-if="!fn">Solution {{(n + 1)}}:</label>
+                      <label :for="'input-' + n" v-else>{{ fn[n] }}:</label>
                       <input 
                         type="text" 
                         :id="'soulve-' + n"
@@ -68,7 +69,7 @@
                       <a class="j-link" :href="oph" target="_blank">View in chain explorer</a>
                     </p>
                     <p>
-                      <router-link class="j-link" to="/observer">View Truths</router-link>
+                      <router-link class="j-link" to="/observer" @click="close();">View Truths</router-link>
                     </p>
                   </div>
                 </div>
@@ -102,6 +103,8 @@ export default {
     l: Boolean, // Last of realm,
     p: Object,  // puzzle,
     t: String,  // Title bar message
+    dd: Boolean,// Description display
+    fn: Object, // Array of field names
     tx: Boolean,// Tezos operation
     rst: Boolean// reset form on close
   },
@@ -147,6 +150,10 @@ export default {
           this.x.id = String(6);
           break;
         }
+        case 'spring+': {
+          this.x.id = String(109);
+          break;
+        }
         default: {
           break;
         }
@@ -165,9 +172,8 @@ export default {
           this.$emit('op', false);
         }
       } catch(e) {
-        console.log('Error reading contract', e);
+        console.warn('Error reading contract', e);
       }
-      // console.log('Oracle =>', this.c);
     }
   },
   watch: {
@@ -243,14 +249,21 @@ export default {
         p = p.substring(2);
         v = this.h.v(p, s, Config.DEFAULT_SIZE, Config.DEFAULT_DEPTH);
       } else {
-        let c = (this.c.current.claims) ? this.c.current.claims : 0;
+        let c = 0;
+        if (this.c) {
+          if (this.c['current']) {
+            if (this.c.current['claims']) {
+              c = (typeof this.c.current.claims == 'number') ? this.c.current.claims : 0;
+            }
+          }
+        }
         let d = (Config.DEFAULT_OP_SIZE - 1) - c;
         p = this.h.g(JSON.stringify(a), d);
         p = p.substring(2);
         v = this.h.v(p, s, Config.DEFAULT_OP_SIZE, d);
       }
       if (v === true) {
-        console.log('Proof Verified =>', {proof: p, verified: v, secret: s/*, pass: JSON.stringify(a)*/});
+        // console.log('Proof Verified =>', {proof: p, verified: v, secret: s/*, pass: JSON.stringify(a)*/});
         // Update parent
         this.$emit('proof', p);
         can.go = true;
@@ -315,7 +328,7 @@ export default {
                   return;
                 }
                 if (scriptError == "WaitYourTurn") {
-                  // @todo?
+                  console.warn('Your time has not yet arrived', scriptError);
                 }
               }
             }
@@ -341,6 +354,17 @@ export default {
       let c = location.href, a = c.split('/'), b = a[(a.length - 1)], u;
       a[(a.length - 1)] = parseInt(b) + 1;
       u = a.join('/');
+
+      if (b == 'discover') {
+        u = u.split('/');
+        u[u.length - 1] = this.r;
+        u.push('1');
+        u = u.join('/');
+        // console.log('Realm =>', this.r)
+        // console.log('Route =>', [u, can.go]);
+        return location.href = u;
+      }
+
       if (this.l) {
         u = a.slice(0,(a.length - 1)).join('/');
         if (this.r == 'tutorial') {

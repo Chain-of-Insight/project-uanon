@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 export default function() {
   const width = window.innerWidth,
-        height = window.innerHeight,    // TODO: calculate width and height
+        height = window.innerHeight,
         n = width / 100,                // Gradient iterations
         moonR = 30,                     // Moon radius
         fDeviation = 3,                 // Glow strength (outer bound)

@@ -25,7 +25,7 @@
               </div>
               <div class="modal-body">
                 <div class="accum">
-                  <div class="img-wr lg right float-right" v-if="image" @click="z=!z;">
+                  <div class="img-wr lg right float-right" :class="r" v-if="image" @click="z=!z;">
                     <img class="card-img" :class="{active: z}" :src="image" :alt="m.attributes[1].action">
                     <!--
                     XXX TODO: Display FA2 shadow / depression when FA2 zoomed in
@@ -40,22 +40,36 @@
                       <label>Rarity:&nbsp;</label>
                       <span>{{m.attributes[0].value}}</span>
                     </p>
+                    <!-- Rite of the Revenant -->
+                    <p class="descr descr-t" v-if="m.attributes.length > 1 && r == 'spring'">
+                      <label>Revenant Spirit:&nbsp;</label>
+                      <span>{{m.attributes[2].value}}</span>
+                    </p>
                     <p class="descr descr-t" v-if="m.attributes.length > 0">
                       <label>Action:&nbsp;</label>
                       <span>{{m.attributes[1].value}}</span>
                     </p>
-                    <p class="descr descr-t" v-if="m.imageUri">
+                    <p class="descr descr-t" v-if="m.imageUri && !m.displayUri">
                       <label>Image:&nbsp;</label>
                       <span>{{m.imageUri}}</span>
                     </p>
+                    <p class="descr descr-t" v-if="m.displayUri">
+                      <label>Image:&nbsp;</label>
+                      <span>{{m.displayUri}}</span>
+                    </p>
+                    <p class="descr descr-t" v-if="m.externalUri">
+                      <label v-if="r == 'spring'">Video:&nbsp;</label>
+                      <span>
+                        <a :href="m.externalUri" target="_blank">{{m.externalUri}}</a>
+                      </span>
+                    </p>
                   </div>
                   <div class="descr descr-t" v-if="m.description">
-                    <label v-if="r == def[0]">Engraving:&nbsp;</label>
-                    <label v-else>Description:&nbsp;</label>
+                    <label>Engraving:&nbsp;</label>
                     <div class="descr-f">{{m.description}}</div>
                   </div>
                 </div>
-                <div class="ctrl">
+                <div class="ctrl" v-if="r !== 'tutorial'">
                   <button class="btn btn-primary ctrl" @click="td=!td;">Open in 3D Viewer</button>
                   <div class="bg-warning" v-if="td">
                     <div type="button" class="close" @click="td = false">
@@ -146,8 +160,11 @@ export default {
 </script>
 
 <style scoped>
+.truth-shard {
+  margin-right: 40px;
+}
 div.card,.jumbotron {
-  max-width: 400px;
+  max-width: 425px;
 }
 .jumbotron {
   margin-bottom: 2em;
@@ -167,6 +184,9 @@ div.card,.jumbotron {
   -webkit-text-fill-color: transparent;
   text-shadow: 0px 0px 6px #ff7070;
 }
+a, a:hover, a:active, a:focus {
+  opacity: 1;
+}
 img.card-img {
   max-height: 250px;
   width: auto;
@@ -176,6 +196,7 @@ img.card-img {
 .card-body {
   text-align: center;
   display: block;
+  min-height: 174px;
 }
 button {
   margin-top: 1rem;
@@ -285,8 +306,20 @@ button.ctrl {
 .descr-f {
   white-space: pre-wrap;
 }
-.img-wr.lg {
+.img-wr.lg.tutorial {
   background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em;
+  padding: 4em;
+}
+.img-wr.lg.spring {
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/2.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -311,8 +344,21 @@ button.ctrl {
 
 /* Backgrounds */
 .bg-tutorial {
-  width: 400px;
+  width: 425px;
   background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em 1em 0 0;
+}
+
+.bg-spring {
+  width: 425px;
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/2.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
