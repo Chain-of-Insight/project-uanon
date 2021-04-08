@@ -19,6 +19,8 @@ import Spring7 from '../components/seasons/season1/Spring7.vue';
 import Spring8 from '../components/seasons/season1/Spring8.vue';
 import SpringAscend from '../components/seasons/season1/SpringAscend.vue';
 import SpringGG from '../components/seasons/season1/SpringGG.vue';
+// Token
+import Viewer3D from '../components/nft/SeeForYourself.vue';
 // Tools
 import Tools from '../components/tools/Tools';
 import CipherTools from '../components/tools/Cipher';
@@ -57,6 +59,8 @@ const routes = [
   { path: '/spring/8', name: 'Spring8', component: Spring8, meta: { requiresAuth: true } },
   { path: '/spring/rites-of-spring', name: 'SpringAscend', component: SpringAscend, meta: { requiresAuth: true } },
   { path: '/spring/gg', name: 'SpringGG', component: SpringGG, meta: { requiresAuth: true } },
+  // Token
+  { path: '/token/:contract/:type', name: 'Viewer3D', component: Viewer3D, meta: { requiresAuth: true } },
   // FAQ
   { path: '/faq', name: 'FAQ', component: Faq },
   // Observer

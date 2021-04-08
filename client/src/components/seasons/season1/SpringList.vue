@@ -136,7 +136,8 @@
 
 <script>
 import { getActiveAccount } from '../../../util/tezos';
-import { getTruths } from '../../../util/contract';
+// import { getTruths } from '../../../util/contract';
+import { getTruthShard } from '../../../util/contract';
 import * as Config from '../../../conf/constants';
 import * as api from '../../../util/api';
 import store from '../../../util/storage';
@@ -167,7 +168,7 @@ export default {
     sh: false,
     pz: {},
     un: null,
-    def: ['spring', 0],
+    def: ['spring', 1],
     str: {},
     asc: false,
     ung: false
@@ -263,19 +264,15 @@ export default {
       }
       let t;
       try {
-        t = await getTruths(a.address);
+        t = await getTruthShard(a.address, this.def[0]);
       } finally {
-        t.forEach((truth) => {
-          if (typeof truth == 'object') {
-            if (truth['season']) {
-              if (truth.season == 1) {
-                this.asc = true;
-                let r = this.def[0] + '+';
-                this.do.store.ascend(r, this.asc);
-              }
+        if (t) {
+          if (t['asset'] && t['season'] && this.def.length > 1) {
+            if (t.season == this.def[1]) {
+              this.asc = true;
             }
           }
-        });
+        }
       }
     },
     ma: async function () {

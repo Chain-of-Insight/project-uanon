@@ -302,10 +302,8 @@ export default {
           return location.href = u;
         }
 
-        if (a[(a.length - 2)] == 'discover') {
-          u = a.slice(0,(a.length - 2)).join('/') + '/' + this.r + '/1';
-          // console.log('Realm =>', this.r);
-          // console.log('Route =>', [u, can.go]);
+        if (a[(a.length - 2)] == 'discover' || b == 'discover') {
+          u = c.replace('discover', this.r + '/1');
           return location.href = u;
         }
 
@@ -328,6 +326,10 @@ export default {
         if (this.r == 'spring' && parseInt(b) == 1) {
           delete a[a.length - 1];
           u = a.join('/').replace(this.r, 'discover');
+          return location.href = u;
+        }
+        if (b == "rites-of-spring") {
+          u = c.replace('rites-of-spring', '8');
           return location.href = u;
         }
         a[(a.length - 1)] = parseInt(b) - 1;

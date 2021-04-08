@@ -55,9 +55,7 @@
       <p class="blood">Entrance requires holding the <span class="italic">Tome of the Princess Caraboo</span></p>
     </div>
   </div>
-  <div class="loading" v-if="ld">
-    <!-- <p class="centre" v-if="ld">Loading...</p> -->
-  </div>
+  <div class="loading" v-if="ld"></div>
 </template>
 
 <script>
@@ -105,8 +103,6 @@ export default {
           if (t['metadata']) {
             if (t.metadata.externalUri) {
               this.asc = true;
-              //https://www.youtube.com/embed/NZUX01DExVA
-              //https://www.youtube.com/watch?v=DA4yGcMZrGI
               let v = t.metadata.externalUri, vs = v.split('=');
               if (vs.length) {
                 if (vs[1]) {

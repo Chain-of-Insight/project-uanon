@@ -350,3 +350,6 @@ ul.instr-n li {
 #id-8UB3F9RJ ul li:nth-child(odd) {
   background-color: #333333;
 }
+model-viewer {
+  --poster-color: transparent !important;
+}

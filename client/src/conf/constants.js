@@ -18,6 +18,8 @@ const TEAM_MAP = {
   '404': {id:'5ff7b6114650b50b77b641fb', name: '404', description: 'The known is finite, the unknown infinite; intellectually we stand on an islet in the midst of an illimitable ocean of inexplicability.'}
 };
 
+const tokens = [process.env.VUE_APP_TEZOS_NFT_SEASON_0,process.env.VUE_APP_TEZOS_NFT_SEASON_1];
+
 const notify = {
   DEFAULT_PLAYER_WARNING: "Careful Observer, you're missing the access key to view this Op",
   DEFAULT_CLI_ERROR: "Error processing command",
@@ -133,5 +135,6 @@ module.exports = {
   TEAM_MAP: TEAM_MAP,
   deployed: deployed,
   notify: notify,
-  externals: externals
+  externals: externals,
+  tokens: tokens
 };

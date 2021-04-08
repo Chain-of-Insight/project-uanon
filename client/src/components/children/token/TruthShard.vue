@@ -32,9 +32,13 @@
                     -->
                   </div>
                   <div class="left">
-                    <p class="descr descr-t" v-if="m.creator">
+                    <p class="descr descr-t" v-if="m.creator && !m.creators">
                       <label>Creator:&nbsp;</label>
                       <span>{{m.creator}}</span>
+                    </p>
+                    <p class="descr descr-t" v-if="m.creators">
+                      <label>Creator:&nbsp;</label>
+                      <span v-if="m.creators.length">{{m.creators[0]}}</span>
                     </p>
                     <p class="descr descr-t" v-if="m.attributes.length > 0">
                       <label>Rarity:&nbsp;</label>
@@ -70,13 +74,7 @@
                   </div>
                 </div>
                 <div class="ctrl" v-if="r !== 'tutorial'">
-                  <button class="btn btn-primary ctrl" @click="td=!td;">Open in 3D Viewer</button>
-                  <div class="bg-warning" v-if="td">
-                    <div type="button" class="close" @click="td = false">
-                      <span class="close-x xxd" aria-hidden="true">&times;</span>
-                    </div>
-                    <span>Coming soon...</span>
-                  </div>
+                  <button class="btn btn-primary ctrl 3d" @click="loadT();">Open in 3D Viewer</button>
                 </div>
               </div>
             </div>
@@ -105,7 +103,7 @@ export default {
     z: false,
     td: false,
     api: api,
-    def: ['tutorial', 0]
+    def: ['tutorial', 'spring']
   }),
   mounted: async function () {
     if (this.n) {
@@ -122,6 +120,29 @@ export default {
         if (this.n['asset']) {
           if (this.n.asset['type']) {
             this.s = this.n.asset.type;
+          }
+        }
+        // console.log('this.n =>', this.n);
+      }
+    },
+    loadT: function () {
+      if (this.n) {
+        if (this.n['asset']) {
+          if (this.n.asset['realm']) {
+            switch(this.n.asset.realm) {
+              case this.def[1]: {
+                let c = location.href, a = c.split('/'), b = a[(a.length - 1)], u;
+                if (b == 'observer') {
+                  u = c.replace('observer', 'token/' + Config.tokens[1] + '/' + this.n.asset.type);
+                } else if (a[(a.length - 2)] == 'player') {
+                  a[(a.length - 2)] = 'token';
+                  a[(a.length - 1)] = Config.tokens[1];
+                  a.push(this.n.asset.type);
+                  u = a.join('/');
+                }
+                return location.href = u;
+              }
+            }
           }
         }
       }
@@ -204,7 +225,7 @@ button {
 }
 button.ctrl {
   max-width: 250px;
-  margin-left: 5em;
+  margin-left: 0;
   margin-top: 4em;
   margin-bottom: 4em;
   display: block;
@@ -275,13 +296,15 @@ button.ctrl {
   clear: both;
 }
 .accum {
-  max-width: 85%;
-  margin: auto;
   background: -webkit-linear-gradient(#fff, #ff7070);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0px 0px 6px #ff7070;
   clear: both;
+}
+div.ctrl, div.accum {
+  max-width: 85%;
+  margin: auto;
 }
 .left {
   max-width: 60%
