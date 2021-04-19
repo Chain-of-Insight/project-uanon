@@ -80,6 +80,7 @@ export default {
   methods: {
     k: function () {
       if (!this.asc || !this.v) {
+        console.warn("Error loading miserable vision.");
         return;
       } else {
         this.sh = !this.sh;
@@ -103,12 +104,9 @@ export default {
           if (t['metadata']) {
             if (t.metadata.externalUri) {
               this.asc = true;
-              let v = t.metadata.externalUri, vs = v.split('=');
-              if (vs.length) {
-                if (vs[1]) {
-                  this.v = YTB + vs[1];
-                }
-              }
+              let y = t.metadata.externalUri.split('/');
+              y = YTB + y[y.length-1];
+              this.v = y;
             }
           }
         }

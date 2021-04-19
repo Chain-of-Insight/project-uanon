@@ -133,7 +133,7 @@ export default {
               case this.def[1]: {
                 let c = location.href, a = c.split('/'), b = a[(a.length - 1)], u;
                 if (b == 'observer') {
-                  u = c.replace('observer', 'token/' + Config.tokens[1] + '/' + this.n.asset.type);
+                  u = c.replace('/observer', '/token/') + Config.tokens[1] + '/' + this.n.asset.type;
                 } else if (a[(a.length - 2)] == 'player') {
                   a[(a.length - 2)] = 'token';
                   a[(a.length - 1)] = Config.tokens[1];

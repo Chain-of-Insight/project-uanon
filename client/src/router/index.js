@@ -91,4 +91,13 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
+router.afterEach(async (to/*, from*/) => {
+  if (!window['ga']) {
+    return;
+  }
+  window.ga('set', 'page', to.path);
+  window.ga('send', 'pageview');
+  // console.log('Router =>', {to: to, from: from});
+});
+
 export default router;
