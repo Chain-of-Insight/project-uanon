@@ -32,7 +32,7 @@
             <div class="modal-dialog modal-dialog-e">
               <div class="modal-content modal-content-e">
                 <div class="modal-header">
-                  <div type="button" class="close" @click="sh=false;">
+                  <div type="button" class="close" @click="k();">
                     <span class="close-x" aria-hidden="true">&times;</span>
                   </div>
                 </div>
@@ -84,6 +84,14 @@ export default {
         return;
       } else {
         this.sh = !this.sh;
+        let b;
+        if (this.sh){
+          b = document.getElementsByTagName('body');
+          b[0].style.overflow = 'hidden';
+        } else {
+          b = document.getElementsByTagName('body');
+          b[0].style.overflow = '';
+        }
       }
     },
     verify: async function () {
@@ -180,9 +188,12 @@ div.hierarchies {
   transition: opacity .3s ease;
 }
 .modal-dialog-e {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-top: 0;
   min-width: 95vw;
-  min-height: 95vh;
-  overflow-y: auto;
 }
 .modal-body, iframe {
   height: 100%;
