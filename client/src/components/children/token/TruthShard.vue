@@ -63,7 +63,7 @@
                     </p>
                     <p class="descr descr-t" v-if="m.externalUri">
                       <label v-if="r == 'spring'">Video:&nbsp;</label>
-                      <span>
+                      <span v-if="r !== 'tutorial'">
                         <a :href="m.externalUri" target="_blank">{{m.externalUri}}</a>
                       </span>
                     </p>
