@@ -11,10 +11,11 @@
                 <span class="close-x" aria-hidden="true">&times;</span>
               </div>
             </div>
-            <div class="modal-body" :class="{email: (c) ? (c.i==0) : false, albert: (c) ? (c.i==4) : false}">
+            <div class="modal-body" :class="{email: (c) ? (c.i==0) : false, albert: (c) ? (c.i==4) : false, horror: b=='horror'}">
               <div v-if="c">
                 <div v-if="c.i==0 && c.email">
                   <Email
+                    v-bind:b="b"
                     v-bind:e="c.email"
                     v-if="!c.email['spring1']"
                   ></Email>
@@ -60,6 +61,7 @@
   export default {
     props: {
       a: Boolean,
+      b: String,
       c: Object,
       ne: Number
     },
@@ -125,6 +127,10 @@
 }
 .modal-wrapper-t {
   max-height: 90vh;
+}
+.modal-body.email {
+  max-height: 85vh;
+  overflow: auto;
 }
 .modal-body.email,
 .modal-body.albert {

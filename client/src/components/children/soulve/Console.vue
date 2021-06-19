@@ -15,7 +15,7 @@
           <p class="log-item" v-for="(l, i) in log" :key="i" v-html="l"></p>
         </div>
         <div class="cli-input">
-          <span class="cyan">{{uni}}</span>@{{r}}:<span class="jaundice">~/{{i}}</span><span> $ </span>
+          <span class="cyan">{{uni}}</span>@{{r}}:<span class="jaundice">~/{{((r == 'summer') ? (i+1) : i)}}</span><span> $ </span>
           <input 
             type="search" 
             id="cli"
@@ -53,6 +53,7 @@ export default {
     l: Boolean,
     p: Object,
     q: Boolean,
+    cf: Object,
     dl: Boolean,
     tx: Boolean,
     un: String
@@ -205,7 +206,7 @@ export default {
      * @param {String} cmd: Command to parse
      */
     cp: function (cmd) {
-      this.log.push('<span class="cyan">' + this.uni + '</span>@' + this.r + ':<span class="jaundice">~/' + String(this.i) + '</span><span> $ </span> ' + cmd);
+      this.log.push('<span class="cyan">' + this.uni + '</span>@' + this.r + ':<span class="jaundice">~/' + ((this.r == 'summer') ? String((this.i + 1)) : String(this.i)) + '</span><span> $ </span> ' + cmd);
       let invalidMsg = Config.notify.DEFAULT_CLI_ERROR, can = this;
       // Cmd
       if (typeof cmd !== 'string') {
@@ -292,6 +293,10 @@ export default {
           if (!this.do.store.existsItem(this.p.secret, this.r)) {
             return Config.notify.DEFAULT_NO_ACCESS;
           }
+        } else if (!can.go && location.href.indexOf('the-land-vomits-ghosts')) {
+          if (!this.do.store.existsItem(this.p.secret, this.r)) {
+            return Config.notify.DEFAULT_NO_ACCESS;
+          }
         }
         this.log.push(Config.notify.DEFAULT_NAVIGATION);
         let c = location.href, a = c.split('/'), b = a[(a.length - 1)], u;
@@ -299,6 +304,9 @@ export default {
 
         if (b == "rites-of-spring") {
           u = c.replace('spring/rites-of-spring', 'discover');
+          return location.href = u;
+        } else if (b == "the-land-vomits-ghosts") {
+          u = c.replace('summer/the-land-vomits-ghosts', 'descend');
           return location.href = u;
         }
 
@@ -313,6 +321,8 @@ export default {
             u = u.replace(this.r, 'learn');
           } else if (this.r == 'spring') {
             u += '/rites-of-spring';
+          } else if (this.r == 'summer') {
+            u += '/the-land-vomits-ghosts';
           }
         } else {
           u = a.join('/');
@@ -330,6 +340,10 @@ export default {
         }
         if (b == "rites-of-spring") {
           u = c.replace('rites-of-spring', '8');
+          return location.href = u;
+        }
+        if (b == "the-land-vomits-ghosts") {
+          u = c.replace('the-land-vomits-ghosts', '10');
           return location.href = u;
         }
         a[(a.length - 1)] = parseInt(b) - 1;
@@ -367,30 +381,36 @@ export default {
       let ig = [];
       if (this.p.title) {
         if (typeof this.p.title == 'object') {
-          ig.push(' <span class="cyan-bg">Title:</span>                   ' + this.p.title.value);
+          ig.push(' <span class="cyan-bg">Title:</span>                                     ' + this.p.title.value);
           ig.push(' <span class="cyan-bg">Title<span class="jaundice">->format</span>:</span>           ' + this.p.title.format);
         } else {
-          ig.push(' <span class="cyan-bg">Title:</span>                   ' + this.p.title);
+          ig.push(' <span class="cyan-bg">Title:</span>                                     ' + this.p.title);
         }
       }
       if (this.p.description) {
         if (typeof this.p.description == 'object') {
-          ig.push(' <span class="cyan-bg">Description:</span>             ' + this.p.description.value);
+          ig.push(' <span class="cyan-bg">Description:</span>                               ' + this.p.description.value);
           ig.push(' <span class="cyan-bg">Description<span class="jaundice">->format</span>:</span>     ' + this.p.description.format);
         } else {
-          ig.push(' <span class="cyan-bg">Description:</span>             ' + this.p.description);
+          ig.push(' <span class="cyan-bg">Description:</span>                               ' + this.p.description);
         }
       }
       if (this.p.secret) {
-        ig.push(' <span class="cyan-bg">Public Key:</span>                ' + this.p.secret);
+        ig.push(' <span class="cyan-bg">Public Key:</span>                                  ' + this.p.secret);
       }
       if (this.p.operation) {
         let o = (this.p.operation.mainnet == "") ? this.p.operation.testnet : this.p.operation.mainnet;
-        ig.push(' <span class="cyan-bg">Operation:</span>                 ' + o);
+        ig.push(' <span class="cyan-bg">Operation:</span>                                   ' + o);
       }
       if (this.p.payload) {
         if (this.p.payload.value) {
-          ig.push(' <span class="cyan-bg">Payload:</span>                 ' + this.p.payload.value);
+          if (Array.isArray(this.p.payload.value)) {
+            this.p.payload.value.forEach((v,i) => {
+              ig.push(' <span class="cyan-bg">Payload ' + (i+1) +':</span>                 ' + v);  
+            });
+          } else {
+            ig.push(' <span class="cyan-bg">Payload:</span>                                 ' + this.p.payload.value);
+          }
         }
         if (this.p.payload.format) {
           if (this.r == "spring" && this.i == 6) {
@@ -405,12 +425,34 @@ export default {
               ig.push(arr[i]);
             }
           } else {
-            ig.push(' <span class="cyan-bg">Format:</span>                  ' + this.p.payload.format);
+            if (Array.isArray(this.p.payload.format)) {
+              for (let i = 0; i < this.p.payload.format.length; i++) {
+                ig.push('<span class="cyan-bg">Format '+ (i+1) +':</span>                   ' + this.p.payload.format[i]);
+              }
+            } else {
+              if (!this.p.format) {
+                ig.push('<span class="cyan-bg">Format:</span>                               ' + this.p.payload.format);
+              }
+            }
           }
         }
       }
+      if (this.cf) {
+        if (this.r == 'summer' && this.i == 6) {
+          let p = this.cf.payload;
+          let f = this.cf.format;
+          ig.push('<span class="cyan-bg">Email Reply:<span class="jaundice">->payload</span>:</span>                ' + p);
+          ig.push('<span class="cyan-bg">Email Reply:<span class="jaundice">->format</span>:</span>                 ' + f);
+        }
+      }
       if (this.p.format) {
-        ig.push(' <span class="cyan-bg">Format:</span>                    ' + this.p.format);
+        if (Array.isArray(this.p.format) && !Array.isArray(this.p.payload['format'])) {
+          this.p.format.forEach((f,i) => {
+            ig.push(' <span class="cyan-bg">Format ' + (i+1) + ':</span>                    ' + f);
+          });
+        } else if (typeof this.p.format == 'string') {
+          ig.push(' <span class="cyan-bg">Format:</span>                                    ' + this.p.format);
+        }
       }
       if (this.r == 'spring+' && this.p.morals) {
         if (Array.isArray(this.p.morals)) {
@@ -425,7 +467,7 @@ export default {
             ig.push(' <span class="cyan-bg">Hint ' + (i+1) + ':</span>                      ' + this.p.hint[i]);
           }
         } else {
-          ig.push(' <span class="cyan-bg">Hint:</span>                      ' + this.p.hint);
+          ig.push(' <span class="cyan-bg">Hint:</span>                                      ' + this.p.hint);
         }
       }
       if (this.dl !== true) {
@@ -435,7 +477,7 @@ export default {
               ig.push(' <span class="cyan-bg">Attachment ' + (i+1) + ':</span>               ' + String(this.p.files[i]));
             }
           } else {
-            ig.push(' <span class="cyan-bg">Attachments:</span>               ' + String(this.p.files));
+            ig.push(' <span class="cyan-bg">Attachments:</span>                              ' + String(this.p.files));
           }
         }
       }
@@ -479,7 +521,7 @@ export default {
     overflow-y: auto;
     width: auto;
     background-color: rgba(0,0,0,0.9);
-    z-index: 1000;
+    z-index: 3000;
   }
   .console.sm {
     min-height: 35vh;
@@ -549,6 +591,7 @@ export default {
   .log-item {
     margin: 0;
     margin-left: 0.25em;
+    word-break: break-word;
   }
   .uwrapper {
     position: relative;

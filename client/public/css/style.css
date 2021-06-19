@@ -8,6 +8,11 @@
   src: url('../font/SpecialElite-Regular.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'AnglicanText';
+  src: url('../font/AnglicanText.ttf') format('truetype');
+}
+
 html, body {
   font-family: 'ShareTechMono', sans-serif;
 }

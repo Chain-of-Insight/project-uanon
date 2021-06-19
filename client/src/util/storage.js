@@ -93,6 +93,10 @@ function updateAscensions(realm, asc) {
         store.ascensions['spring+'] = asc;
         break;
       }
+      case 'summer+': {
+        store.ascensions['summer+'] = asc;
+        break;
+      }
     }
     let update = JSON.stringify(store);
     localStorage.setItem(M, update);

@@ -6,19 +6,19 @@ const DEFAULT_FIELD_SIZE = 1;
 const DEFAULT_VISIBLE_PROPS = ['title','description','secret','previous','payload','hint','files'];
 const DEFAULT_STORAGE_BASE = process.env.VUE_APP_STORAGE_BASE;
 const DEFAULT_STORAGE_DOWNLOAD = 'index.zip';
-const deployed = ['tutorial', 'spring'];
+const deployed = ['tutorial', 'spring', 'summer'];
 const TEAMS = {
   '5ff7b2944650b50b77b641f9': {id:'5ff7b2944650b50b77b641f9', name: 'Nation', description: 'So he that can find no other way for correcting the errors of his people but by taking from them the conveniences of life, shows that he knows not what it is to govern a free nation.'},
   '5ff7b3204650b50b77b641fa': {id:'5ff7b3204650b50b77b641fa', name: 'Rebel', description: 'As soon as it is possible to disobey with impunity, disobedience is legitimate.'},
   '5ff7b6114650b50b77b641fb': {id:'5ff7b6114650b50b77b641fb', name: '404', description: 'The known is finite, the unknown infinite; intellectually we stand on an islet in the midst of an illimitable ocean of inexplicability.'}
-}
+};
 const TEAM_MAP = {
   'nation': {id:'5ff7b2944650b50b77b641f9', name: 'Nation', description: 'So he that can find no other way for correcting the errors of his people but by taking from them the conveniences of life, shows that he knows not what it is to govern a free nation.'},
   'rebel': {id:'5ff7b3204650b50b77b641fa', name: 'Rebel', description: 'As soon as it is possible to disobey with impunity, disobedience is legitimate.'},
   '404': {id:'5ff7b6114650b50b77b641fb', name: '404', description: 'The known is finite, the unknown infinite; intellectually we stand on an islet in the midst of an illimitable ocean of inexplicability.'}
 };
 
-const tokens = [process.env.VUE_APP_TEZOS_NFT_SEASON_0,process.env.VUE_APP_TEZOS_NFT_SEASON_1];
+const tokens = [process.env.VUE_APP_TEZOS_NFT_SEASON_0,process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2];
 
 const notify = {
   DEFAULT_PLAYER_WARNING: "Careful Observer, you're missing the access key to view this Op",
@@ -105,6 +105,25 @@ const externals = {
           lost: 'lost.glb',
           secret: 'secret.glb',
           cruel: 'cruel.glb',
+          common2: 'common2.glb',
+          common1: 'common1.glb'
+        }
+      },
+      summer: {
+        path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/QmayS4NUBQkTi5v6qxtcg6bp8Ax889Q7mzYrUMVCSf9VRc/',
+        image: {
+          ascended: 'ascended.png',
+          medieval: 'medieval.png',
+          kohathite: 'kohathite.png',
+          orthodox: 'orthodox.png',
+          common2: 'common2.png',
+          common1: 'common1.png'
+        },
+        model: {
+          ascended: 'ascended.glb',
+          medieval: 'medieval.glb',
+          kohathite: 'kohathite.glb',
+          orthodox: 'orthodox.glb',
           common2: 'common2.glb',
           common1: 'common1.glb'
         }

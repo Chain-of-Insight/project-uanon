@@ -245,7 +245,6 @@
           return;
         }
         this.p.proof = s;
-        // console.log([this.p, this.def[0], CURRENT_I]);
         if (!this.do.store.update(this.p, this.def[0], CURRENT_I)) {
           console.warn("Failed updating storage, your solution has not been saved");
         }

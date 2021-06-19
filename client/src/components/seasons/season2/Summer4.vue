@@ -1,0 +1,336 @@
+<template>
+
+  <div class="summer-wrap console" v-if="rdy">
+    <div class="content-s summer puzzle-content" v-if="p.id">
+      <div class="content-i">
+        <iframe id="crowd" src="https://www.youtube.com/embed/IbVi5VSapFs?rel=0&amp;autoplay=1&mute=0&enablejsapi=1&controls=0&loop=1&playlist=IbVi5VSapFs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="v-ctrl blood" @click="sound()">
+        <span class="icon icon-volume_up" title="Toggle sound" v-if="v"></span>
+        <span class="icon icon-volume_off" title="Toggle sound" v-if="!v"></span>
+      </div>
+    </div>
+
+    <div class="content-s danger no-access" v-if="!a && i > 0">
+      <p class="no-access descr" v-html="w"></p>
+      <router-link to="/descend">Back</router-link>
+    </div>
+
+    <!-- Soulve -->
+    <Console
+      v-bind:s="p.secret"
+      v-bind:d="cd"
+      v-bind:i="i"
+      v-bind:r="def[0]"
+      v-bind:p="p"
+      v-bind:l="false"
+      v-bind:un="un"
+      v-if="p.secret && un"
+      @proof="retain"
+      @copen="copen"
+    ></Console>
+  </div>
+
+</template>
+
+<script>
+  import * as api from '../../../util/api';
+  import store from '../../../util/storage';
+  import { verifyProof } from '../../../util/hasher';
+  import * as Config from '../../../conf/constants';
+
+  import Console from '../../children/soulve/Console.vue';
+
+  const CURRENT_I = 3;
+
+  export default {
+    name: 'Summer 4',
+    components: { Console },
+    data: () => ({
+      a: false,
+      c: Config,
+      cd: false,
+      gd: false,
+      api: api,
+      h: verifyProof,
+      i: CURRENT_I,
+      k: null,
+      p: {
+        id: null,
+        title: null,
+        description: null,
+        secret: null,
+        template: null
+      },
+      s: null,
+      t: null,
+      v: true,
+      w: Config.notify.DEFAULT_PLAYER_WARNING,
+      do: store,
+      sl: null,
+      sv: null,
+      fi: null,
+      un: null,
+      str:{},
+      def: ['summer', 2],
+      rdy: false,
+      argT: [false, false]
+    }),
+    mounted: async function () {
+      this.getStr();
+      await this.getU();
+      await this.getS();
+      await this.getTpl();
+      this.rdy = true;
+    },
+    methods: {
+      getStr: function () {
+        this.str = this.do.store.get();
+      },
+      getS: async function () {
+        let req = {
+          realm: this.def[0]
+        };
+        let resp = await this.api.request.post('/season/get', req);
+        if (resp.status == 200 && resp.data) {
+          let d = resp.data;
+          if (d.message) {
+            let s = d.message, i = CURRENT_I;
+            if (s[i]) {
+              this.s = s[i];
+              await this.getSl();
+            }
+          }
+        }
+      },
+      getSl: async function () {
+        let r = this.def[0],
+            d;
+        let req = {
+          realm: r
+        };
+        let resp = await this.api.request.post('/season/get', req);
+        if (resp.status == 200 && resp.data) {
+          d = resp.data;
+          let s = d.message;
+          if (Array.isArray(s)) {
+            this.sl = s.length;
+          }
+        }
+      },
+      getU: async function () {
+        let resp = await this.api.request.get('/user/me'), data;
+        if (resp.status == 200 && resp.data) {
+          data = resp.data;
+          if (data['message']) {
+            if (data.message.observer) {
+              this.o = data.message.observer;
+              if (this.o['agentName']) {
+                this.un = this.o.agentName.replace(/\s/g, '');
+              }
+              // console.log('Observer', this.o);
+            }
+          }
+        }
+      },
+      /**
+       * @param {Number} n : Index
+       */
+      getTpl: async function () {
+        let i = CURRENT_I;
+        let r = this.def[0];
+        let d, s;
+        let req = {
+          index: i, 
+          realm: r
+        };
+        let proof, verifiedProof = false;
+        // No proof required
+        if (i == 0) {
+          let resp = await this.api.request.post('/puzzle/get', req);
+          if (resp.status == 200 && resp.data) {
+            d = resp.data;
+            if (d.message) {
+              this.make(d.message);
+            }
+          }
+        }
+        // Proof required
+        else {
+          // Prover
+          if (this.str[r]) {
+            let str = this.str[r];
+            if (typeof str[CURRENT_I - 1] == 'object') {
+              if (str[CURRENT_I - 1].proof) {
+                proof = str[CURRENT_I - 1].proof;
+                s = str[CURRENT_I - 1].secret;
+                if (typeof s == 'string') {
+                  let t = this.prove(proof, s);
+                  if (t === true)
+                    verifiedProof = true;
+                }
+              }
+            }
+          }
+          // Verified proof
+          if (verifiedProof) {
+            req.proof = proof;
+            let resp = await this.api.request.post('/puzzle/get', req);
+            if (resp.status == 200 && resp.data) {
+              d = resp.data;
+              if (d.message) {
+                this.a = true;
+                this.make(d.message);
+              }
+            }
+          }
+        }
+        // console.log("Proof =>", verifiedProof);
+      },
+      /**
+       * @param {Object} m : Response object.data
+       */
+      make: async function (m) {
+        this.p.id = (m.id) ? m.id : null;
+        this.p.title = (m.title) ? m.title : null;
+        this.p.description = (m.description) ? m.description : null;
+        this.p.secret = (m.secret) ? m.secret : null;
+        this.p.operation = (m.operation) ? m.operation : null;
+        this.p.previous = (m.previous) ? m.previous : null;
+        this.p.payload = (m.payload) ? m.payload : null;
+        this.p.hint = (m.hint) ? m.hint : null;
+
+        if (m['external']) {
+          this.k = m.external;
+        }
+
+        if (this.p.payload) {
+          if (this.p.payload['format']) {
+            this.p.format = this.p.payload.format;
+          }
+        }
+
+        if (Array.isArray(this.p.files)) {
+          for (let i = 0; i < this.p.files.length; i++) {
+            let f = this.p.files[i].split('/');
+            f = f[f.length - 1];
+            this.p.files[i] = f;
+          }
+        }
+        // console.log('Current Puzzle =>', [m, this.k]);
+      },
+      /**
+       * @param {String} s : Public key
+       * @param {String} h : Private Proof
+       */
+      prove: function (h, s) {
+        let v = false;
+
+        if (typeof h !== 'string') {
+          return false;
+        } else if (h.length !== Config.DEFAULT_CHAR_LENGTH) {
+          return false;
+        }
+
+        const p = this.h(h, s, Config.DEFAULT_SIZE, Config.DEFAULT_DEPTH);
+
+        if (p === true)
+          v = true;
+
+        return v;
+      },
+      /**
+       * @param {String} s : Secret
+       */
+      retain: function (s) {
+        if (typeof s !== 'string') {
+          return;
+        } else if (s.length !== Config.DEFAULT_CHAR_LENGTH) {
+          return;
+        }
+        this.p.proof = s;
+        // console.log([this.p, this.def[0], CURRENT_I]);
+        if (!this.do.store.update(this.p, this.def[0], CURRENT_I)) {
+          console.warn("Failed updating storage, your solution has not been saved");
+        }
+      },
+      copen: function (b) {
+        this.co = b;
+      },
+      goForth: function () {
+        if (!this.k) {
+          return;
+        }
+        window.open(this.k, "_blank");
+      },
+      /**
+       * @param {?Boolean} s : Optional param to hard mute / unmute instead of toggle
+       */
+      sound: function (s = null) {
+        const y = document.getElementById('crowd');
+        if (s == null) {
+          this.v = !this.v;
+        } else if (s) {
+          this.v = true;
+        } else {
+          this.v = false;
+        }
+        if (this.v == false) {
+          y.contentWindow.postMessage('{"event":"command","func":"mute","args":""}', '*');
+        } else {
+          y.contentWindow.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+        }
+      }
+    }
+  }
+</script>
+
+<style scoped>
+.content-i {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%; 
+  height: 100%; 
+  z-index: -1;
+  pointer-events: none;
+}
+iframe {
+  position: relative;
+  top: -5%;
+  left: -2%;
+  width: 100%;
+  height: 110%;
+  border-radius: 4em;
+}
+.vacancy {
+  z-index: 100;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 100px;
+  cursor: pointer;
+}
+.v-ctrl {
+  position: absolute;
+  right: 4em;
+  bottom: 45px;
+  border-radius: 20%;
+  padding: 0.1em;
+  cursor: pointer;
+  border: 1px solid rgba(255,112,112,0.25);
+}
+.v-ctrl span {
+  position: relative;
+  top: 3px;
+  clear: both;
+  cursor: pointer;
+}
+.v-ctrl:hover {
+  box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);
+  text-shadow: 0 0 20px #eee, 0 0 30px #eee, 0 0 40px #ff7070, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff7070;
+}
+</style>

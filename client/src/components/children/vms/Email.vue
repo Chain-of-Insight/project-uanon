@@ -1,5 +1,5 @@
 <template>
-  <div class="mailer">
+  <div class="mailer" :class="b">
     <div class="title-bar e-bar"></div>
     <div class="sjt-bar es-bar"></div>
     <div class="e-body">
@@ -31,6 +31,17 @@
               <span class="bold italic">To: {{s.to}}</span>
             </div>
             <div class="body" v-if="s.body" v-html="s.body"></div>
+            <div v-if="b == 'horror'" class="reply reply-h">
+              <textarea class="william-ii form-control" rows="6" cols="1" v-model="reply"></textarea>
+              <button class="btn btn-primary submit-h" @click="despair();">Submit</button>
+            </div>
+            <div class="messenger" v-if="msg.type && msg.value">
+              <p class="error-msg danger bg-danger" v-if="msg.type == 'error'">{{msg.value}}<span class="float-right close-x" @click="msg={type:null,value:null};reply=null;">&times;</span></p>
+              <div class="success-msg success bg-success" v-if="msg.type == 'success'">
+                <span class="float-right close-x" @click="msg={type:null,value:null};input=null;i=0;">&times;</span>
+                <div v-html="msg.value"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -44,6 +55,7 @@
 
   export default {
     props: {
+      b: String,
       e: Object   // Email 
     },
     data: () => ({
@@ -60,8 +72,9 @@
         value: null
       },
       input: null,
-      reply: null,
+      output: null,
       inbox: [],
+      reply: null,
       sent: []
     }),
     mounted: async function () {
@@ -77,23 +90,64 @@
           return;
         }
         this.msg = {type: null, value: null};
-        // Verify submission
         let submission = this.input.trim().replace(/"/g,"");
         let v = this.make(submission);
         if (v !== true) {
           this.msg = {type: 'error', value: Config.notify.DEFAULT_VERIFICATION_FAIL};
         // pass
         } else {
+        // fail
           this.msg = {type: 'success', value: Config.notify.DEFAULT_VERIFICATION_SUCCESS };
+        }
+      },
+      despair: function () {
+        if (!this.e['reply']) {
+          this.msg = {type: 'error', value: Config.notify.DEFAULT_VERIFICATION_FAIL};
+          return;
+        }
+        let r = this.reply.split("\n");
+        let s = (this.e.reply) ? this.e.reply['payload'] : null;
+        for (let i = 0; i < r.length; i++) {
+          r[i] = r[i].replace(/[^\w\s]|_/g, "").replace(/\s+/g, "").toUpperCase()
+        }
+        if (!s) {
+          this.msg = {type: 'error', value: Config.notify.DEFAULT_VERIFICATION_FAIL};
+          return;
+        } else {
+          s = s.split("(Public Key): ");
+          if (s.length == 2) {
+            s = s[1];
+          } else {
+            this.msg = {type: 'error', value: Config.notify.DEFAULT_VERIFICATION_FAIL};
+            return;
+          }
+        }
+        this.msg = {type: null, value: null};
+        let v = this.make(r, s);
+        if (v !== true) {
+        // fail
+          this.msg = {type: 'error', value: Config.notify.DEFAULT_VERIFICATION_FAIL};
+        // pass
+        } else {
+          this.msg = {type: 'success', value: "Verification succeeded. Use proof " + this.output + " to reveal the horror show."};
         }
       },
       /**
        * @param {String} a : Answer
        */
-      make: function (a) {
-        let p = this.h.g(JSON.stringify([a]), Config.DEFAULT_DEPTH), s = this.s;
+      make: function (a,b = null) {
+        let c;
+        if (!b)  {
+          c = [a]
+        } else {
+          c = a;
+        }
+        let p = this.h.g(JSON.stringify(c), Config.DEFAULT_DEPTH), s = (!b) ? this.s : b;
         p = p.substring(2);
         const v = this.h.v(p, s, Config.DEFAULT_SIZE, Config.DEFAULT_DEPTH);
+        if (v == true) {
+          this.output = p;
+        }
         return v;
       },
     }
@@ -101,16 +155,21 @@
 </script>
 
 <style scoped>
-.mailer {
+.mailer:not(.horror) {
   background: linear-gradient(to right, rgb(64, 224, 208), rgb(255, 140, 0), rgb(255, 0, 128));
-  padding: 2em;
-  border-radius: 0 0 1em 1em;
   animation: mythos ease 160s;
   -webkit-animation: mythos ease 160s;
   -moz-animation: mythos ease 160s;
   -o-animation: mythos ease 160s;
   -ms-animation: mythos ease 160s;
   animation-iteration-count: infinite;
+}
+.mailer.horror {
+  background: #ff7070;
+}
+.mailer {
+  padding: 2em;
+  border-radius: 0 0 1em 1em;
 }
 .inbox-list {
   background-color: #eee;
@@ -131,7 +190,7 @@
 .reply div {
   margin-bottom: 1.25rem;
 }
-.dial {
+.dial, .submit-h {
   margin-top: 1em;
   margin-bottom: 1em;
 }

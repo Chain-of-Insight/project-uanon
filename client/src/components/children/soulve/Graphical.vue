@@ -18,7 +18,7 @@
                 </div>
                 <div class="modal-body" v-if="st == 0">
                   <ul class="n-fields ul form-group">
-                    <li class="tutorials-list li" v-for="(f, n) in input" :key="n">
+                    <li class="g-list li" v-for="(f, n) in input" :key="n">
                       <label :for="'input-' + n" v-if="!fn">Solution {{(n + 1)}}:</label>
                       <label :for="'input-' + n" v-else>{{ fn[n] }}:</label>
                       <input 
@@ -41,12 +41,16 @@
                     </li>
                   </ul>
                   <div class="format descr" v-if="p.format && !v">
-                    <p><strong>Format: </strong>{{p.format}}</p>
+                    <p v-if="!Array.isArray(p.format)"><strong>Format: </strong>{{p.format}}</p>
+                    <div class="format-multi" v-if="Array.isArray(p.format)">
+                      <p v-for="(pi, n) in p.format" :key="n"><strong>Format {{(n+1)}}: </strong>{{pi}}</p>
+                    </div>
                   </div>
                   <div class="controls">
                     <button class="btn btn-inverse" @click="submit();">Check Solution</button>
                     <button class="btn btn-primary" @click="next();" v-if="!tx" :disabled="!go || !v">Next</button>
-                    <button class="btn btn-primary" @click="forge(false);" v-if="tx" :disabled="!go || !v">Claim Reward</button>
+                    <button class="btn btn-primary" @click="next();" v-if="egg" :disabled="!go || !v">Next</button>
+                    <button class="btn btn-primary" @click="forge(false);" v-if="tx" :disabled="!go || !v || egg && c.current.claims > 0">Claim Reward</button>
                   </div>
                   <div class="errors" v-if="e.v">
                     <span class="close error-reset" aria-hidden="true" @click="clean();">&times;</span>
@@ -131,12 +135,17 @@ export default {
     do: store,
     op: null,
     oph: null,
-    out: null
+    out: null,
+    egg: false
   }),
   mounted: async function () {
     let l = (this.f) ? this.f : Config.DEFAULT_FIELD_SIZE;
     for (let i = 0; i < l; i++) {
-      this.input.push(null);
+      if (this.a && this.a[i]) {
+        this.input.push(this.a[i])
+      } else {
+        this.input.push(null);
+      }
     }
     if (this.t) {
       this.tt = this.t;
@@ -151,7 +160,28 @@ export default {
           break;
         }
         case 'spring+': {
-          this.x.id = String(109);
+          this.x.id = String(109);  // We'll ignore declaring egg=true 
+                                    // here as it's already in the past
+          break;
+        }
+        case 'summer': {
+          if (this.i == 6) {
+            this.x.id = String(206);
+            this.egg = true;
+          } else if (this.i == 7) {
+            this.x.id = String(207);
+            this.egg = true;
+          } else if (this.i == 8) {
+            this.x.id = String(208);
+            this.egg = true;
+          } else if (this.i == 9) {
+            this.x.id = String(209);
+            this.egg = true;
+          }
+          break;
+        }
+        case 'summer+': {
+          this.x.id = String(210);
           break;
         }
         default: {
@@ -214,8 +244,13 @@ export default {
           }
         }
       } else {
-        b = JSON.stringify(this.p.bundle);
-        b = JSON.parse(b);
+        if (this.p['bundle']) {
+          b = JSON.stringify(this.p.bundle);
+          b = JSON.parse(b);
+        } else {
+          b = [];
+          this.egg = true;
+        }
         if (this.input.length) {
           for (let i = 0; i < this.input.length; i++) {
             if (typeof this.input[i] === 'undefined') {
@@ -265,10 +300,24 @@ export default {
       if (v === true) {
         // console.log('Proof Verified =>', {proof: p, verified: v, secret: s/*, pass: JSON.stringify(a)*/});
         // Update parent
-        this.$emit('proof', p);
-        can.go = true;
-        this.e.v = false;
+        if (this.egg) {
+          let p2 = this.h.g(JSON.stringify(a), 1);
+          p2 = p2.substring(2);
+          let v2 = this.h.v(p2, s, Config.DEFAULT_OP_SIZE, 1);
+          if (v2) {
+            this.$emit('proof', p2);
+            can.go = true;
+            this.e.v = false;
+          } else {
+            this.e.v = true;
+          }
+        } else {
+          this.$emit('proof', p);
+          can.go = true;
+          this.e.v = false;
+        }
       } else {
+        can.go = false;
         this.e.v = true;
       }
       return v;
@@ -399,7 +448,7 @@ export default {
 <style scoped>
 .modal-mask {
   position: fixed;
-  z-index: 1000;
+  z-index: 2500;
   top: 0;
   left: 0;
   width: 100%;
@@ -451,6 +500,9 @@ button {
   -webkit-box-shadow: inset 0 0 10px #000000;
   box-shadow: inset 0 0 10px #000000;
 }
+.format-multi p {
+  margin-bottom: 0;
+}
 .jumbotron {
   background-color: rgba(230,0,115,0.5);
 }
@@ -480,5 +532,8 @@ span.op-hash {
   text-align: center;
   margin-top: 1.5em;
   font-size: 1.5em;
+}
+li.g-list {
+  margin-bottom: 0.5em;
 }
 </style>

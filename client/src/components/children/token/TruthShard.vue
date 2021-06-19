@@ -2,7 +2,7 @@
   <div class="truth-shard nft" @click="toggle();">
     <div class="jumbotron">
       <div class="img-wr" :class="'bg-' + r" v-if="s">
-        <img class="card-img" :src="image" :alt="m.attributes[1].action">
+        <img class="card-img" :class="n.asset.type" :src="image" :alt="m.attributes[1].action">
       </div>
       <div class="card-body" v-if="m">
         <h5 class="card-title" v-if="m.name"><strong class="blood">{{m.name}}</strong></h5>
@@ -25,10 +25,10 @@
               </div>
               <div class="modal-body">
                 <div class="accum">
-                  <div class="img-wr lg right float-right" :class="r" v-if="image" @click="z=!z;">
+                  <div class="img-wr lg right float-right" :class="r + ' ' + n.asset.type" v-if="image" @click="z=!z;">
                     <img class="card-img" :class="{active: z}" :src="image" :alt="m.attributes[1].action">
                     <!--
-                    XXX TODO: Display FA2 shadow / depression when FA2 zoomed in
+                    XXX TODO: Display FA2 shadow / depression when FA2 zoomed in?
                     -->
                   </div>
                   <div class="left">
@@ -49,6 +49,11 @@
                       <label>Revenant Spirit:&nbsp;</label>
                       <span>{{m.attributes[2].value}}</span>
                     </p>
+                    <!-- Kept Their Keep -->
+                    <p class="descr descr-t" v-if="m.attributes.length > 1 && r == 'summer'">
+                      <label>Provenance:&nbsp;</label>
+                      <span>{{m.attributes[2].value}}</span>
+                    </p>
                     <p class="descr descr-t" v-if="m.attributes.length > 0">
                       <label>Action:&nbsp;</label>
                       <span>{{m.attributes[1].value}}</span>
@@ -62,7 +67,7 @@
                       <span>{{m.displayUri}}</span>
                     </p>
                     <p class="descr descr-t" v-if="m.externalUri">
-                      <label v-if="r == 'spring'">Video:&nbsp;</label>
+                      <label v-if="r == 'spring' || r == 'summer'">Video:&nbsp;</label>
                       <span v-if="r !== 'tutorial'">
                         <a :href="m.externalUri" target="_blank">{{m.externalUri}}</a>
                       </span>
@@ -103,7 +108,12 @@ export default {
     z: false,
     td: false,
     api: api,
-    def: ['tutorial', 'spring']
+    def: ['tutorial', 'spring', 'summer'],
+    defs: {
+      tutorial: 0,
+      spring: 1,
+      summer: 2
+    }
   }),
   mounted: async function () {
     if (this.n) {
@@ -130,17 +140,20 @@ export default {
         if (this.n['asset']) {
           if (this.n.asset['realm']) {
             switch(this.n.asset.realm) {
-              case this.def[1]: {
+              case this.def[1]:
+              case this.def[2]: {
                 let c = location.href, a = c.split('/'), b = a[(a.length - 1)], u;
+                let i = this.defs[this.n.asset.realm];
                 if (b == 'observer') {
-                  u = c.replace('/observer', '/token/') + Config.tokens[1] + '/' + this.n.asset.type;
+                  u = c.replace('/observer', '/token/') + Config.tokens[i] + '/' + this.n.asset.type;
                 } else if (a[(a.length - 2)] == 'player') {
                   a[(a.length - 2)] = 'token';
                   a[(a.length - 1)] = Config.tokens[1];
                   a.push(this.n.asset.type);
                   u = a.join('/');
                 }
-                return location.href = u;
+                console.log(i, Config.tokens[i], u);
+                // return location.href = u;
               }
             }
           }
@@ -353,6 +366,19 @@ div.ctrl, div.accum {
   border-radius: 1em;
   padding: 4em;
 }
+.img-wr.lg.summer {
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/4.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em;
+  padding: 4em;
+  max-width: 450px;
+}
 .img-wr.lg img, .img-wr.lg {
   position: relative;
   margin-right: 0.5%;
@@ -364,8 +390,6 @@ div.ctrl, div.accum {
   top: 6em;
   right: 25vw;
 }
-
-/* Backgrounds */
 .bg-tutorial {
   width: 425px;
   background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/1.jpg');
@@ -378,7 +402,6 @@ div.ctrl, div.accum {
   box-shadow: inset 0 0 10px #000000;
   border-radius: 1em 1em 0 0;
 }
-
 .bg-spring {
   width: 425px;
   background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/2.jpg');
@@ -390,6 +413,50 @@ div.ctrl, div.accum {
   -webkit-box-shadow: inset 0 0 10px #000000;
   box-shadow: inset 0 0 10px #000000;
   border-radius: 1em 1em 0 0;
+}
+.bg-summer {
+  width: 425px;
+  height: 250px;
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/4.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em 1em 0 0;
+}
+.bg-summer .card-img, .summer .card-img {
+  max-width: 375px;
+  position: relative;
+}
+.bg-summer .card-img.ascended {
+  top: 25px;
+}
+.bg-summer .card-img.medieval {
+  top: 2.5px;
+}
+/* .bg-summer .card-img.kohathite {
+  top: 10px;
+  max-height: 90%;
+} */
+.bg-summer .card-img.orthodox {
+  top: 20px;
+}
+.bg-summer .card-img.common1, .bg-summer .card-img.common2 {
+  top: 17px;
+  max-height: 85%;
+}
+.summer.ascended .card-img:not(.active),
+.summer.orthodox .card-img:not(.active) {
+  right: 25%;
+}
+.summer.medieval .card-img:not(.active) {
+  right: 17%;
+}
+.summer.kohathite .card-img:not(.active) {
+  right: 13%;
 }
 
 @keyframes mythos {

@@ -8,8 +8,9 @@ const importKey = require('@taquito/signer').importKey;
 const Oracle = process.env.VUE_APP_TEZOS_ORACLE;
 const SEASON_0_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_0;
 const SEASON_1_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_1;
-const DEPLOYED = [0,1];
-const defs = ['tutorial', 'spring'];
+const SEASON_2_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_2;
+const DEPLOYED = [0,1,2];
+const defs = ['tutorial', 'spring', 'summer'];
 
 /**
  * Gets an instance of Uanon Puzzle Oracle
@@ -41,6 +42,7 @@ const toJSON = (x) => JSON.parse(JSON.stringify(x));
  */
 async function getTruthShard(address, season) {
   const SPRING = 1;
+  const SUMMER = 2;
   if (!address) {
     return false;
   } else if (typeof address !== 'string') {
@@ -51,11 +53,18 @@ async function getTruthShard(address, season) {
     return false;
   }
   let truths = [], selectedContract, nftLen, addressBalance, tokenIndexes = [];
+  let realmOpts;
   await importKey(Tezos, 'edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq');
   try {
     switch (season) {
       case 'spring': {
         selectedContract = SEASON_1_NFT;
+        realmOpts = ["ascended", "lost", "secret", "cruel", "common2", "common1"];
+        break;
+      }
+      case 'summer': {
+        selectedContract = SEASON_2_NFT;
+        realmOpts = ["ascended", "medieval", "kohathite", "orthodox", "common2", "common1"];
         break;
       }
     }
@@ -124,62 +133,12 @@ async function getTruthShard(address, season) {
             m.description = m2.metadata['description'];
           }
         }
-        switch (cIndex) {
-          case 0: {
-            assets = {
-              id: String(cIndex), 
-              value: Number(asset),
-              realm: "spring",
-              type: "ascended"
-            };
-            break;
-          }
-          case 1: {
-            assets = {
-              id: String(cIndex), 
-              value: Number(asset),
-              realm: "spring",
-              type: "lost"
-            };
-            break;
-          }
-          case 2: {
-            assets = {
-              id: String(cIndex), 
-              value: Number(asset),
-              realm: "spring",
-              type: "secret"
-            };
-            break;
-          }
-          case 3: {
-            assets = {
-              id: String(cIndex), 
-              value: Number(asset),
-              realm: "spring",
-              type: "cruel"
-            };
-            break;
-          }
-          case 4: {
-            assets = {
-              id: String(cIndex), 
-              value: Number(asset),
-              realm: "spring",
-              type: "common2"
-            };
-            break;
-          }
-          case 5: {
-            assets = {
-              id: String(cIndex), 
-              value: Number(asset),
-              realm: "spring",
-              type: "common1"
-            };
-            break;
-          }
-        }
+        assets = {
+          id: String(cIndex), 
+          value: Number(asset),
+          realm: season,
+          type: realmOpts[cIndex]
+        };
       } catch(e) {
         console.warn('Error', e);
         continue;
@@ -187,7 +146,18 @@ async function getTruthShard(address, season) {
     }
     // console.log('Assets =>', assets);
     if (assets['id']) {
-      truths.push({season: SPRING, asset: assets, metadata: m});
+      let sI;
+      switch (season) {
+        case 'spring': {
+          sI = SPRING;
+          break;
+        }
+        case 'summer': {
+          sI = SUMMER;
+          break;
+        } 
+      }
+      truths.push({season: sI, asset: assets, metadata: m});
       return truths[0];
     }
   } catch (e) {
@@ -203,6 +173,7 @@ async function getTruthShard(address, season) {
  */
 async function getTruthShardData(season, index) {
   const SPRING = ['ascended','lost','secret','cruel','common1','common2'];
+  const SUMMER = ['ascended','medieval','kohathite','orthodox','common1','common2'];
   if (typeof index !== 'number') {
     return false;
   } else if (typeof season !== 'string') {
@@ -210,12 +181,18 @@ async function getTruthShardData(season, index) {
   } else if (defs.indexOf(season) < 0) {
     return false;
   }
-  let selectedContract;
+  let selectedContract, sI;
   await importKey(Tezos, 'edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq');
   try {
     switch (season) {
       case 'spring': {
         selectedContract = SEASON_1_NFT;
+        sI = SPRING;
+        break;
+      }
+      case 'summer': {
+        selectedContract = SEASON_2_NFT;
+        sI = SUMMER;
         break;
       }
     }
@@ -247,7 +224,7 @@ async function getTruthShardData(season, index) {
     let asset = {
       id: String(index), 
       realm: season,
-      type: SPRING[index]
+      type: sI[index]
     };
 
     if (asset['id']) {
@@ -272,6 +249,7 @@ async function getTruths(address) {
   }
 
   let truths = [], selectedContract, nftLen, addressBalance, tokenIndexes = [];
+  let realmOpts, ss;
   // use alice key
   await importKey(Tezos, 'edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq');
   for (let i = 0; i < DEPLOYED.length; i++) {
@@ -280,6 +258,8 @@ async function getTruths(address) {
         case 0: {
           selectedContract = SEASON_0_NFT;
           nftLen = 6;
+          realmOpts = ["ascended", "forgotten", "rare", "prosaic", "common2", "common1"];
+          ss = "tutorial";
           let requestList = [];
           for (let n = 0; n < nftLen; n++) {
             let a = {
@@ -297,6 +277,8 @@ async function getTruths(address) {
         case 1: {
           selectedContract = SEASON_1_NFT;
           nftLen = 6;
+          realmOpts = ["ascended", "lost", "secret", "cruel", "common2", "common1"];
+          ss = "spring";
           let requestList = [];
           for (let n = 0; n < nftLen; n++) {
             let a = {
@@ -309,6 +291,26 @@ async function getTruths(address) {
           addressBalance = await nftInstance.views.balance_of(requestList).read();
           addressBalance = toJSON(addressBalance);
           // console.log('addressBalance =>', addressBalance);
+          break;
+        }
+        case 2: {
+          selectedContract = SEASON_2_NFT;
+          nftLen = 6;
+          realmOpts = ["ascended", "medieval", "kohathite", "orthodox", "common2", "common1"];
+          ss = "summer";
+          let requestList = [];
+          for (let n = 0; n < nftLen; n++) {
+            let a = {
+              owner: address,
+              token_id: String(n)
+            };
+            requestList.push(a);
+          }
+          let nftInstance = await Tezos.contract.at(selectedContract, tzip16);
+          addressBalance = await nftInstance.views.balance_of(requestList).read();
+          addressBalance = toJSON(addressBalance);
+          // console.log('addressBalance =>', addressBalance);
+          break;
         }
       }
 
@@ -364,64 +366,7 @@ async function getTruths(address) {
             }
           }
 
-          if (DEPLOYED[i] == 0) {
-            switch (cIndex) {
-              case 0: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "tutorial",
-                  type: "ascended"
-                };
-                break;
-              }
-              case 1: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "tutorial",
-                  type: "forgotten"
-                };
-                break;
-              }
-              case 2: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "tutorial",
-                  type: "rare"
-                };
-                break;
-              }
-              case 3: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "tutorial",
-                  type: "prosaic"
-                };
-                break;
-              }
-              case 4: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "tutorial",
-                  type: "common2"
-                };
-                break;
-              }
-              case 5: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "tutorial",
-                  type: "common1"
-                };
-                break;
-              }
-            }
-          } else if (DEPLOYED[i] == 1) {
+          if (DEPLOYED[i] >= 1) {
             let c = await Tezos.contract.at(selectedContract, compose(tzip16, tzip12));
             m = await c.tzip12().getTokenMetadata(cIndex);
             let m2 = await c.tzip16().getMetadata();
@@ -430,63 +375,13 @@ async function getTruths(address) {
                 m.description = m2.metadata['description'];
               }
             }
-            switch (cIndex) {
-              case 0: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "spring",
-                  type: "ascended"
-                };
-                break;
-              }
-              case 1: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "spring",
-                  type: "lost"
-                };
-                break;
-              }
-              case 2: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "spring",
-                  type: "secret"
-                };
-                break;
-              }
-              case 3: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "spring",
-                  type: "cruel"
-                };
-                break;
-              }
-              case 4: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "spring",
-                  type: "common2"
-                };
-                break;
-              }
-              case 5: {
-                assets = {
-                  id: String(cIndex), 
-                  value: Number(asset),
-                  realm: "spring",
-                  type: "common1"
-                };
-                break;
-              }
-            }
           }
+          assets = {
+            id: String(cIndex), 
+            value: Number(asset),
+            realm: ss,
+            type: realmOpts[cIndex]
+          };
         } catch(e) {
           console.warn('Error', e);
           continue;

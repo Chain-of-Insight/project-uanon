@@ -270,6 +270,8 @@ export default {
           if (t['asset'] && t['season'] && this.def.length > 1) {
             if (t.season == this.def[1]) {
               this.asc = true;
+              let r = this.def[0] + '+';
+              this.do.store.ascend(r, this.asc);
             }
           }
         }

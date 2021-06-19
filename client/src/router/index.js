@@ -19,6 +19,20 @@ import Spring7 from '../components/seasons/season1/Spring7.vue';
 import Spring8 from '../components/seasons/season1/Spring8.vue';
 import SpringAscend from '../components/seasons/season1/SpringAscend.vue';
 import SpringGG from '../components/seasons/season1/SpringGG.vue';
+// Season 2
+import Summers from '../components/seasons/season2/SummerList.vue';
+import Summer1 from '../components/seasons/season2/Summer1.vue';
+import Summer2 from '../components/seasons/season2/Summer2.vue';
+import Summer3 from '../components/seasons/season2/Summer3.vue';
+import Summer4 from '../components/seasons/season2/Summer4.vue';
+import Summer5 from '../components/seasons/season2/Summer5.vue';
+import Summer6 from '../components/seasons/season2/Summer6.vue';
+import Summer7 from '../components/seasons/season2/Summer7.vue';
+import Summer8 from '../components/seasons/season2/Summer8.vue';
+import Summer9 from '../components/seasons/season2/Summer9.vue';
+import Summer10 from '../components/seasons/season2/Summer10.vue';
+import SummerAscend from '../components/seasons/season2/SummerAscend.vue';
+import SummerGG from '../components/seasons/season2/SummerGG.vue';
 // Token
 import Viewer3D from '../components/nft/SeeForYourself.vue';
 // Tools
@@ -59,6 +73,20 @@ const routes = [
   { path: '/spring/8', name: 'Spring8', component: Spring8, meta: { requiresAuth: true } },
   { path: '/spring/rites-of-spring', name: 'SpringAscend', component: SpringAscend, meta: { requiresAuth: true } },
   { path: '/spring/gg', name: 'SpringGG', component: SpringGG, meta: { requiresAuth: true } },
+  // Summer
+  { path: '/descend', name: 'Summers', component: Summers, meta: { requiresAuth: true } },
+  { path: '/summer/1', name: 'Summer1', component: Summer1, meta: { requiresAuth: true } },
+  { path: '/summer/2', name: 'Summer2', component: Summer2, meta: { requiresAuth: true } },
+  { path: '/summer/3', name: 'Summer3', component: Summer3, meta: { requiresAuth: true } },
+  { path: '/summer/4', name: 'Summer4', component: Summer4, meta: { requiresAuth: true } },
+  { path: '/summer/5', name: 'Summer5', component: Summer5, meta: { requiresAuth: true } },
+  { path: '/summer/6', name: 'Summer6', component: Summer6, meta: { requiresAuth: true } },
+  { path: '/summer/7', name: 'Summer7', component: Summer7, meta: { requiresAuth: true } },
+  { path: '/summer/8', name: 'Summer8', component: Summer8, meta: { requiresAuth: true } },
+  { path: '/summer/9', name: 'Summer9', component: Summer9, meta: { requiresAuth: true } },
+  { path: '/summer/10', name: 'Summer10', component: Summer10, meta: { requiresAuth: true } },
+  { path: '/summer/the-land-vomits-ghosts', name: 'SummerAscend', component: SummerAscend, meta: { requiresAuth: true } },
+  { path: '/summer/gg', name: 'SummerGG', component: SummerGG, meta: { requiresAuth: true } },
   // Token
   { path: '/token/:contract/:type', name: 'Viewer3D', component: Viewer3D, meta: { requiresAuth: true } },
   // FAQ

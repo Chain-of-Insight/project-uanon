@@ -9,12 +9,13 @@
   </div>
   <div class="content-s home season-content" v-if="a && p">
     <router-link :to="l[i].p" v-for="(s, i) in d" :key="i">
-      <div class="season-item" v-if="l[i]" :style="'background-image: url(' + l[i].b + ');'">
+      <div class="season-item" :class="{'pyramidscheme': (i==2)}" v-if="l[i]" :style="'background-image: url(' + l[i].b + ');'">
         <div v-if="i==1" class="season 991" :id="'si-'+i">
           <h2 class="season 991">Season {{s}}</h2>
         </div>
-        <h2 class="season" v-else>Season {{s}}</h2>
+        <h2 class="season" v-if="i!==1 && i!==2">Season {{s}}</h2>
       </div>
+      <h2 class="season mont-royal" v-if="i==2">Season {{s}}</h2>
     </router-link>
   </div>
   <div class="content-s home season-content" v-if="a && !p">
@@ -57,7 +58,7 @@ import * as api from '../../util/api';
 
 import { isLoggedIn } from 'axios-jwt';
 
-const DEPLOYED = [0,1];
+const DEPLOYED = [0,1,2];
 
 export default {
   name: 'Home',
@@ -66,7 +67,8 @@ export default {
     d: DEPLOYED,
     l: [
       {p: '/learn', b: '/img/3450804e9328585e42a89335475f2317785c6f09feac8e5c0b5ada225ec4fd2b.png'},
-      {p: '/discover', b: '/img/d81c85d1b7926c06ce180214bdfe19e059f2fdd38938d97275016dbea3a2389c.jpg'}
+      {p: '/discover', b: '/img/d81c85d1b7926c06ce180214bdfe19e059f2fdd38938d97275016dbea3a2389c.jpg'},
+      {p: '/descend', b: '/img/0efbeb172d372829e597dcb2d602aa2c5a8fd831ba1e78669876f4032fc25642.png'}
     ],
     o: null,
     p: null,
@@ -184,6 +186,12 @@ div.season-item {
   background-repeat: no-repeat;
   cursor: pointer;
 }
+.pyramidscheme {
+  -webkit-clip-path: polygon(50% 5%, 0% 100%, 100% 100%);
+  clip-path: polygon(50% 5%, 0% 100%, 100% 100%);
+  filter: sepia(1);
+  max-width: 1080px !important;
+}
 a, a:hover {
   text-decoration: none;
 }
@@ -200,6 +208,13 @@ h2.season {
 }
 h2.season:hover {
   text-shadow: 0 0 10px #eee, 0 0 20px #eee, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #ff7070;
+}
+h2.mont-royal {
+  top: -360px;
+  display: block;
+  width: 495px;
+  text-align: center;
+  font-size: 6em;
 }
 div.season-item > div.float-left {
   background-image: url('https://uanon.s3.amazonaws.com/backgrounds/cf3c6f0f3163a1c4b2aa788af8c88a0c1e9a3c3378e9178e2060ae8707d10898.png');

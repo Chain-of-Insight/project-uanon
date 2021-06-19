@@ -4,9 +4,10 @@
   <div class="bgo" v-if="bgo && o" :style="'background-image:url('+ o['bg'] +')'"></div>
   <div class="bgx" v-if="bgo && !o"></div>
   
-  <div class="u" v-if="!bgo">
+  <div class="u" v-if="!bgo || (bgo && r == 'summer' && i == 6)">
     <div class="center">
-      <img class="u_avi" src="https://uanon.s3.amazonaws.com/uav/6ffce610afca2a45b40e7f9f0b135402238ec14ee0d087940531b0dabbbf2db1.png" />
+      <img v-if="r !== 'summer'" class="u_avi" src="https://uanon.s3.amazonaws.com/uav/6ffce610afca2a45b40e7f9f0b135402238ec14ee0d087940531b0dabbbf2db1.png" />
+      <img v-if="r == 'summer'" class="u_avi-h" src="https://uanon.s3.amazonaws.com/backgrounds/09d7f064eea42be512538cf11e669292147b7bc098f50becc2f51946c5b1417a.png" />
     </div>
   </div>
 
@@ -51,6 +52,7 @@
   <div class="context" v-if="typeof c['i'] == 'number' || a">
     <!-- Open App -->
     <Program
+      v-bind:b="b"
       v-bind:c="c"
       v-if="c.i >= 0 && c.name"
       @pclose="load"
@@ -91,11 +93,12 @@
     emits: ['proof'],
     data: () => ({
       a: false,
+      b: null,
       c: {
         i: null,
         name: ''
       },
-      d: [{i:0,name:'email',email:null},{i:1,name:'files',list:[]},{i:2,name:'info'},{i:3,name:'trash',list:[]},{i:4,name:"Albert's head-scratcher", einstein:null}, {i:5,filename:"message.wav"}],
+      d: [{i:0,name:'email',email:null},{i:1,name:'files',list:[]},{i:2,name:'info'},{i:3,name:'trash',list:[]},{i:4,name:"Albert's head-scratcher", einstein:null}, {i:5,filename:"message.wav"}, {i:6,name:'email',email:null}],
       ne: 0,
       bgo: false,
       mp: false
@@ -108,8 +111,11 @@
           this.d[2].msg = this.in;
         }
       }
-      if (this.r == "spring" && this.i == 7) {
+      if (this.r == "spring" && this.i == 7 || this.r == "summer" && this.i == 6) {
         this.bgo = true;
+        if (this.r == "summer" && this.i == 6) {
+          this.b = 'horror';
+        }
       }
       if (this.e) {
         if (this.e['body']) {
@@ -302,6 +308,25 @@ div.center {
   bottom: 0;
   height: auto;
   opacity: 0.45;
+  animation-name: fade;
+	animation-duration: 10s;
+	animation-iteration-count: infinite;
+  animation: mythos ease 60s;
+  -webkit-animation: mythos ease 60s;
+  -moz-animation: mythos ease 60s;
+  -o-animation: mythos ease 60s;
+  -ms-animation: mythos ease 60s;
+  animation-iteration-count: infinite;
+  z-index: -1;
+}
+.u_avi-h {
+  position: fixed;
+  width: 1080px;
+  left: 32vw;
+  top: 14%;
+  margin: auto;
+  height: auto;
+  opacity: 0.75;
   animation-name: fade;
 	animation-duration: 10s;
 	animation-iteration-count: infinite;

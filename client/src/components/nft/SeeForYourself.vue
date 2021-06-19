@@ -10,7 +10,7 @@
   <div class="model" v-if="model">
     <model-viewer 
       class="mv"
-      :class="m.asset.type"
+      :class="m.asset.type + ' ' + m.asset.realm"
       :src="model.uri"
       environment-image="neutral"
       loading="eager"
@@ -26,7 +26,7 @@
 import * as api from '../../util/api';
 import { getTruthShardData } from '../../util/contract';
 
-const DEPLOYED = [process.env.VUE_APP_TEZOS_NFT_SEASON_1];
+const DEPLOYED = [process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2];
 
 export default {
   data: () => ({
@@ -39,9 +39,10 @@ export default {
     bg: null,
     ld: true,
     api: api,
-    def: ['spring'],
+    def: ['spring','summer'],
     model: null,
-    spring: ['ascended','lost','secret','cruel','common2','common1']
+    spring: ['ascended','lost','secret','cruel','common2','common1'],
+    summer: ['ascended','medieval','kohathite','orthodox','common2','common1']
   }),
   mounted: async function () {
     await this.loadComponent();
@@ -122,6 +123,54 @@ export default {
               }
             }
           }
+          // Summer
+          case DEPLOYED[1]: {
+            this.r = this.def[1]
+            args.s = this.r;
+            switch (this.t) {
+              case this.summer[0]: {
+                args.i = 0;
+                t = await getTruthShardData(args.s, args.i);
+                console.log('getTruthShardData', t);
+                this.ld = false;
+                return t;
+              }
+              case this.summer[1]: {
+                args.i = 1;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.summer[2]: {
+                args.i = 2;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.summer[3]: {
+                args.i = 3;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.summer[4]: {
+                args.i = 4;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.summer[5]: {
+                args.i = 5;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              default: {
+                this.ld = false;
+                return false;
+              }
+            }
+          }
           default: {
             this.ld = false;
             return false;
@@ -137,12 +186,14 @@ export default {
      * @param {Object} f : Array of asset formats 
      */
     setM: function (f) {
+      console.log('setM', f);
       if (!Array.isArray(f)) {
         return;
       }
       if (this.c) {
         switch (this.c) {
-          case DEPLOYED[0]: {
+          case DEPLOYED[0]: 
+          case DEPLOYED[1]: {
             if (f[1]) {
               this.model = f[1];
               // console.log('Model =>', this.model);
@@ -189,5 +240,8 @@ export default {
 }
 .mv.cruel {
   background: linear-gradient(to right, rgb(64, 224, 208), rgb(255, 140, 0), rgb(255, 0, 128));
+}
+.mv.summer:not(.ascended) {
+  background: linear-gradient(to right, #333333, #8B0000, #8B0000, #ff5743, #8B0000, #8B0000, #333333);
 }
 </style>
