@@ -1,5 +1,6 @@
 import { BeaconWallet } from '@taquito/beacon-wallet';
 import { TezosToolkit } from '@taquito/taquito';
+import { SigningType } from "@airgap/beacon-sdk";
 
 const Tzip12Module = require('@taquito/tzip12').Tzip12Module;
 const Tzip16Module = require('@taquito/tzip16').Tzip16Module;
@@ -35,7 +36,7 @@ const signMessage = async (msg, address) => {
 
     let signedMsg = false;
     try {
-        signedMsg = (await wallet.client.requestSignPayload({ payload: msg, sourceAddress: address })).signature;
+        signedMsg = (await wallet.client.requestSignPayload({ signingType: SigningType.MICHELINE, payload: msg, sourceAddress: address })).signature;
     } catch(signPayloadError) {
         console.error(signPayloadError);
     }

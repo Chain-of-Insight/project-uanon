@@ -298,14 +298,14 @@ export default {
         v = this.h.v(p, s, Config.DEFAULT_OP_SIZE, d);
       }
       if (v === true) {
-        // console.log('Proof Verified =>', {proof: p, verified: v, secret: s/*, pass: JSON.stringify(a)*/});
+        // console.log('Proof Verified =>', {proof: p, verified: v, secret: s, pass: JSON.stringify(a)});
         // Update parent
         if (this.egg) {
           let p2 = this.h.g(JSON.stringify(a), 1);
           p2 = p2.substring(2);
           let v2 = this.h.v(p2, s, Config.DEFAULT_OP_SIZE, 1);
           if (v2) {
-            this.$emit('proof', p2);
+            this.$emit('proof', [p, p2]);
             can.go = true;
             this.e.v = false;
           } else {

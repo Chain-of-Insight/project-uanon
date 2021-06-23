@@ -266,16 +266,21 @@
       return v;
     },
     /**
-     * @param {String} s : Secret
+     * @param {Object} s : Puzzle
      */
-    retain: function (s) {
-      if (typeof s !== 'string') {
+     retain: function (s) {
+      if (typeof s !== 'object') {
         return;
-      } else if (s.length !== Config.DEFAULT_CHAR_LENGTH) {
+      } else if (!s.length) {
+        return;
+      } else if (s[0].length !== Config.DEFAULT_CHAR_LENGTH || s[1].length !== Config.DEFAULT_CHAR_LENGTH) {
         return;
       }
-      this.p.proof = s;
-      if (!this.do.store.update(this.p, this.def[0], CURRENT_I)) {
+      this.p.proof = s[0];
+      let c = JSON.stringify(this.p);
+      c = JSON.parse(c);
+      c.proof = s[1];
+      if (!this.do.store.update(c, this.def[0], CURRENT_I)) {
         console.warn("Failed updating storage, your solution has not been saved");
       }
     },
