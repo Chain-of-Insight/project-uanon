@@ -412,6 +412,12 @@ export default {
         // console.log('Realm =>', this.r)
         // console.log('Route =>', [u, can.go]);
         return location.href = u;
+      } else if (this.r == 'summer' && this.i == 9) {
+        u = u.split('/');
+        u[u.length - 2] = 'descend';
+        u = u.slice(0, -1);
+        u = u.join('/');
+        return location.href = u;
       }
 
       if (this.l) {

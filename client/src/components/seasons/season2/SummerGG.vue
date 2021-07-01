@@ -1,7 +1,25 @@
 <template>
   <div class="spring-wrap gg" v-if="asc">
     <div class="video gg"></div>
-    <div class="sealed jumbotron">
+    <div class="voidism" v-if="st==1">
+      <canvas id="canvas"></canvas>
+      <div class="j-fixed">
+        <div class="sealed jumbotron">
+          <div class="ctrl">
+            <button class="btn btn-primary tk" @click="k();">
+              <span class="icon-display"></span>&nbsp;<span>TAKE YOUR BOW</span>
+            </button>
+            <button class="btn btn-primary tk tk2" @click="st=1;" v-if="st!==1">
+              <span class="icon-coronavirus"></span>
+            </button>
+            <button class="btn btn-primary tk tk2" @click="st=0;" v-if="st!==0">
+              <span class="fa fa-crown"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sealed jumbotron" v-if="st==0">
       <div class="title-bar t">
         <h3>An Elephant Never Forgets</h3>
         <hr class="ruler">
@@ -27,6 +45,12 @@
       <div class="ctrl">
         <button class="btn btn-primary tk" @click="k();">
           <span class="icon-display"></span>&nbsp;<span>TAKE YOUR BOW</span>
+        </button>
+        <button class="btn btn-primary tk tk2" @click="ism(1);" v-if="st!==1">
+          <span class="icon-coronavirus"></span>
+        </button>
+        <button class="btn btn-primary tk tk2" @click="ism(0);" v-if="st!==0">
+          <span class="fa fa-crown"></span>
         </button>
       </div>
     </div>
@@ -67,15 +91,19 @@
 import { getActiveAccount } from '../../../util/tezos';
 import { getTruthShard } from '../../../util/contract';
 
+import make from '../../../aesthetics/a5';
+
 const YTB = "https://www.youtube.com/embed/";
 
 export default {
   name: 'Summer Ascend',
   data: () => ({
+    a: make,
     r: 'summer',
     v: null,
     ld: false,
     sh: false,
+    st: 0,
     asc: false
   }),
   mounted: async function () {
@@ -97,6 +125,27 @@ export default {
           b[0].style.overflow = '';
         }
       }
+    },
+    /**
+     * @param {Number} s : Boolean integer (animation state) ? True : False
+     */
+    ism: async function (s = 0) {
+      if (typeof s !== 'number') {
+        s = 0;
+      } else if (s > 1 || s < 0) {
+        s = 0;
+      }
+      this.st = s;
+      if (s > 0) {
+        setTimeout(() => {
+          this.$nextTick(async() => {
+            await this.ma();
+          });
+        }, 0);
+      }
+    },
+    ma: async function () {
+      await this.a();
     },
     verify: async function () {
       this.ld = true;
@@ -143,6 +192,14 @@ export default {
   width: 80vw;
   max-width: 1440px;
   margin: auto;
+  margin-bottom: 6.5em;
+}
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
 }
 .sealed {
   animation: mythos ease 160s;
@@ -154,6 +211,9 @@ export default {
 }
 .sealed.jumbotron {
   margin-top: 0;
+  max-width: 1440px;
+  width: 80vw;
+  margin: auto;
 }
 .sealed .title-bar h3,
 .sealed .title-bar h5,
@@ -206,9 +266,20 @@ div.hierarchies {
   min-height: 90vh;
   background: transparent;
 }
-.tk {
+.ctrl {
   display: block;
   margin: auto;
+  width: 250px;
+}
+.j-fixed {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.tk {
+  display: inline-block;
+  margin: auto;
+  margin-right: 1em;
 }
 span.icon-display {
   position: relative;
