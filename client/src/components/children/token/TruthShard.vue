@@ -152,8 +152,8 @@ export default {
                   a.push(this.n.asset.type);
                   u = a.join('/');
                 }
-                console.log(i, Config.tokens[i], u);
-                // return location.href = u;
+                // console.log(i, Config.tokens[i], u);
+                return location.href = u;
               }
             }
           }
