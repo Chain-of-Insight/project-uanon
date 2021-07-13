@@ -148,7 +148,7 @@ export default {
                   u = c.replace('/observer', '/token/') + Config.tokens[i] + '/' + this.n.asset.type;
                 } else if (a[(a.length - 2)] == 'player') {
                   a[(a.length - 2)] = 'token';
-                  a[(a.length - 1)] = Config.tokens[1];
+                  a[(a.length - 1)] = Config.tokens[i];
                   a.push(this.n.asset.type);
                   u = a.join('/');
                 }
