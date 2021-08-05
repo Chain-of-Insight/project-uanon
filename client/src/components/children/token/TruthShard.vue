@@ -458,6 +458,9 @@ div.ctrl, div.accum {
 .summer.kohathite .card-img:not(.active) {
   right: 13%;
 }
+.summer.common1 .card-img:not(.active), .summer.common2 .card-img:not(.active) {
+  right: 24%;
+}
 
 @keyframes mythos {
   0% {filter: hue-rotate(0deg);}
