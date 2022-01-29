@@ -34,11 +34,26 @@ const login = async () => {
   return isLoggedIn();
 };
 
+const T = () => {
+  let t = localStorage.getItem('auth-tokens-production'), o;
+  if (!t) {
+    t = localStorage.getItem('auth-tokens-development');
+  }
+  try {
+    o = JSON.parse(t);
+    return o.accessToken;
+  } catch(e) {
+    console.warn('Unauthorized', e);
+    return '';
+  }
+};
+
 // to reset auth tokens
 const logout = () => clearAuthTokens();
 
 export {
   isLoggedIn,
+  T,
   login,
   logout
 };

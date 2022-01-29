@@ -184,6 +184,25 @@ export default {
           this.x.id = String(210);
           break;
         }
+        case 'autumn': {
+          this.egg = true;
+          if (this.i == 0) {
+            this.x.id = String(300);
+          } else if (this.i == 1) {
+            this.x.id = String(301);
+          } else if (this.i == 2) {
+            this.x.id = String(302);
+          } else if (this.i == 3) {
+            this.x.id = String(303);
+          } else if (this.i == 4) {
+            this.x.id = String(304);
+          }
+          break;
+        }
+        case 'autumn+': {
+          this.x.id = String(305);
+          break;
+        }
         default: {
           break;
         }

@@ -9,13 +9,41 @@
   </div>
   <div class="content-s home season-content" v-if="a && p">
     <router-link :to="l[i].p" v-for="(s, i) in d" :key="i">
-      <div class="season-item" :class="{'pyramidscheme': (i==2)}" v-if="l[i]" :style="'background-image: url(' + l[i].b + ');'">
+
+      <div class="season-item" :class="{'pyramidscheme': (i==2)}" v-if="l[i] && i!==3" :style="'background-image: url(' + l[i].b + ');'">
         <div v-if="i==1" class="season 991" :id="'si-'+i">
           <h2 class="season 991">Season {{s}}</h2>
         </div>
         <h2 class="season" v-if="i!==1 && i!==2">Season {{s}}</h2>
       </div>
       <h2 class="season mont-royal" v-if="i==2">Season {{s}}</h2>
+      <div class="season-item pentakiller" v-if="l[i] && i==3" @mouseover="pk=true" @mouseout="pk=false" :class="{'active':pk==true}">
+        <div id="pk" class="base" @mouseover="pk=true" @mouseout="pk=false" :class="{'active':pk==true}">
+          <div class="circle"></div>
+          <div class="bar n0"><li></li></div>
+          <div class="bar n1"><li></li></div>
+          <div class="bar n2"><li></li></div>
+          <div class="bar n3"><li></li></div>
+          <div class="bar n4"><li></li></div>
+          <div class="overbar n0"><li></li></div>
+          <div class="overbar n1"><li></li></div>
+          <div class="overbar n2"><li></li></div>
+          <div class="overbar n3"><li></li></div>
+          <div class="overbar n4"><li></li></div>
+          <div class="u" :style="'background-image: url(' + l[i].b + ');'"></div>
+          <section class="penta">
+            <div class='blooddrop a'></div>
+            <div class='blooddrop b'></div>
+            <div class='blooddrop c'></div>
+            <div class='blooddrop d'></div>
+            <div class='blooddrop e'></div>
+            <div class='blooddrop f'></div>
+            <div class='blooddrop g'></div>
+            <div class='blooddrop h'></div>
+          </section>
+        </div>
+        <h2 class="season in-decay" @mouseover="pk=true" @mouseout="pk=false" :class="{'active':pk==true}">Season {{s}}</h2>
+      </div>
     </router-link>
   </div>
   <div class="content-s home season-content" v-if="a && !p">
@@ -58,7 +86,7 @@ import * as api from '../../util/api';
 
 import { isLoggedIn } from 'axios-jwt';
 
-const DEPLOYED = [0,1,2];
+const DEPLOYED = [0,1,2,3];
 
 export default {
   name: 'Home',
@@ -68,10 +96,12 @@ export default {
     l: [
       {p: '/learn', b: '/img/3450804e9328585e42a89335475f2317785c6f09feac8e5c0b5ada225ec4fd2b.png'},
       {p: '/discover', b: '/img/d81c85d1b7926c06ce180214bdfe19e059f2fdd38938d97275016dbea3a2389c.jpg'},
-      {p: '/descend', b: '/img/0efbeb172d372829e597dcb2d602aa2c5a8fd831ba1e78669876f4032fc25642.png'}
+      {p: '/descend', b: '/img/0efbeb172d372829e597dcb2d602aa2c5a8fd831ba1e78669876f4032fc25642.png'},
+      {p: '/echolalia', b: '/img/23ca814cf4c078f2d0b5ed3b85e2af85b7850dfba1252e87733bffea8c980914.png'}
     ],
     o: null,
     p: null,
+    pk: false,
     api: api,
     msg: 'project uanon'
   }),
@@ -216,6 +246,14 @@ h2.mont-royal {
   text-align: center;
   font-size: 6em;
 }
+h2.in-decay {
+  display: block;
+  text-align: center;
+  font-size: 2.5em;
+  width: 100%;
+  top: 1.75em;
+  left: -15px;
+}
 div.season-item > div.float-left {
   background-image: url('https://uanon.s3.amazonaws.com/backgrounds/cf3c6f0f3163a1c4b2aa788af8c88a0c1e9a3c3378e9178e2060ae8707d10898.png');
   background-size: cover;
@@ -261,6 +299,206 @@ h2.login, h2.register {
   min-height: 600px;
   background-repeat: repeat;
 }
+.season-item.pentakiller {
+  top: -290px;
+}
+.season-item.pentakiller.active {
+  background-image: url('https://uanon.s3.amazonaws.com/backgrounds/3ab2ba644a304a0f022cf0b5d26c9e926111defd244c5270d8c77ee63662f9bc.png');
+  background-size: cover;
+}
+.season-item.pentakiller:not(.active) {
+  border: none !important;
+  box-shadow: none;
+  background: transparent;
+  animation: mythos ease 160s;
+  -webkit-animation: mythos ease 160s;
+  -moz-animation: mythos ease 160s;
+  -o-animation: mythos ease 160s;
+  -ms-animation: mythos ease 160s;
+  animation-iteration-count: infinite;
+}
+#pk.base {
+  width: 350px;
+  height: auto;
+  position: relative;
+  margin: 0 auto;
+  transform: scale(2.3);
+  transform-origin: center;
+  top: -40px;
+  left: 32px;
+}
+#pk .circle {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 12px solid red;
+  border-radius: 112px;
+  left: 150px;
+  top: 150px;
+  margin-left: -107px;
+  margin-top: -112px;
+}
+#pk .u {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  left: 52px;
+  top: 46px;
+  border-radius: 50%;
+  opacity: 0.75;
+  filter: hue-rotate(160deg);
+}
+#pk .bar, #pk .overbar {
+  position: absolute;
+  height: 200px;
+  width: 10px;
+  left: 150px;
+  top: 50px;
+}
+.bar li, .overbar li {
+  list-style-type: none;
+  height: 200px;
+  width: 20px;
+  margin-left: 30px;
+  width: 10px;
+  background: red;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+}
+.overbar li {
+  margin-top: 50px;
+  margin-left: 28px;
+  height: 50px;
+  width: 14px;
+  background: red;
+  border-left: 2px solid #100;
+  border-right: 2px solid #100;
+}
+.n0 { -webkit-transform: rotate(90deg); }
+.n1 { -webkit-transform: rotate(162deg); }
+.n2 { -webkit-transform: rotate(234deg); }
+.n3 { -webkit-transform: rotate(306deg); }
+.n4 { -webkit-transform: rotate(378deg); }
+section.penta {
+  position: absolute;
+  top: 125px;
+}
+.blooddrop {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  top: 0px;
+  margin: 0;
+  background-color: red;
+  border-radius: 50%;
+  display: none;
+}
+.base.active section .blooddrop {
+  display: block;
+  animation: drip 3s cubic-bezier(1,0,.91,.19) infinite ;
+  -webkit-animation: drip 3s cubic-bezier(1,0,.91,.19) infinite;
+  -moz-animation: drip 3s cubic-bezier(1,0,.91,.19) infinite;
+  -o-animation: drip 3s cubic-bezier(1,0,.91,.19) infinite;
+}
+.blooddrop:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 23px solid red;
+  top: -20px;
+  left: 1px;
+}
+.base.active section .blooddrop.a {
+  position: absolute;
+  left: 50px;
+  top: 20px;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop.b {
+  position: absolute;
+  left: 75px;
+  top: 0px;
+  animation-delay: 4s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop.c {
+  position: absolute;
+  left: 80px;
+  margin-top: -114px;
+  animation-delay: 0.8s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop.d {
+  position: absolute;
+  left: 216px;
+  margin-top: -110px;
+  animation-delay: 1s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop.e {
+  position: absolute;
+  left: 110px;
+  margin-top: -35px;
+  animation-delay: 4s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop.f {
+  position: absolute;
+  left: 175px;
+  margin-top: 8px;
+  animation-delay: 6.4s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop:nth-of-type(7) {
+  position: absolute;
+  left: 245px;
+  margin-top: -45px;
+  animation-delay: 2.6s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop.g {
+  position: absolute;
+  left: 255px;
+  top: 0px;
+  animation-delay: 1.2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop:nth-of-type(9) {
+  position: absolute;
+  left: 280px;
+  margin-top: 0px;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+.base.active section .blooddrop.h {
+  position: absolute;
+  left: 200px;
+  margin-top: 65px;
+  animation-delay: 4.2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+}
+
+@keyframes drip {
+  0% { top: 70px; }
+  100% { top: 600px; }
+}
 @keyframes glow {
   from {
     text-shadow: 0 0 10px #eee, 0 0 20px #eee, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #ff7070;
@@ -293,5 +531,30 @@ h2.login, h2.register {
   0% {opacity:0;}
   50% {opacity:1;}
   100% {opacity:0;}
+}
+@keyframes mythos {
+  0% {filter: hue-rotate(0deg);}
+  50% {filter: hue-rotate(255deg);}
+  100% {filter: hue-rotate(0deg);}
+}
+@-moz-keyframes mythos {
+  0% {filter: hue-rotate(0deg);}
+  50% {filter: hue-rotate(255deg);}
+  100% {filter: hue-rotate(0deg);}
+}
+@-webkit-keyframes mythos {
+  0% {filter: hue-rotate(0deg);}
+  50% {filter: hue-rotate(255deg);}
+  100% {filter: hue-rotate(0deg);}
+}
+@-o-keyframes mythos {
+  0% {filter: hue-rotate(0deg);}
+  50% {filter: hue-rotate(255deg);}
+  100% {filter: hue-rotate(0deg);}
+}
+@-ms-keyframes mythos {
+  0% {filter: hue-rotate(0deg);}
+  50% {filter: hue-rotate(255deg);}
+  100% {filter: hue-rotate(0deg);}
 }
 </style>

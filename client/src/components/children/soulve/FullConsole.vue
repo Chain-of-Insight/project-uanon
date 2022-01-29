@@ -1,22 +1,16 @@
 <template>
-  <div id="uterm" class="console" :class="{'open': open, 'closed': !open, 'sm': (ss == 35), 'x-sm': (ss == 25), 'xx-sm': (ss == 15), pentagram: (r == 'autumn' && i == 3)}">
-    <div class="disp" v-if="(r == 'autumn' && i == 3)"></div>
+  <div id="uterm" class="console open">
     <div class="console-inner">
       <p class="title-bar">
         <span class="ws"></span>
         <span class="icon icon-terminal1"></span>
-        <span class="float-right close-x" @click="close();">&times;</span>
-        <span class="float-right plus-s" @click="plusS();" v-if="ss">&#43;</span>
-        <span class="float-right plus-s greyed" v-if="!ss">&#43;</span>
-        <span class="float-right minus-s" @click="minusS();" v-if="ss !== 15">&#8722;</span>
-        <span class="float-right minus-s greyed" v-if="ss == 15">&#8722;</span>
       </p>
       <div class="uwrapper">
         <div id="log">
           <p class="log-item" v-for="(l, i) in log" :key="i" v-html="l"></p>
         </div>
         <div class="cli-input">
-          <span class="cyan">{{uni}}</span>@{{r}}:<span class="jaundice">~/{{((r == 'summer' || r == 'autumn') ? (i+1) : i)}}</span><span> $ </span>
+          <span class="cyan">{{uni}}</span>@{{r}}:<span class="jaundice">~/{{((r == 'summer') ? (i+1) : i)}}</span><span> $ </span>
           <input 
             type="search" 
             id="cli"
@@ -87,6 +81,15 @@ export default {
     } else {
       this.uni = this.un;
     }
+    // Autofocus event
+    this.$refs.cli.focus();
+    document.getElementById('uterm').addEventListener('click', (e) => {
+      if (e.target) {
+        if (e.target.id == 'uterm' || e.target.classList.contains('title-bar')) {
+          this.$refs.cli.focus();
+        }
+      }
+    });
     // Listen for console display
     document.onkeypress = (e) => {
       e = e || window.event;
@@ -207,7 +210,7 @@ export default {
      * @param {String} cmd: Command to parse
      */
     cp: function (cmd) {
-      this.log.push('<span class="cyan">' + this.uni + '</span>@' + this.r + ':<span class="jaundice">~/' + ((this.r == 'summer' || this.r == 'autumn') ? String((this.i + 1)) : String(this.i)) + '</span><span> $ </span> ' + cmd);
+      this.log.push('<span class="cyan">' + this.uni + '</span>@' + this.r + ':<span class="jaundice">~/' + ((this.r == 'summer') ? String((this.i + 1)) : String(this.i)) + '</span><span> $ </span> ' + cmd);
       let invalidMsg = Config.notify.DEFAULT_CLI_ERROR, can = this;
       // Cmd
       if (typeof cmd !== 'string') {
@@ -425,6 +428,8 @@ export default {
       } else {
         return invalidMsg;
       }
+      // Flags
+      // XXX TODO: this
     },
     ig: function () {
       let ig = [];
@@ -474,7 +479,8 @@ export default {
             });
           } else {
             if (typeof this.p.payload.value == 'object') {
-              ig.push(' <span class="cyan-bg">Payload:</span><pre class="wrapme">'+JSON.stringify(this.p.payload.value)+'</pre>');
+              // ig.push(' <span class="cyan-bg">Payload:</span><pre class="wrapme">'+JSON.stringify(this.p.payload.value)+'</pre>');
+              ig.push(' <span class="cyan-bg">Payload:</span> See attachments');
             } else {
               ig.push(' <span class="cyan-bg">Payload:</span>                                 ' + this.p.payload.value);
             }
@@ -595,15 +601,15 @@ export default {
 <style scoped>
   .console {
     position: fixed;
+    top: 51px;
     bottom: 0;
     left: 0;
     right: 0;
-    min-height: 55vh;
-    max-height: 55vh;
+    min-height: calc(100vh - 51px);
+    max-height: calc(100vh - 51px);
     overflow-y: auto;
     width: auto;
     background-color: rgba(0,0,0,0.9);
-    z-index: 3000;
   }
   .console.sm {
     min-height: 35vh;
@@ -673,7 +679,6 @@ export default {
   .log-item {
     margin: 0;
     margin-left: 0.25em;
-    word-break: break-word;
   }
   .uwrapper {
     position: relative;
@@ -696,20 +701,10 @@ export default {
     box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);
     text-shadow: 0 0 20px #eee, 0 0 30px #eee, 0 0 40px #ff7070, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff7070;
   }
-  #uterm.pentagram {
-    background: #000;
-  }
-  #uterm.pentagram > .disp {
-    background-image: url('https://uanon.s3.amazonaws.com/backgrounds/759c787169ec7c0df64171b088b44c8f9936a4ed9934a8e5b8f57a7f6a47b32a.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    filter: hue-rotate(-75deg) brightness(2.07) contrast(2.53) saturate(2.82) sepia(0.35);
-    opacity: 0.1;
-    display: block;
-    position: absolute;
-    top: -25px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
+</style>
+<style>
+.wrapme {
+  max-width: 100%;
+  word-wrap: break-all;
+}
 </style>

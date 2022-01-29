@@ -112,6 +112,7 @@
                   <input class="form-control" name="apass" type="text" v-model="a.k" placeholder="Optional" />
                 </p>
               </div>
+              <!--
               <div class="civ">
                 <p>
                   <label for="aciv">IV</label>
@@ -121,6 +122,7 @@
                   <input class="form-control" name="aciv" type="text" maxlength="16" v-model="a.i" placeholder="Optional" />
                 </p>
               </div>
+              -->
             </div>
             <div class="dec">
               <p>

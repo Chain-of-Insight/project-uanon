@@ -54,6 +54,11 @@
                       <label>Provenance:&nbsp;</label>
                       <span>{{m.attributes[2].value}}</span>
                     </p>
+                    <!-- Wrong, forever on the Throne -->
+                    <p class="descr descr-t" v-if="m.attributes.length > 1 && r == 'autumn'">
+                      <label>Genus:&nbsp;</label>
+                      <span>{{m.attributes[2].value}}</span>
+                    </p>
                     <p class="descr descr-t" v-if="m.attributes.length > 0">
                       <label>Action:&nbsp;</label>
                       <span>{{m.attributes[1].value}}</span>
@@ -67,7 +72,7 @@
                       <span>{{m.displayUri}}</span>
                     </p>
                     <p class="descr descr-t" v-if="m.externalUri">
-                      <label v-if="r == 'spring' || r == 'summer'">Video:&nbsp;</label>
+                      <label v-if="r == 'spring' || r == 'summer' || r == 'autumn'">Video:&nbsp;</label>
                       <span v-if="r !== 'tutorial'">
                         <a :href="m.externalUri" target="_blank">{{m.externalUri}}</a>
                       </span>
@@ -78,7 +83,7 @@
                     <div class="descr-f">{{m.description}}</div>
                   </div>
                 </div>
-                <div class="ctrl" v-if="r !== 'tutorial'">
+                <div class="ctrl" v-if="r !== 'tutorial' && r !== 'autumn'">
                   <button class="btn btn-primary ctrl 3d" @click="loadT();">Open in 3D Viewer</button>
                 </div>
               </div>
@@ -379,16 +384,35 @@ div.ctrl, div.accum {
   padding: 4em;
   max-width: 450px;
 }
+.img-wr.lg.autumn {
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/5.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em;
+  max-width: 450px;
+  padding: 2em;
+}
 .img-wr.lg img, .img-wr.lg {
   position: relative;
   margin-right: 0.5%;
   cursor: pointer;
+}
+.img-wr.lg.autumn img{
+  border-radius: 1em;
 }
 .img-wr.lg img.active {
   transform: scale(3);
   z-index: 1000;
   top: 6em;
   right: 25vw;
+}
+.img-wr.lg.autumn img.active {
+  top: 10.5em;
 }
 .bg-tutorial {
   width: 425px;
@@ -427,6 +451,19 @@ div.ctrl, div.accum {
   box-shadow: inset 0 0 10px #000000;
   border-radius: 1em 1em 0 0;
 }
+.bg-autumn {
+  width: 425px;
+  height: 250px;
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/5.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em 1em 0 0;
+}
 .bg-summer .card-img, .summer .card-img {
   max-width: 375px;
   position: relative;
@@ -437,16 +474,17 @@ div.ctrl, div.accum {
 .bg-summer .card-img.medieval {
   top: 2.5px;
 }
-/* .bg-summer .card-img.kohathite {
-  top: 10px;
-  max-height: 90%;
-} */
 .bg-summer .card-img.orthodox {
   top: 20px;
 }
 .bg-summer .card-img.common1, .bg-summer .card-img.common2 {
   top: 17px;
   max-height: 85%;
+}
+.bg-autumn .card-img {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 1em;
 }
 .summer.ascended .card-img:not(.active),
 .summer.orthodox .card-img:not(.active) {

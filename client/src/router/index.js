@@ -33,6 +33,15 @@ import Summer9 from '../components/seasons/season2/Summer9.vue';
 import Summer10 from '../components/seasons/season2/Summer10.vue';
 import SummerAscend from '../components/seasons/season2/SummerAscend.vue';
 import SummerGG from '../components/seasons/season2/SummerGG.vue';
+// Season 3
+import Autumns from '../components/seasons/season3/AutumnList.vue';
+import Autumn1 from '../components/seasons/season3/Autumn1.vue';
+import Autumn2 from '../components/seasons/season3/Autumn2.vue';
+import Autumn3 from '../components/seasons/season3/Autumn3.vue';
+import Autumn4 from '../components/seasons/season3/Autumn4.vue';
+import Autumn5 from '../components/seasons/season3/Autumn5.vue';
+import AutumnAscend from '../components/seasons/season3/AutumnAscend.vue';
+import AutumnGG from '../components/seasons/season3/AutumnGG.vue';
 // Token
 import Viewer3D from '../components/nft/SeeForYourself.vue';
 // Tools
@@ -87,6 +96,15 @@ const routes = [
   { path: '/summer/10', name: 'Summer10', component: Summer10, meta: { requiresAuth: true } },
   { path: '/summer/the-land-vomits-ghosts', name: 'SummerAscend', component: SummerAscend, meta: { requiresAuth: true } },
   { path: '/summer/gg', name: 'SummerGG', component: SummerGG, meta: { requiresAuth: true } },
+  // Autumn
+  { path: '/echolalia', name: 'Autumns', component: Autumns, meta: { requiresAuth: true } },
+  { path: '/autumn/1', name: 'Autumn1', component: Autumn1, meta: { requiresAuth: true } },
+  { path: '/autumn/2', name: 'Autumn2', component: Autumn2, meta: { requiresAuth: true } },
+  { path: '/autumn/3', name: 'Autumn3', component: Autumn3, meta: { requiresAuth: true } },
+  { path: '/autumn/4', name: 'Autumn4', component: Autumn4, meta: { requiresAuth: true } },
+  { path: '/autumn/5', name: 'Autumn5', component: Autumn5, meta: { requiresAuth: true } },
+  { path: '/autumn/the-same-old-story', name: 'AutumnAscend', component: AutumnAscend, meta: { requiresAuth: true } },
+  { path: '/autumn/one-tin-soldier-rides-away', name: 'AutumnGG', component: AutumnGG, meta: { requiresAuth: true } },
   // Token
   { path: '/token/:contract/:type', name: 'Viewer3D', component: Viewer3D, meta: { requiresAuth: true } },
   // FAQ

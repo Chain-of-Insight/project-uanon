@@ -6,7 +6,7 @@ const DEFAULT_FIELD_SIZE = 1;
 const DEFAULT_VISIBLE_PROPS = ['title','description','secret','previous','payload','hint','files'];
 const DEFAULT_STORAGE_BASE = process.env.VUE_APP_STORAGE_BASE;
 const DEFAULT_STORAGE_DOWNLOAD = 'index.zip';
-const deployed = ['tutorial', 'spring', 'summer'];
+const deployed = ['tutorial', 'spring', 'summer', 'autumn'];
 const TEAMS = {
   '5ff7b2944650b50b77b641f9': {id:'5ff7b2944650b50b77b641f9', name: 'Nation', description: 'So he that can find no other way for correcting the errors of his people but by taking from them the conveniences of life, shows that he knows not what it is to govern a free nation.'},
   '5ff7b3204650b50b77b641fa': {id:'5ff7b3204650b50b77b641fa', name: 'Rebel', description: 'As soon as it is possible to disobey with impunity, disobedience is legitimate.'},
@@ -58,6 +58,9 @@ const externals = {
         "c4b6300dab0b8200df373b8ecb6881dcbed0284e4567005cad4250db8b7f4b5e.mp3",
         "ec45883459c8d10bc9493e751b3dd7096710f0ff356055ff07ffc80dc77a49db.mp3"
       ]
+    },
+    autumn: {
+      tectonics: {path: process.env.VUE_APP_STORAGE_BASE + '/sounds/9a66b42c01964f7329ebdc5d0fcbfc0d80d413fe9d6bf4c08c3b32c08ca38cf3.mp3', type: 'audio/mp3'}
     }
   },
   images: {
@@ -127,6 +130,17 @@ const externals = {
           common2: 'common2.glb',
           common1: 'common1.glb'
         }
+      },
+      autumn: {
+        path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/QmRzf2KVSiiCWVukFSz53Bk5sw3N3AinQDFQaL2CHtNdVp/',
+        image: {
+          ascended: 'ascended.png',
+          medieval: 'twisted.png',
+          kohathite: 'diabolic.png',
+          orthodox: 'exigent.png',
+          common2: 'common2.png',
+          common1: 'common1.png'
+        }
       }
     }
   },
@@ -135,8 +149,11 @@ const externals = {
     style: process.env.VUE_APP_STORAGE_BASE + '/289f2157eca9228d2e0119548c8116679b844948c863f276da3e72d25a11033b/index.css',
     audio: {path: process.env.VUE_APP_STORAGE_BASE + '/289f2157eca9228d2e0119548c8116679b844948c863f276da3e72d25a11033b/a18ecf32ca0636dee18db00facccb7a74511cf92b3d760a7144baadda52dadb4.mp3', type: 'audio/mpeg'}
   },
+  autumn1: {
+    script: 'https://maps.googleapis.com/maps/api/js?key=' + process.env.VUE_APP_GAME_API_SECRET
+  },
   explorer: {
-    testnet: 'https://edo2net.tzkt.io/',
+    testnet: 'https://hangzhou2net.tzkt.io/',
     mainnet: 'https://tzkt.io/'
   }
 };

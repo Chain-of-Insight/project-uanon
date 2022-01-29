@@ -9,8 +9,9 @@ const Oracle = process.env.VUE_APP_TEZOS_ORACLE;
 const SEASON_0_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_0;
 const SEASON_1_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_1;
 const SEASON_2_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_2;
-const DEPLOYED = [0,1,2];
-const defs = ['tutorial', 'spring', 'summer'];
+const SEASON_3_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_3;
+const DEPLOYED = [0,1,2,3];
+const defs = ['tutorial', 'spring', 'summer', 'autumn'];
 
 /**
  * Gets an instance of Uanon Puzzle Oracle
@@ -43,6 +44,7 @@ const toJSON = (x) => JSON.parse(JSON.stringify(x));
 async function getTruthShard(address, season) {
   const SPRING = 1;
   const SUMMER = 2;
+  const AUTUMN = 3;
   if (!address) {
     return false;
   } else if (typeof address !== 'string') {
@@ -66,6 +68,10 @@ async function getTruthShard(address, season) {
         selectedContract = SEASON_2_NFT;
         realmOpts = ["ascended", "medieval", "kohathite", "orthodox", "common2", "common1"];
         break;
+      }
+      case 'autumn': {
+        selectedContract = SEASON_3_NFT;
+        realmOpts = ["ascended", "twisted", "diabolic", "exigent", "common2", "common1"];
       }
     }
     nftLen = 6;
@@ -155,7 +161,11 @@ async function getTruthShard(address, season) {
         case 'summer': {
           sI = SUMMER;
           break;
-        } 
+        }
+        case 'autumn': {
+          sI = AUTUMN;
+          break;
+        }
       }
       truths.push({season: sI, asset: assets, metadata: m});
       return truths[0];
@@ -174,6 +184,7 @@ async function getTruthShard(address, season) {
 async function getTruthShardData(season, index) {
   const SPRING = ['ascended','lost','secret','cruel','common1','common2'];
   const SUMMER = ['ascended','medieval','kohathite','orthodox','common1','common2'];
+  const AUTUMN = ['ascended','twisted','diabolic','exigent','common2','common1'];
   if (typeof index !== 'number') {
     return false;
   } else if (typeof season !== 'string') {
@@ -193,6 +204,11 @@ async function getTruthShardData(season, index) {
       case 'summer': {
         selectedContract = SEASON_2_NFT;
         sI = SUMMER;
+        break;
+      }
+      case 'autumn': {
+        selectedContract = SEASON_3_NFT;
+        sI = AUTUMN;
         break;
       }
     }
@@ -298,6 +314,25 @@ async function getTruths(address) {
           nftLen = 6;
           realmOpts = ["ascended", "medieval", "kohathite", "orthodox", "common2", "common1"];
           ss = "summer";
+          let requestList = [];
+          for (let n = 0; n < nftLen; n++) {
+            let a = {
+              owner: address,
+              token_id: String(n)
+            };
+            requestList.push(a);
+          }
+          let nftInstance = await Tezos.contract.at(selectedContract, tzip16);
+          addressBalance = await nftInstance.views.balance_of(requestList).read();
+          addressBalance = toJSON(addressBalance);
+          // console.log('addressBalance =>', addressBalance);
+          break;
+        }
+        case 3: {
+          selectedContract = SEASON_3_NFT;
+          nftLen = 6;
+          realmOpts = ["ascended", "twisted", "diabolic", "exigent", "common2", "common1"];
+          ss = "autumn";
           let requestList = [];
           for (let n = 0; n < nftLen; n++) {
             let a = {

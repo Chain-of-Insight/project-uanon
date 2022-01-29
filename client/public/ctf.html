@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="2022 is quickly coming to its end, and it's time for the Project Uanon CTF.">
+    <meta property="og:description" content="2022 is quickly coming to its end, and it's time for the Project Uanon CTF.">
+    <meta property="og:image" content="https://uanon.s3.amazonaws.com/banner/sanctity.jpg">
+    <meta content="summary" name="twitter:card">
+    <meta content="@chainofinsight" name="twitter:site">
+    <meta content="@chainofinsight" name="twitter:creator">
+    <meta content="Project Uanon" name="twitter:title">
+    <meta content="Project Uanon is the Truth as entertainment" name="twitter:description">
+    <meta content="https://uanon.s3.amazonaws.com/banner/sanctity.jpg" name="twitter:image:src">
+    <link rel="stylesheet" href="/css/bt.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/m.css">
+    <title>Project Uanon - CTF 2022 - Hack This Meme</title>
+    <meta name="robots" content="noindex">
+    <style>img{margin:auto;margin-top:2em;display:block;}h1,h2,h3{margin-bottom:1em;}h2,h3{margin-top:1em;}div.c{margin-bottom:4em;}a.h-a{text-decoration:none;color:#fff !important;}</style>
+    <script>
+      let C;
+      function solstice() {
+        const targ = 1643472000000;
+        const difference = +new Date(targ) - +new Date();
+        let remaining, patience = document.getElementById('as');
+        if (!patience) {
+          return;
+        }
+        if (difference > 0) {
+          const parts = {
+            d: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            h: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            m: Math.floor((difference / 1000 / 60) % 60),
+            s: Math.floor((difference / 1000) % 60),
+          };
+          remaining = Object.keys(parts).map(part => {
+            return `${parts[part]}${part}`;
+          }).join(" ");
+          patience.innerHTML = remaining;
+        } else {
+          patience.innerHTML = '<a href="/echolalia">The CTF is LIVE</a>';
+          if (C) {
+            clearInterval(C);
+          }
+        }
+      };
+      solstice();
+      C = setInterval(solstice, 1000);
+    </script>
+</head>
+<body cz-shortcut-listen="true">
+  <div class="wrapper ctf-wr">
+    <div class="page">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 c">
+            <div class="banner">
+              <a href="/">
+                <img src="https://uanon.s3.amazonaws.com/banner/3598ce6f965b2481fe26316c06b30950c46ac7f8e7229f104aa78f579997668d.png" title="Project Unanon">
+              </a>
+            </div>
+
+            <h1 class="blood">Hack This Meme! 2022 CTF</h1>
+
+            <!-- YouTube Embed goes here -->
+            <br/>
+            <div class="yt">
+              <iframe width="100%" height="600px" src="https://www.youtube.com/embed/lkvmu6TzvIQ" title="Your journey awaits" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <br/>
+
+            <h3>Participation Guide</h3>
+
+            <h5 class="blood">Registration</h5>
+            <p>2022 is upon us and it's time for the Project Uanon CTF. To join the CTF you will need follow the steps in the <a class="blood" href="/faq">FAQ</a> page for creating an account.</p>
+            <p>The CTF consists of 6<span class="hidden">66</span> challenges. The 6th and final challenge will be accessible to partipants only when they've completed all the previous challenges (levels 1 to 5).</p>
+            <p>When you're ready to begin, the CTF start page is located <a href="/echolalia">here</a>.</p>
+
+            <h5 class="blood">Claiming Flags</h5>
+            <p>To learn about Project Uanon console and graphical solving tools review the beginning <a href="/learn">tutorials</a>. The console and graphical solvers allow you to submit answers for verification.</p>
+            <p>Answers with payload formats marked as <strong>flag</strong> have the format <strong>uanon{flag}</strong>.</p>
+            <p>While most challenges use the flag format, notable exceptions are challenges in the OSINT category wehere filenames or geo tagged data provide the solution.</p>
+
+            <h5 class="blood">First Bloods (~$10k in Prizes)</h5>
+            <p>Participants who get first blood must use the graphical solver to submit their solution.</p>
+            <p>Each first blood in the CTF can claim a <a href="https://tezos.com/" target="_blank">Tezos</a> prize in <a href="https://coinmarketcap.com/currencies/tezos/" target="_blank">$XTZ</a>.</p>
+            <p>Prize amounts are proportional to estimated difficulty of the challenge. Overall estimated value, for all 6 prizes, is ~10k USD in <a href="https://coinmarketcap.com/currencies/tezos/" target="_blank">$XTZ</a>.</p>
+            <p>View a challenge's Points using the <strong>info</strong> command in the Project Uanon console. Point quantities are equivalent to <a href="https://coinmarketcap.com/currencies/tezos/" target="_blank">$XTZ</a> prize value for first blood.</p>
+            <p>Claiming a prize requires paying a transaction fee to the Tezos network (estimated to be between $0.04 and $0.10 USD in <a href="https://tezos.com/" target="_blank">Tezos</a> <a href="https://coinmarketcap.com/currencies/tezos/" target="_blank">$XTZ</a>).</p>
+            <p>Participants who get first blood but do not claim their prize, can still verify their answer, as well as compete in the other challenges; the <a href="https://coinmarketcap.com/currencies/tezos/" target="_blank">$XTZ</a> prize will remain available until it's claimed by a participant.</p>
+
+            <h5 class="blood">CTF Categories</h5>
+            <ul>
+              <li title="Open source intelligence" alt="Open source intelligence">OSINT</li>
+              <li title="Analyze data and patterns" alt="Analyze data and patterns">DATA FORENSICS</li>
+              <li title="Knowledge of protocols like RSA and key signatures" alt="Knowledge of protocols like RSA and key signatures">CRYPTOGRAPHY</li>
+              <li title="Applied mathematics" alt="Applied mathematics">MATH</li>
+              <li title="Web security" alt="Web security">WEB</li>
+              <li title="Discover how a device, process, system, or piece of software accomplishes a task using deductive reasoning" alt="Discover how a device, process, system, or piece of software accomplishes a task using deductive reasoning">REVERSE ENGINEERING</li>
+            </ul>
+
+            <h5 class="blood">Isn't Project Uanon a Puzzle Game?</h5>
+            <p>Participation in the main game and leaderboard is not required for CTF participation.</p>
+
+            <h1>HACK THIS MEME! CTF 2022</h1>
+            <h3 id="as"></h3>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
