@@ -113,11 +113,12 @@ export default {
     z: false,
     td: false,
     api: api,
-    def: ['tutorial', 'spring', 'summer'],
+    def: ['tutorial', 'spring', 'summer', 'autumn'],
     defs: {
       tutorial: 0,
       spring: 1,
-      summer: 2
+      summer: 2,
+      autumn: 3
     }
   }),
   mounted: async function () {

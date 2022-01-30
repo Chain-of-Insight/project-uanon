@@ -135,9 +135,9 @@ const externals = {
         path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/QmRzf2KVSiiCWVukFSz53Bk5sw3N3AinQDFQaL2CHtNdVp/',
         image: {
           ascended: 'ascended.png',
-          medieval: 'twisted.png',
-          kohathite: 'diabolic.png',
-          orthodox: 'exigent.png',
+          twisted: 'twisted.png',
+          diabolic: 'diabolic.png',
+          exigent: 'exigent.png',
           common2: 'common2.png',
           common1: 'common1.png'
         }
