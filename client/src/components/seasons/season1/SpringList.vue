@@ -100,6 +100,9 @@
   <div v-if="pz">
     <div class="solve solve-t" v-if="pz.secret">
       <div class="open-c inner">
+        <p class="helper-bar float-right" @click="handleCopen();">
+          <span class="icon icon-terminal2"></span>
+        </p>
         <p class="helper-bar float-right" @click="gopen();">
           <span class="icon icon-game"></span>
         </p>
@@ -131,6 +134,7 @@
     v-bind:un="un"
     v-if="pz.secret && un"
     @proof="retain"
+    @copen="copen"
   ></Console>
 </template>
 
@@ -284,6 +288,12 @@ export default {
       this.b = false;
       this.b = true;
       await this.ma();
+    },
+    handleCopen: function () {
+      document.dispatchEvent(new KeyboardEvent('keypress',{'key':'`'}));
+    },
+    copen: function (b) {
+      this.co = b;
     },
     gopen: function () {
       this.gd = true;
@@ -528,6 +538,9 @@ span.not-solved {
   cursor: pointer;
   border: 1px solid rgba(255,112,112,0.25);
   font-size: 1.5em;
+}
+.helper-bar:nth-of-type(2n) {
+  right: calc(2em + 75px);
 }
 .helper-bar:hover {
   box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);

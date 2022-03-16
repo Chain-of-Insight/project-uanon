@@ -18,6 +18,9 @@
         <li class="li nav-login" v-if="l">
           <a href="#" @click="logout();">Logout</a>
         </li>
+        <li class="li nav-login" v-if="l" alt="Unsyncs wallet connection allowing you to reconnect or switch between accounts" title="Unsyncs wallet connection allowing you to reconnect or switch between accounts">
+          <a href="#" @click="unpair();">Unpair</a>
+        </li>
       </ul>
       <div class="float-right controls">
         <span class="icon icon-volume_off" v-if="!s" @click="a();" title="Toggle sound"></span>
@@ -83,6 +86,10 @@ export default {
     logout: async function() {
       await Auth.logout();
       location.reload();
+    },
+    unpair: async function() {
+      localStorage.removeItem('beacon:accounts');
+      await this.logout();
     },
     a: function () {
       this.s = !this.s;

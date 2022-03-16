@@ -101,6 +101,9 @@
 
     <!-- Soulve -->
     <div class="open-c inner">
+      <p class="helper-bar float-right" @click="handleCopen();" v-if="p.secret">
+        <span class="icon icon-terminal2"></span>
+      </p>
       <p class="helper-bar float-right" @click="gopen();" v-if="p.secret">
         <span class="icon icon-game"></span>
       </p>
@@ -366,6 +369,9 @@
           console.warn("Failed updating storage, your solution has not been saved");
         }
       },
+      handleCopen: function () {
+        document.dispatchEvent(new KeyboardEvent('keypress',{'key':'`'}));
+      },
       copen: function (b) {
         this.co = b;
       },
@@ -400,8 +406,6 @@ h2.blood-t {
   font-family: 'AnglicanText' !important;
   font-size: 81px;
   margin-bottom: 0;
-  /* text-shadow: 0 0 10px #eee, 0 0 20px #eee, 0 0 30px #000, 0 0 40px #000, 0 0 50px #000, 0 0 60px #ff7070, 0 0 70px #ff7070; */
-  
 }
 .helper-bar {
   position: fixed;
@@ -416,6 +420,9 @@ h2.blood-t {
   cursor: pointer;
   border: 1px solid rgba(255,112,112,0.25);
   font-size: 1.5em;
+}
+.helper-bar:nth-of-type(2n) {
+  right: calc(2em + 75px);
 }
 .helper-bar:hover {
   box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);

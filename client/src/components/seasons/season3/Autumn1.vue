@@ -185,6 +185,9 @@ ndrtutab ebyoæutyoth thno esthæthhw elabutbenoabhwhw
 
     <!-- Soulve -->
     <div class="open-c inner">
+      <p class="helper-bar float-right" @click="handleCopen();" v-if="p.secret">
+        <span class="icon icon-terminal2"></span>
+      </p>
       <p class="helper-bar float-right" @click="gopen();" v-if="p.secret">
         <span class="icon icon-game"></span>
       </p>
@@ -614,6 +617,9 @@ MMMMMMMM               MMMMMMMMEEEEEEEEEEEEEEEEEEEEEEMMMMMMMM               MMMM
           console.warn("Failed updating storage, your solution has not been saved");
         }
       },
+      handleCopen: function () {
+        document.dispatchEvent(new KeyboardEvent('keypress',{'key':'`'}));
+      },
       copen: function (b) {
         this.co = b;
       },
@@ -684,6 +690,9 @@ MMMMMMMM               MMMMMMMMEEEEEEEEEEEEEEEEEEEEEEMMMMMMMM               MMMM
   border: 1px solid rgba(255,112,112,0.25);
   font-size: 1.5em;
   z-index: 1000;
+}
+.helper-bar:nth-of-type(2n) {
+  right: calc(2em + 75px);
 }
 .helper-bar:hover {
   box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);

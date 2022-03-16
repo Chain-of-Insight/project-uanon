@@ -368,7 +368,7 @@ export default {
           return location.href = u;
         }
         if (b == "the-same-old-story") {
-          u = c.replace('the-same-old-story', '8');
+          u = c.replace('the-same-old-story', '5');
           return location.href = u;
         }
         a[(a.length - 1)] = parseInt(b) - 1;
