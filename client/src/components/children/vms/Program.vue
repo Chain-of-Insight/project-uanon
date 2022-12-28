@@ -36,6 +36,9 @@
                     @proof="retain"
                   ></HeadScratcher>
                 </div>
+                <div v-if="(c.i==7 && c.file) || (c.i==8 && c.file) || (c.i==9 && c.file) || (c.i==10 && c.file) || (c.i==11 && c.file)">
+                  <object :data="c.file">Not supported</object>
+                </div>
               </div>
               <div v-if="a">
                 <div class="icons icons-top">
@@ -148,5 +151,61 @@
   top: 25px;
   left: -5px;
   text-align: center;
+}
+object {
+  height: 100%;
+  min-height: 345px;
+  line-height: 1.2em;
+  background-size: 2.4em 2.4em;
+  background-origin: content-box;
+  padding: 1em;
+  text-align: justify;
+  display: inline-block;
+  color: #0a4862;
+  background-color: #73c8eb;
+  border-color: #3bb3e3;
+  border-radius: 0.5em;
+  filter: hue-rotate(0deg);
+  animation: transmogrify ease 60s;
+  -webkit-animation: transmogrify ease 60s;
+  -moz-animation: transmogrify ease 60s;
+  -o-animation: transmogrify ease 60s;
+  -ms-animation: transmogrify ease 60s;
+  animation-iteration-count: infinite;
+}
+@keyframes transmogrify {
+  0% {filter: hue-rotate(0deg);}
+  25% {filter: hue-rotate(25deg);}
+  50%  {filter: hue-rotate(55deg);}
+  75% {filter: hue-rotate(25deg);}
+  100% {filter: hue-rotate(0deg);}
+}
+@-moz-keyframes transmogrify {
+  0% {filter: hue-rotate(0deg);}
+  25% {filter: hue-rotate(25deg);}
+  50%  {filter: hue-rotate(55deg);}
+  75% {filter: hue-rotate(25deg);}
+  100% {filter: hue-rotate(0deg);}
+}
+@-webkit-keyframes transmogrify {
+  0% {filter: hue-rotate(0deg);}
+  25% {filter: hue-rotate(25deg);}
+  50%  {filter: hue-rotate(55deg);}
+  75% {filter: hue-rotate(25deg);}
+  100% {filter: hue-rotate(0deg);}
+}
+@-o-keyframes transmogrify {
+  0% {filter: hue-rotate(0deg);}
+  25% {filter: hue-rotate(25deg);}
+  50%  {filter: hue-rotate(55deg);}
+  75% {filter: hue-rotate(25deg);}
+  100% {filter: hue-rotate(0deg);}
+}
+@-ms-keyframes transmogrify {
+  0% {filter: hue-rotate(0deg);}
+  25% {filter: hue-rotate(25deg);}
+  50%  {filter: hue-rotate(55deg);}
+  75% {filter: hue-rotate(25deg);}
+  100% {filter: hue-rotate(0deg);}
 }
 </style>

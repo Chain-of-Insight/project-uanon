@@ -1,24 +1,40 @@
 <template>
-  <div class="spring-wrap console" v-if="rdy">
+  <div class="cryptowinter-wrap console" v-if="rdy">
 
-    <div class="content-s spring puzzle-content" v-if="p.id">
-      <Ubuntu
-        v-bind:i="i"
-        v-bind:m="c.DEFAULT_STORAGE_BASE+'/'+p.id+'/'+p.files[0]"
-        v-bind:r="def[0]"
-        v-bind:in="p.description"
-        v-bind:un="un"
-        v-if="un"
-        @proof="retain"
-      ></Ubuntu>
+    <div class="content-s cryptowinter puzzle-content" v-if="p.id">
+      <img class="keepers" :src="c.DEFAULT_STORAGE_BASE + '/' + p.id + '/bg.png'" :title="m" :alt="m" />
     </div>
 
     <div class="content-s danger no-access" v-if="!a && i > 0">
       <p class="no-access descr" v-html="w"></p>
-      <router-link to="/discover">Back</router-link>
+      <router-link to="/deny">Back</router-link>
     </div>
 
     <!-- Soulve -->
+    <div class="open-c inner">
+      <p class="helper-bar float-right" @click="handleCopen();" v-if="p.secret">
+        <span class="icon icon-terminal2"></span>
+      </p>
+      <p class="helper-bar float-right" @click="gopen();" v-if="p.secret">
+        <span class="icon icon-game"></span>
+      </p>
+    </div>
+    <Graphical 
+      v-bind:s="p.secret"
+      v-bind:r="def[0]"
+      v-bind:f="p.fields"
+      v-bind:o="gd"
+      v-bind:i="i"
+      v-bind:p="p"
+      v-bind:t="'$ix$ix$ix'"
+      v-bind:dd="false"
+      v-bind:fn="p.fieldNames"
+      v-bind:tx="false"
+      v-bind:rst="true"
+      v-if="p.secret"
+      @proof="retain"
+      @gclose="gclose"
+    ></Graphical>
     <Console
       v-bind:s="p.secret"
       v-bind:d="cd"
@@ -26,12 +42,41 @@
       v-bind:r="def[0]"
       v-bind:p="p"
       v-bind:l="true"
+      v-bind:q="true"
       v-bind:un="un"
       v-if="p.secret && un"
       @proof="retain"
       @copen="copen"
     ></Console>
   </div>
+<!--
+<![CDATA[
+                 
+                    
+                      
+                             
+            
+              
+             
+                              
+                         
+                            
+    
+      
+  
+
+  
+          
+           
+           
+                  
+  
+   
+               
+      
+        
+]]>
+-->
 </template>
 
 <script>
@@ -39,23 +84,21 @@
   import store from '../../../util/storage';
   import { verifyProof } from '../../../util/hasher';
   import * as Config from '../../../conf/constants';
-
+  
+  import Graphical from '../../children/soulve/Graphical.vue';
   import Console from '../../children/soulve/Console.vue';
-  import Ubuntu from '../../children/vms/Ubuntu.vue';
 
-  const CURRENT_I = 8;
+  const CURRENT_I = 0;
 
   export default {
-  name: 'Spring 8',
-  components: { Console, Ubuntu },
+  name: 'Cryptowinter 1',
+  components: { Console, Graphical },
   data: () => ({
     a: false,
     c: Config,
-    cd: false,
-    gd: false,
-    api: api,
     h: verifyProof,
     i: CURRENT_I,
+    m: "Use the 'download' command to start the puzzle",
     p: {
       id: null,
       title: null,
@@ -66,14 +109,16 @@
     s: null,
     t: null,
     w: Config.notify.DEFAULT_PLAYER_WARNING,
-    fx: [Config.externals.tutorial3.audio],
+    cd: false,
     do: store,
+    fi: null,
+    gd: false,
     sl: null,
     sv: null,
-    fi: null,
     un: null,
+    api: api,
+    def: ['cryptowinter', 5],
     str:{},
-    def: ['spring', 0],
     rdy: false,
     argT: [false, false]
   }),
@@ -204,20 +249,18 @@
       this.p.payload = (m.payload) ? m.payload : null;
       this.p.hint = (m.hint) ? m.hint : null;
       this.p.files = (m.files) ? m.files : null;
+      this.p.fields = (m.fields) ? m.fields : 1;
+      this.p.fieldNames = (m.fieldNames) ? m.fieldNames : null;
       this.p.template = (m.template) ? m.template : null;
-      if (m['email']) {
-        this.p.email = m.email;
-      }
-      if (m['einstein']) {
-        m.einstein.secret = m.secret;
-        this.p.einstein = m.einstein;
-      }
       if (Array.isArray(this.p.files)) {
         for (let i = 0; i < this.p.files.length; i++) {
           let f = this.p.files[i].split('/');
           f = f[f.length - 1];
-          this.p.files[i] = f;
+          this.p.files[i] = '<a href="'+this.c.DEFAULT_STORAGE_BASE+'/'+this.p.id+'/'+f+'" target="_blank">'+f+'</a>';
         }
+      }
+      if (this.p.payload) {
+        this.p.format = (this.p.payload['format']) ? this.p.payload.format : null;
       }
       // console.log('Current Puzzle =>', this.p);
     },
@@ -253,16 +296,64 @@
         return;
       }
       this.p.proof = s;
+      // console.log([this.p, this.def[0], CURRENT_I]);
       if (!this.do.store.update(this.p, this.def[0], CURRENT_I)) {
         console.warn("Failed updating storage, your solution has not been saved");
       }
     },
+    handleCopen: function () {
+      document.dispatchEvent(new KeyboardEvent('keypress',{'key':'`'}));
+    },
     copen: function (b) {
       this.co = b;
-    }
+    },
+    gopen: function () {
+      this.gd = true;
+      let b = document.getElementsByTagName('body');
+      b[0].style.overflow = 'hidden';
+    },
+    gclose: function () {
+      this.gd = false;
+      let b = document.getElementsByTagName('body');
+      b[0].style.overflow = '';
+    },
   }
 }
 </script>
 
 <style scoped>
+.helper-bar {
+  position: fixed;
+  bottom: 30px;
+  right: 2em;
+  border-radius: 20%;
+  background-color: rgba(148,49,91,0.1);
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  padding: 0.25em;
+  cursor: pointer;
+  border: 1px solid rgba(255,112,112,0.25);
+  font-size: 1.5em;
+}
+.helper-bar:nth-of-type(2n) {
+  right: calc(2em + 75px);
+}
+.helper-bar:hover {
+  box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);
+  text-shadow: 0 0 20px #eee, 0 0 30px #eee, 0 0 40px #ff7070, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff7070;
+}
+.helper-bar > .icon-game {
+  position: relative;
+  top: 2px;
+}
+.cryptowinter-wrap.copen {
+  margin-bottom: 70vh;
+}
+img.keepers {
+  width: 80%;
+  height: auto;
+  margin: auto;
+  display: block;
+}
 </style>

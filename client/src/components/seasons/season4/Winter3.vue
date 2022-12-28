@@ -1,10 +1,12 @@
 <template>
-  <div class="spring-wrap console" v-if="rdy">
+  <div class="winter-wrap console" v-if="rdy">
 
-    <div class="content-s spring puzzle-content" v-if="p.id">
+    <div class="content-i" v-if="p.id && !b"></div>
+
+    <div class="content-s winter puzzle-content" v-if="p.id && b">
       <Ubuntu
         v-bind:i="i"
-        v-bind:m="c.DEFAULT_STORAGE_BASE+'/'+p.id+'/'+p.files[0]"
+        v-bind:ma="ma"
         v-bind:r="def[0]"
         v-bind:in="p.description"
         v-bind:un="un"
@@ -15,17 +17,41 @@
 
     <div class="content-s danger no-access" v-if="!a && i > 0">
       <p class="no-access descr" v-html="w"></p>
-      <router-link to="/discover">Back</router-link>
+      <router-link to="/palilalia">Back</router-link>
     </div>
 
     <!-- Soulve -->
+    <div class="open-c inner">
+      <p class="helper-bar float-right" @click="handleCopen();" v-if="p.secret">
+        <span class="icon icon-terminal2"></span>
+      </p>
+      <p class="helper-bar float-right" @click="gopen();" v-if="p.secret">
+        <span class="icon icon-game"></span>
+      </p>
+    </div>
+    <Graphical 
+      v-bind:s="p.secret"
+      v-bind:r="def[0]"
+      v-bind:f="p.fields"
+      v-bind:o="gd"
+      v-bind:i="i"
+      v-bind:p="p"
+      v-bind:t="p.title"
+      v-bind:dd="false"
+      v-bind:tx="false"
+      v-bind:rst="true"
+      v-if="p.secret"
+      @proof="retain"
+      @gclose="gclose"
+    ></Graphical>
     <Console
       v-bind:s="p.secret"
       v-bind:d="cd"
       v-bind:i="i"
       v-bind:r="def[0]"
       v-bind:p="p"
-      v-bind:l="true"
+      v-bind:l="false"
+      v-bind:q="true"
       v-bind:un="un"
       v-if="p.secret && un"
       @proof="retain"
@@ -39,17 +65,19 @@
   import store from '../../../util/storage';
   import { verifyProof } from '../../../util/hasher';
   import * as Config from '../../../conf/constants';
-
+  
+  import Graphical from '../../children/soulve/Graphical.vue';
   import Console from '../../children/soulve/Console.vue';
   import Ubuntu from '../../children/vms/Ubuntu.vue';
 
-  const CURRENT_I = 8;
+  const CURRENT_I = 2;
 
   export default {
-  name: 'Spring 8',
-  components: { Console, Ubuntu },
+  name: 'Winter 3',
+  components: { Console, Graphical, Ubuntu },
   data: () => ({
     a: false,
+    b: false,
     c: Config,
     cd: false,
     gd: false,
@@ -66,14 +94,14 @@
     s: null,
     t: null,
     w: Config.notify.DEFAULT_PLAYER_WARNING,
-    fx: [Config.externals.tutorial3.audio],
     do: store,
+    ma: [],
     sl: null,
     sv: null,
     fi: null,
     un: null,
     str:{},
-    def: ['spring', 0],
+    def: ['winter', 4],
     rdy: false,
     argT: [false, false]
   }),
@@ -204,21 +232,26 @@
       this.p.payload = (m.payload) ? m.payload : null;
       this.p.hint = (m.hint) ? m.hint : null;
       this.p.files = (m.files) ? m.files : null;
+      this.p.fields = (m.fields) ? m.fields : 1;
       this.p.template = (m.template) ? m.template : null;
-      if (m['email']) {
-        this.p.email = m.email;
-      }
-      if (m['einstein']) {
-        m.einstein.secret = m.secret;
-        this.p.einstein = m.einstein;
-      }
+      this.p.format = (this.p.payload['format']) ? this.p.payload.format : null;
       if (Array.isArray(this.p.files)) {
+        this.ma = [
+          this.c.DEFAULT_STORAGE_BASE+'/'+this.p.id+'/'+m.files[0], 
+          this.c.DEFAULT_STORAGE_BASE+'/'+this.p.id+'/'+m.files[1], 
+          this.c.DEFAULT_STORAGE_BASE+'/'+this.p.id+'/'+m.files[2], 
+          this.c.DEFAULT_STORAGE_BASE+'/'+this.p.id+'/'+m.files[3], 
+          this.c.DEFAULT_STORAGE_BASE+'/'+this.p.id+'/'+m.files[4]
+        ];
         for (let i = 0; i < this.p.files.length; i++) {
           let f = this.p.files[i].split('/');
           f = f[f.length - 1];
-          this.p.files[i] = f;
+          this.p.files[i] = '<a href="'+this.c.DEFAULT_STORAGE_BASE+'/'+this.p.id+'/'+f+'" target="_blank">'+f+'</a>';
         }
       }
+      setTimeout(() => {
+        this.b = true;
+      }, 9000);
       // console.log('Current Puzzle =>', this.p);
     },
     /**
@@ -253,16 +286,69 @@
         return;
       }
       this.p.proof = s;
+      // console.log([this.p, this.def[0], CURRENT_I]);
       if (!this.do.store.update(this.p, this.def[0], CURRENT_I)) {
         console.warn("Failed updating storage, your solution has not been saved");
       }
     },
+    handleCopen: function () {
+      document.dispatchEvent(new KeyboardEvent('keypress',{'key':'`'}));
+    },
     copen: function (b) {
       this.co = b;
-    }
+    },
+    gopen: function () {
+      this.gd = true;
+      let b = document.getElementsByTagName('body');
+      b[0].style.overflow = 'hidden';
+    },
+    gclose: function () {
+      this.gd = false;
+      let b = document.getElementsByTagName('body');
+      b[0].style.overflow = '';
+    },
   }
 }
 </script>
 
 <style scoped>
+.helper-bar {
+  position: fixed;
+  bottom: 30px;
+  right: 2em;
+  border-radius: 20%;
+  background-color: rgba(148,49,91,0.1);
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  padding: 0.25em;
+  cursor: pointer;
+  border: 1px solid rgba(255,112,112,0.25);
+  font-size: 1.5em;
+}
+.helper-bar:nth-of-type(2n) {
+  right: calc(2em + 75px);
+}
+.helper-bar:hover {
+  box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);
+  text-shadow: 0 0 20px #eee, 0 0 30px #eee, 0 0 40px #ff7070, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff7070;
+}
+.helper-bar > .icon-game {
+  position: relative;
+  top: 2px;
+}
+.winter-wrap.copen {
+  margin-bottom: 70vh;
+}
+.content-i {
+  position: fixed;
+  width: 100vw; 
+  height: 100vh; 
+  z-index: -1;
+  top: 50px;
+  background-image: url('/img/301b33ab445c354f0c87bd64571035fe5ec87efbdcc04108b1fe445d7af6caae.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
 </style>

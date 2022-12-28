@@ -6,7 +6,7 @@ const DEFAULT_FIELD_SIZE = 1;
 const DEFAULT_VISIBLE_PROPS = ['title','description','secret','previous','payload','hint','files'];
 const DEFAULT_STORAGE_BASE = process.env.VUE_APP_STORAGE_BASE;
 const DEFAULT_STORAGE_DOWNLOAD = 'index.zip';
-const deployed = ['tutorial', 'spring', 'summer', 'autumn'];
+const deployed = ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter'];
 const TEAMS = {
   '5ff7b2944650b50b77b641f9': {id:'5ff7b2944650b50b77b641f9', name: 'Nation', description: 'So he that can find no other way for correcting the errors of his people but by taking from them the conveniences of life, shows that he knows not what it is to govern a free nation.'},
   '5ff7b3204650b50b77b641fa': {id:'5ff7b3204650b50b77b641fa', name: 'Rebel', description: 'As soon as it is possible to disobey with impunity, disobedience is legitimate.'},
@@ -141,6 +141,28 @@ const externals = {
           common2: 'common2.png',
           common1: 'common1.png'
         }
+      },
+      winter: {
+        path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/QmbMvPYM6aB1FCcRhbUwB2aT4eqgYDpEqJ4ma2YYc2Syyz/',
+        image: {
+          ascended: 'ascended.png',
+          "self-transforming": 'self-transforming.png',
+          whetted: 'whetted.png',
+          crying: 'crying.png',
+          common2: 'common2.png',
+          common1: 'common1.png'
+        }
+      },
+      cryptowinter: {
+        path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/tmp/cryptowinter/',
+        image: {
+          ascended: 'unrevealed.png',
+          incandescent: 'unrevealed.png',
+          neuromorphic: 'unrevealed.png',
+          spurious: 'unrevealed.png',
+          common2: 'unrevealed.png',
+          common1: 'unrevealed.png'
+        }
       }
     }
   },
@@ -153,7 +175,7 @@ const externals = {
     script: 'https://maps.googleapis.com/maps/api/js?key=' + process.env.VUE_APP_GAME_API_SECRET
   },
   explorer: {
-    testnet: 'https://hangzhou2net.tzkt.io/',
+    testnet: 'https://ghostnet.tzkt.io/',
     mainnet: 'https://tzkt.io/'
   }
 };

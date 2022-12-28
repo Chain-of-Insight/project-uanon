@@ -203,6 +203,14 @@ export default {
           this.x.id = String(305);
           break;
         }
+        case 'winter+': {
+          this.x.id = String(406);
+          break;
+        }
+        case 'cryptowinter+': {
+          this.x.id = String(501);
+          break;
+        }
         default: {
           break;
         }
@@ -284,10 +292,12 @@ export default {
             if (i == (this.input.length - 1)) {
               if (a == true) {
                 if (N !== 'mainnet') {
-                  b.push(TE);
+                  // b.push(TE);
+                  b.unshift(TE);
                 }
                 this.e.v = false;
                 this.v = this.make(b);
+                console.log(b);
               } else {
                 this.e.v = true;
               }

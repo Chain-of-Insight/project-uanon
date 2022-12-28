@@ -318,7 +318,7 @@
     /**
      * @param {?Boolean} s : Optional param to hard mute / unmute instead of toggle
      */
-      sound: function (s = null) {
+    sound: function (s = null) {
       const y = document.getElementById('wheel');
       if (s == null) {
         this.v = !this.v;

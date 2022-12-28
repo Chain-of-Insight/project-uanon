@@ -27,9 +27,6 @@
                 <div class="accum">
                   <div class="img-wr lg right float-right" :class="r + ' ' + n.asset.type" v-if="image" @click="z=!z;">
                     <img class="card-img" :class="{active: z}" :src="image" :alt="m.attributes[1].action">
-                    <!--
-                    XXX TODO: Display FA2 shadow / depression when FA2 zoomed in?
-                    -->
                   </div>
                   <div class="left">
                     <p class="descr descr-t" v-if="m.creator && !m.creators">
@@ -59,10 +56,27 @@
                       <label>Genus:&nbsp;</label>
                       <span>{{m.attributes[2].value}}</span>
                     </p>
+                    <!-- Cannot the Kingdom of Salvation take me Home? -->
+                    <p class="descr descr-t" v-if="m.attributes.length > 1 && r == 'winter'">
+                      <label>Calculus:&nbsp;</label>
+                      <span>{{m.attributes[2].value}}</span>
+                    </p>
+                    <!-- This path seems the blackest -->
+                    <p class="descr descr-t" v-if="m.attributes.length > 1 && r == 'cryptowinter'">
+                      <label>Lunar Phase:&nbsp;</label>
+                      <span>{{m.attributes[2].value}}</span>
+                    </p>
+                    <!-- But I guess it's the soonest -->
+                    <p class="descr descr-t" v-if="m.attributes.length > 2 && r == 'cryptowinter'">
+                      <label>Solar Power:&nbsp;</label>
+                      <span>{{m.attributes[3].value}}</span>
+                    </p>
+                    <!-- I want the money I don't care about thi$ -->
                     <p class="descr descr-t" v-if="m.attributes.length > 0">
                       <label>Action:&nbsp;</label>
                       <span>{{m.attributes[1].value}}</span>
                     </p>
+                    <!-- In the night there's no faces -->
                     <p class="descr descr-t" v-if="m.imageUri && !m.displayUri">
                       <label>Image:&nbsp;</label>
                       <span>{{m.imageUri}}</span>
@@ -72,7 +86,7 @@
                       <span>{{m.displayUri}}</span>
                     </p>
                     <p class="descr descr-t" v-if="m.externalUri">
-                      <label v-if="r == 'spring' || r == 'summer' || r == 'autumn'">Video:&nbsp;</label>
+                      <label v-if="r == 'spring' || r == 'summer' || r == 'autumn' || r == 'winter' || r == 'cryptowinter'">Video:&nbsp;</label>
                       <span v-if="r !== 'tutorial'">
                         <a :href="m.externalUri" target="_blank">{{m.externalUri}}</a>
                       </span>
@@ -83,8 +97,11 @@
                     <div class="descr-f">{{m.description}}</div>
                   </div>
                 </div>
-                <div class="ctrl" v-if="r !== 'tutorial' && r !== 'autumn'">
+                <div class="ctrl" v-if="r !== 'tutorial' && r !== 'autumn' && r !== 'winter'">
                   <button class="btn btn-primary ctrl 3d" @click="loadT();">Open in 3D Viewer</button>
+                </div>
+                <div class="ctrl" v-if="r !== 'tutorial' && r == 'cryptowinter'">
+                  <button class="btn btn-primary ctrl 2d" @click="loadT();" disabled>Open in 2D Viewer</button>
                 </div>
               </div>
             </div>
@@ -113,12 +130,14 @@ export default {
     z: false,
     td: false,
     api: api,
-    def: ['tutorial', 'spring', 'summer', 'autumn'],
+    def: ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter'],
     defs: {
       tutorial: 0,
       spring: 1,
       summer: 2,
-      autumn: 3
+      autumn: 3,
+      winter: 4,
+      cryptowinter: 5
     }
   }),
   mounted: async function () {
@@ -398,6 +417,32 @@ div.ctrl, div.accum {
   max-width: 450px;
   padding: 2em;
 }
+.img-wr.lg.winter {
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/6.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em;
+  max-width: 450px;
+  padding: 2em;
+}
+.img-wr.lg.cryptowinter {
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/7.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em;
+  max-width: 450px;
+  padding: 2em;
+}
 .img-wr.lg img, .img-wr.lg {
   position: relative;
   margin-right: 0.5%;
@@ -465,6 +510,32 @@ div.ctrl, div.accum {
   box-shadow: inset 0 0 10px #000000;
   border-radius: 1em 1em 0 0;
 }
+.bg-winter {
+  width: 425px;
+  height: 250px;
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/6.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em 1em 0 0;
+}
+.bg-cryptowinter {
+  width: 425px;
+  height: 250px;
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/7.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em 1em 0 0;
+}
 .bg-summer .card-img, .summer .card-img {
   max-width: 375px;
   position: relative;
@@ -487,6 +558,15 @@ div.ctrl, div.accum {
   padding-bottom: 1rem;
   border-radius: 1em;
 }
+.bg-winter .card-img,
+.winter .card-img {
+  max-width: 351px;
+  padding-top: 1em;
+}
+.bg-cryptowinter .card-img,
+.cryptowinter .card-img {
+  padding: 1em;
+}
 .summer.ascended .card-img:not(.active),
 .summer.orthodox .card-img:not(.active) {
   right: 25%;
@@ -499,6 +579,12 @@ div.ctrl, div.accum {
 }
 .summer.common1 .card-img:not(.active), .summer.common2 .card-img:not(.active) {
   right: 24%;
+}
+.winter .card-img {
+  top: -12px;
+}
+.img-wr.lg.winter img.active {
+  right: 23vw;
 }
 
 @keyframes mythos {

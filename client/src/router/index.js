@@ -42,6 +42,20 @@ import Autumn4 from '../components/seasons/season3/Autumn4.vue';
 import Autumn5 from '../components/seasons/season3/Autumn5.vue';
 import AutumnAscend from '../components/seasons/season3/AutumnAscend.vue';
 import AutumnGG from '../components/seasons/season3/AutumnGG.vue';
+// Season 4
+import Winters from '../components/seasons/season4/WinterList.vue';
+import Winter1 from '../components/seasons/season4/Winter1.vue';
+import Winter2 from '../components/seasons/season4/Winter2.vue';
+import Winter3 from '../components/seasons/season4/Winter3.vue';
+import Winter4 from '../components/seasons/season4/Winter4.vue';
+import Winter5 from '../components/seasons/season4/Winter5.vue';
+import Winter6 from '../components/seasons/season4/Winter6.vue';
+import WinterAscend from '../components/seasons/season4/WinterAscend.vue';
+import WinterGG from '../components/seasons/season4/WinterGG.vue';
+import CryptoWinters from '../components/seasons/season5/CryptoWinterList.vue';
+import CryptoWinter1 from '../components/seasons/season5/CryptoWinter1.vue';
+import CryptoWinterAscend from '../components/seasons/season5/CryptoWinterAscend.vue';
+import CryptoWinterGG from '../components/seasons/season5/CryptoWinterGG.vue';
 // Token
 import Viewer3D from '../components/nft/SeeForYourself.vue';
 // Tools
@@ -105,6 +119,21 @@ const routes = [
   { path: '/autumn/5', name: 'Autumn5', component: Autumn5, meta: { requiresAuth: true } },
   { path: '/autumn/the-same-old-story', name: 'AutumnAscend', component: AutumnAscend, meta: { requiresAuth: true } },
   { path: '/autumn/one-tin-soldier-rides-away', name: 'AutumnGG', component: AutumnGG, meta: { requiresAuth: true } },
+  // Winter
+  { path: '/palilalia', name: 'Winters', component: Winters, meta: { requiresAuth: true } },
+  { path: '/winter/1', name: 'Winter1', component: Winter1, meta: { requiresAuth: true } },
+  { path: '/winter/2', name: 'Winter2', component: Winter2, meta: { requiresAuth: true } },
+  { path: '/winter/3', name: 'Winter3', component: Winter3, meta: { requiresAuth: true } },
+  { path: '/winter/4', name: 'Winter4', component: Winter4, meta: { requiresAuth: true } },
+  { path: '/winter/5', name: 'Winter5', component: Winter5, meta: { requiresAuth: true } },
+  { path: '/winter/6', name: 'Winter6', component: Winter6, meta: { requiresAuth: true } },
+  { path: '/winter/so-i-can-feel-happier', name: 'WinterAscend', component: WinterAscend, meta: { requiresAuth: true } },
+  { path: '/winter/safe-up-here-with-you', name: 'WinterGG', component: WinterGG, meta: { requiresAuth: true } },
+  // Crypto Winter
+  { path: '/deny', name: 'CryptoWinters', component: CryptoWinters, meta: { requiresAuth: true } },
+  { path: '/cryptowinter/1', name: 'CryptoWinter1', component: CryptoWinter1, meta: { requiresAuth: true } },
+  { path: '/cryptowinter/sleep-paralysis', name: 'CryptoWinterAscend', component: CryptoWinterAscend, meta: { requiresAuth: true } },
+  { path: '/cryptowinter/are-these-demons-real?', name: 'CryptoWinterGG', component: CryptoWinterGG, meta: { requiresAuth: true } },
   // Token
   { path: '/token/:contract/:type', name: 'Viewer3D', component: Viewer3D, meta: { requiresAuth: true } },
   // FAQ

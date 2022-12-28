@@ -210,7 +210,7 @@ export default {
      * @param {String} cmd: Command to parse
      */
     cp: function (cmd) {
-      this.log.push('<span class="cyan">' + this.uni + '</span>@' + this.r + ':<span class="jaundice">~/' + ((this.r == 'summer') ? String((this.i + 1)) : String(this.i)) + '</span><span> $ </span> ' + cmd);
+      this.log.push('<span class="cyan">' + this.uni + '</span>@' + this.r + ':<span class="jaundice">~/' + ((this.r == 'summer' || this.r == 'autumn' || this.r == 'winter' || this.r == 'cryptowinter') ? String((this.i + 1)) : String(this.i)) + '</span><span> $ </span> ' + cmd);
       let invalidMsg = Config.notify.DEFAULT_CLI_ERROR, can = this;
       // Cmd
       if (typeof cmd !== 'string') {
@@ -312,6 +312,12 @@ export default {
         } else if (b == "the-same-old-story") {
           u = c.replace('autumn/the-same-old-story', 'echolalia');
           return location.href = u;
+        } else if (b == "so-i-can-feel-happier") {
+          u = c.replace('winter/so-i-can-feel-happier', 'palilalia');
+          return location.href = u;
+        } else if (b == "sleep-paralysis") {
+          u = c.replace('cryptowinter/sleep-paralysis', 'deny');
+          return location.href = u;
         }
 
         if (a[(a.length - 2)] == 'discover' || b == 'discover') {
@@ -322,6 +328,12 @@ export default {
           return location.href = u;
         } else if (a[(a.length - 2)] == 'echolalia' || b == 'echolalia') {
           u = c.replace('echolalia', this.r + '/1');
+          return location.href = u;
+        } else if (a[(a.length - 2)] == 'palilalia' || b == 'palilalia') {
+          u = c.replace('palilalia', this.r + '/1');
+          return location.href = u;
+        } else if (a[(a.length - 2)] == 'deny' || b == 'deny') {
+          u = c.replace('deny', this.r + '/1');
           return location.href = u;
         }
 
@@ -335,6 +347,10 @@ export default {
             u += '/the-land-vomits-ghosts';
           } else if (this.r == 'autumn') {
             u += '/the-same-old-story';
+          } else if (this.r == 'winter') {
+            u += '/so-i-can-feel-happier';
+          } else if (this.r == 'cryptowinter') {
+            u += '/sleep-paralysis';
           }
         } else {
           u = a.join('/');
@@ -357,6 +373,14 @@ export default {
           delete a[a.length - 1];
           u = a.join('/').replace(this.r, 'echolalia');
           return location.href = u;
+        } else if (this.r == 'winter' && parseInt(b) == 1) {
+          delete a[a.length - 1];
+          u = a.join('/').replace(this.r, 'palilalia');
+          return location.href = u;
+        } else if (this.r == 'cryptowinter' && parseInt(b) == 1) {
+          delete a[a.length - 1];
+          u = a.join('/').replace(this.r, 'deny');
+          return location.href = u;
         }
 
         if (b == "rites-of-spring") {
@@ -369,6 +393,14 @@ export default {
         }
         if (b == "the-same-old-story") {
           u = c.replace('the-same-old-story', '5');
+          return location.href = u;
+        }
+        if (b == "so-i-can-feel-happier") {
+          u = c.replace('so-i-can-feel-happier', '6');
+          return location.href = u;
+        }
+        if (b == "sleep-paralysis") {
+          u = c.replace('sleep-paralysis', '1');
           return location.href = u;
         }
         a[(a.length - 1)] = parseInt(b) - 1;
@@ -416,6 +448,14 @@ export default {
           }
           case "autumn": {
             u += '/echolalia';
+            break;
+          }
+          case "winter": {
+            u += '/palilalia';
+            break;
+          }
+          case "cryptowinter": {
+            u += '/deny';
             break;
           }
         }
@@ -534,6 +574,9 @@ export default {
             ig.push(' <span class="cyan-bg">Fear<span class="jaundice">->format</span>:</span>                      ' + this.p.morals[0].format);
           }
         }
+      }
+      if (this.p.warning) {
+        ig.push(' <span class="cyan-bg">Warning:</span>                                      ' + this.p.warning);
       }
       if (this.p.hint) {
         if (Array.isArray(this.p.hint)) {

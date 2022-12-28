@@ -42,7 +42,7 @@
   import * as Config from '../../../conf/constants';
 
   import Console from '../../children/soulve/Console.vue';
-  import Ubuntu from '../../children/vms/Ubuntu.vue'
+  import Ubuntu from '../../children/vms/Ubuntu.vue';
 
   const CURRENT_I = 5;
 

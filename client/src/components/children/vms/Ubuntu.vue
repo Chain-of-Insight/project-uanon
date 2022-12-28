@@ -46,6 +46,12 @@
       v-if="mp"
       @fin="stopP"
     ></Audio>
+
+    <div class="files-container" v-if="ma && r == 'winter' && i == 2">
+      <div :class="'i-txt txt-file txt-' + (i+1)" v-for="(file, i) in ma" :key="i" @click="load((7+i))">
+        <span class="label txt-file">WhatLanguageAmI{{i + 1}}.txt</span>
+      </div>
+    </div>
   </div>
 
   <!-- Active Context -->
@@ -85,6 +91,7 @@
       o: Object,  // Overrides
       r: String,  // Realm
       m: String,  // Media
+      ma: Object, // Media Array
       hs: Object, // Albert's template
       in: String, // Info
       un: String  // Username
@@ -98,7 +105,7 @@
         i: null,
         name: ''
       },
-      d: [{i:0,name:'email',email:null},{i:1,name:'files',list:[]},{i:2,name:'info'},{i:3,name:'trash',list:[]},{i:4,name:"Albert's head-scratcher", einstein:null}, {i:5,filename:"message.wav"}, {i:6,name:'email',email:null}],
+      d: [{i:0,name:'email',email:null},{i:1,name:'files',list:[]},{i:2,name:'info'},{i:3,name:'trash',list:[]},{i:4,name:"Albert's head-scratcher", einstein:null}, {i:5,filename:"message.wav"}, {i:6,name:'email',email:null}, {i:7,name:'An Introduction To Existential Types',file:null},{i:8,name:'An Introduction To Existential Types',file:null},{i:9,name:'An Introduction To Existential Types',file:null},{i:10,name:'An Introduction To Existential Types',file:null},{i:11,name:'An Introduction To Existential Types',file:null}],
       ne: 0,
       bgo: false,
       mp: false
@@ -116,6 +123,14 @@
         if (this.r == "summer" && this.i == 6) {
           this.b = 'horror';
         }
+      }
+      if (this.r == "winter" && this.i == 2) {
+        this.d[7].file = this.ma[0];
+        this.d[8].file = this.ma[1];
+        this.d[9].file = this.ma[2];
+        this.d[10].file = this.ma[3];
+        this.d[11].file = this.ma[4];
+        console.log('this.ma', this.ma);
       }
       if (this.e) {
         if (this.e['body']) {
@@ -232,6 +247,9 @@
 .i-media {
   background: url('/img/9fc9fbfd9187376618a6732c61d4c9414b94f27c2d8ae3fbbaa45aa293e98947.svg');
 }
+.i-txt {
+  background: url('/img/152c4dbd2455d77b700cfcd489a07991e16f4c8920598fd9771b7376fd37d8bf.svg');
+}
 .icons-top div {
   margin: auto;
 }
@@ -240,7 +258,8 @@
 .i-trash,
 .i-inf,
 .i-media,
-.i-einstein {
+.i-einstein,
+.i-txt {
   width: 100px;
   height: 100px;
   background-repeat: no-repeat !important;
@@ -254,6 +273,30 @@
   top: 10px;
   left: 130px;
   height: 87px;
+}
+.i-txt {
+  position: absolute;
+  top: 215px;
+}
+.i-txt.txt-2 {
+  left: 130px;
+}
+.i-txt.txt-3 {
+  left: calc(2 * 130px);
+}
+.i-txt.txt-4 {
+  left: calc(3 * 130px);
+}
+.i-txt.txt-5 {
+  left: calc(4 * 130px);
+}
+.i-txt span {
+  top: 92px;
+  left: 8px;
+  position: relative;
+  max-width: 95px;
+  display: block;
+  word-break: break-all;
 }
 .i-einstein {
   width: 95px;  

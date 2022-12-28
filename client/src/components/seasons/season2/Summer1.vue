@@ -428,185 +428,185 @@
       0 0 90px goldenrod,
       0 0 100px #a17434,
       0 0 150px #a17434;
-    font-weight: 800;
-    text-align: center;
-    display: block;
-    text-transform: uppercase;
-    background-color: transparent;
-    font-family: 'Special Elite', cursive;
-    font-size: 2em;
-    letter-spacing: 0.4em;
-    position: absolute;
-    top: 12%;
-    left: 32%;
-  }
-  #book {
-    margin: auto;
-    top: 4em;
-    border-radius: 4em;
-  }
-  .cover.front {
-    background: url('https://uanon.s3.amazonaws.com/c7f2e913f7739a1f556243c4fddc18e9b0d9f157f0316524ac322c1bf2425c31/book-cover-01a.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 110%;
-    -moz-box-shadow: inset 0 0 10px #000000;
-    -webkit-box-shadow: inset 0 0 10px #000000;
-    box-shadow: inset 0 0 10px #000000;
-  }
-  #snakeoil {
-    position: relative;
-    display: block;
-    width: 400px;
-    height: auto;
-    margin: auto;
-    padding-left: 15px;
-    left: 5px;
-    top: 22%;
-  }
-  .cover.back {
-    background: url('https://uanon.s3.amazonaws.com/c7f2e913f7739a1f556243c4fddc18e9b0d9f157f0316524ac322c1bf2425c31/book-cover-01b.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 110%;
-    -moz-box-shadow: inset 0 0 10px #000000;
-    -webkit-box-shadow: inset 0 0 10px #000000;
-    box-shadow: inset 0 0 10px #000000;
-  }
-  .page {
-    padding: 20px;
-    background-color: #f8f5de;
-    background-image: 
-      linear-gradient(to right, rgba(255,210,0,0.3), rgba(200, 160, 0, 0.1) 11%, rgba(0,0,0,0) 35%, rgba(200, 160, 0, 0.1) 65%),
-      linear-gradient(to left, rgba(255,210,0,0.3), rgba(200, 160, 0, 0.1) 11%, rgba(0,0,0,0) 25%, rgba(200, 160, 0, 0.1) 75%);
-    font-family: 'AnglicanText';
-    color: #000000;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .page:nth-child(even) {
-    border-radius: 1em 0  0 1em;
-  }
-  .page:nth-child(odd) {
-    border-radius: 0 1em  1em 0;
-  }
-  .cover {
-    cursor: grab;
-    border: solid 1px #333333;
-  }
-  #start {
-    background: url('https://uanon.s3.amazonaws.com/c7f2e913f7739a1f556243c4fddc18e9b0d9f157f0316524ac322c1bf2425c31/knights-coat-of-arms.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  #final {
-    background: url('https://uanon.s3.amazonaws.com/c7f2e913f7739a1f556243c4fddc18e9b0d9f157f0316524ac322c1bf2425c31/cosmiel-and-theodidactus.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  .flip-book {
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
-    margin: 0 auto;
-    display: none;
-    z-index: 100
-  }
-  .html-book {
-    background-size: cover
-  }
-  .page .page-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-  }
-  .page .page-content .page-header {
-    height: 30px;
-    font-size: 100%;
-    text-transform: uppercase;
-    text-align: center;
-  }
-  .page .page-content .page-image {
-    height: 100%;
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
-  }
-  .page .page-content .page-text {
-    height: 100%;
-    flex-grow: 1;
-    font-size: 80%;
-    text-align: justify;
-    margin-top: 10px;
-    padding-top: 10px;
-    box-sizing: border-box;
-    border-top: solid 1px #f4e8d7;
-  }
-  .page .page-content .page-footer {
-    height: 30px;
-    border-top: solid 1px #f4e8d7;
-    font-size: 80%;
-    color: #998466;
-  }
-  .page.--left {
-    border-right: 0;
-    box-shadow: inset -7px 0 30px -7px rgba(0, 0, 0, 0.4);
-  }
-  .page.--right {
-    border-left: 0;
-    box-shadow: inset 7px 0 30px -7px rgba(0, 0, 0, 0.4);
-  }
-  .page.--right .page-footer {
-    text-align: right;
-  }
-  .page.hard {
-    border: solid 1px #998466;
-  }
-  .page.page-cover {
-    background-color: #e3d0b5;
-    color: #785e3a;
-    border: solid 1px #998466;
-  }
-  .page.page-cover h2 {
-    text-align: center;
-    padding-top: 50%;
-    font-size: 210%;
-  }
-  .page.page-cover.page-cover-top {
-    box-shadow: inset 0px 0 30px 0px rgba(36, 10, 3, 0.5), -2px 0 5px 2px rgba(0, 0, 0, 0.4);
-  }
-  .page.page-cover.page-cover-bottom {
-    box-shadow: inset 0px 0 30px 0px rgba(36, 10, 3, 0.5), 10px 0 8px 0px rgba(0, 0, 0, 0.4);
-  }
-  /* page contents */
-  ul, li {
-    list-style: none;
-    font-size: 1.35em;
-  }
-  img.wheel, img.drake {
-    max-width: 400px;
-    display: block;
-    margin: auto;
-  }
-  img.big.eddie {
-    height: 100%;
-    max-width: 575px;
-    border-radius: 2%;
-    margin: auto;
-    display: block;
-    box-shadow: inset 0px 0 30px 0px rgba(36, 10, 3, 0.5), 10px 0 8px 0px rgba(0, 0, 0, 0.4);
-  }
-  .payload {
-    position: relative;
-    font-family: 'Special Elite', cursive;
-    font-weight: bold;
-    padding: 1.5em;
-    font-size: 0.8em;
-  }
-  .payload-1 {
-    top: -10px;
-  }
+  font-weight: 800;
+  text-align: center;
+  display: block;
+  text-transform: uppercase;
+  background-color: transparent;
+  font-family: 'Special Elite', cursive;
+  font-size: 2em;
+  letter-spacing: 0.4em;
+  position: absolute;
+  top: 12%;
+  left: 32%;
+}
+#book {
+  margin: auto;
+  top: 4em;
+  border-radius: 4em;
+}
+.cover.front {
+  background: url('https://uanon.s3.amazonaws.com/c7f2e913f7739a1f556243c4fddc18e9b0d9f157f0316524ac322c1bf2425c31/book-cover-01a.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 110%;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+}
+#snakeoil {
+  position: relative;
+  display: block;
+  width: 400px;
+  height: auto;
+  margin: auto;
+  padding-left: 15px;
+  left: 5px;
+  top: 22%;
+}
+.cover.back {
+  background: url('https://uanon.s3.amazonaws.com/c7f2e913f7739a1f556243c4fddc18e9b0d9f157f0316524ac322c1bf2425c31/book-cover-01b.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 110%;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+}
+.page {
+  padding: 20px;
+  background-color: #f8f5de;
+  background-image: 
+    linear-gradient(to right, rgba(255,210,0,0.3), rgba(200, 160, 0, 0.1) 11%, rgba(0,0,0,0) 35%, rgba(200, 160, 0, 0.1) 65%),
+    linear-gradient(to left, rgba(255,210,0,0.3), rgba(200, 160, 0, 0.1) 11%, rgba(0,0,0,0) 25%, rgba(200, 160, 0, 0.1) 75%);
+  font-family: 'AnglicanText';
+  color: #000000;
+  overflow: hidden;
+  cursor: pointer;
+}
+.page:nth-child(even) {
+  border-radius: 1em 0  0 1em;
+}
+.page:nth-child(odd) {
+  border-radius: 0 1em  1em 0;
+}
+.cover {
+  cursor: grab;
+  border: solid 1px #333333;
+}
+#start {
+  background: url('https://uanon.s3.amazonaws.com/c7f2e913f7739a1f556243c4fddc18e9b0d9f157f0316524ac322c1bf2425c31/knights-coat-of-arms.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#final {
+  background: url('https://uanon.s3.amazonaws.com/c7f2e913f7739a1f556243c4fddc18e9b0d9f157f0316524ac322c1bf2425c31/cosmiel-and-theodidactus.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.flip-book {
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
+  display: none;
+  z-index: 100
+}
+.html-book {
+  background-size: cover
+}
+.page .page-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+.page .page-content .page-header {
+  height: 30px;
+  font-size: 100%;
+  text-transform: uppercase;
+  text-align: center;
+}
+.page .page-content .page-image {
+  height: 100%;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.page .page-content .page-text {
+  height: 100%;
+  flex-grow: 1;
+  font-size: 80%;
+  text-align: justify;
+  margin-top: 10px;
+  padding-top: 10px;
+  box-sizing: border-box;
+  border-top: solid 1px #f4e8d7;
+}
+.page .page-content .page-footer {
+  height: 30px;
+  border-top: solid 1px #f4e8d7;
+  font-size: 80%;
+  color: #998466;
+}
+.page.--left {
+  border-right: 0;
+  box-shadow: inset -7px 0 30px -7px rgba(0, 0, 0, 0.4);
+}
+.page.--right {
+  border-left: 0;
+  box-shadow: inset 7px 0 30px -7px rgba(0, 0, 0, 0.4);
+}
+.page.--right .page-footer {
+  text-align: right;
+}
+.page.hard {
+  border: solid 1px #998466;
+}
+.page.page-cover {
+  background-color: #e3d0b5;
+  color: #785e3a;
+  border: solid 1px #998466;
+}
+.page.page-cover h2 {
+  text-align: center;
+  padding-top: 50%;
+  font-size: 210%;
+}
+.page.page-cover.page-cover-top {
+  box-shadow: inset 0px 0 30px 0px rgba(36, 10, 3, 0.5), -2px 0 5px 2px rgba(0, 0, 0, 0.4);
+}
+.page.page-cover.page-cover-bottom {
+  box-shadow: inset 0px 0 30px 0px rgba(36, 10, 3, 0.5), 10px 0 8px 0px rgba(0, 0, 0, 0.4);
+}
+/* page contents */
+ul, li {
+  list-style: none;
+  font-size: 1.35em;
+}
+img.wheel, img.drake {
+  max-width: 400px;
+  display: block;
+  margin: auto;
+}
+img.big.eddie {
+  height: 100%;
+  max-width: 575px;
+  border-radius: 2%;
+  margin: auto;
+  display: block;
+  box-shadow: inset 0px 0 30px 0px rgba(36, 10, 3, 0.5), 10px 0 8px 0px rgba(0, 0, 0, 0.4);
+}
+.payload {
+  position: relative;
+  font-family: 'Special Elite', cursive;
+  font-weight: bold;
+  padding: 1.5em;
+  font-size: 0.8em;
+}
+.payload-1 {
+  top: -10px;
+}
 </style>

@@ -10,7 +10,7 @@
   <div class="content-s home season-content" v-if="a && p">
     <router-link :to="l[i].p" v-for="(s, i) in d" :key="i">
 
-      <div class="season-item" :class="{'pyramidscheme': (i==2)}" v-if="l[i] && i!==3" :style="'background-image: url(' + l[i].b + ');'">
+      <div class="season-item" :class="{'pyramidscheme': (i==2), 'restitution': (i==5)}" v-if="l[i] && i!==3 && i!==4" :style="'background-image: url(' + l[i].b + ');'">
         <div v-if="i==1" class="season 991" :id="'si-'+i">
           <h2 class="season 991">Season {{s}}</h2>
         </div>
@@ -44,6 +44,62 @@
         </div>
         <h2 class="season in-decay" @mouseover="pk=true" @mouseout="pk=false" :class="{'active':pk==true}">Season {{s}}</h2>
       </div>
+
+      <div class="season-item cults effect-wrapper" v-if="l[i] && i==4" @mouseover="ew=true" @mouseout="ew=false" :class="{'deadly-night':ew==true}">
+        <div class="layer1">
+          <div>
+              <div>
+                  <div>
+                      <div>
+                          <div>
+                              <div>
+                                  <div>
+                                      <div>
+                                          <div>
+                                                <div>
+                                                  <div>
+                                                      <div></div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="layer2">
+          <div>
+              <div>
+                  <div>
+                      <div>
+                          <div>
+                              <div>
+                                  <div>
+                                      <div>
+                                          <div>
+                                                <div>
+                                                  <div>
+                                                      <div></div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <h2 class="season nightfall" @mouseover="ew=true" @mouseout="ew=false" :class="{'active':ew==true}">Season {{s}}</h2>
+      </div>
+
     </router-link>
   </div>
   <div class="content-s home season-content" v-if="a && !p">
@@ -82,11 +138,10 @@
 <script>
 import * as Auth from '../../util/auth';
 import * as api from '../../util/api';
-// import * as Config from '../../conf/constants';
 
 import { isLoggedIn } from 'axios-jwt';
 
-const DEPLOYED = [0,1,2,3];
+const DEPLOYED = [0,1,2,3,4,5];
 
 export default {
   name: 'Home',
@@ -97,11 +152,14 @@ export default {
       {p: '/learn', b: '/img/3450804e9328585e42a89335475f2317785c6f09feac8e5c0b5ada225ec4fd2b.png'},
       {p: '/discover', b: '/img/d81c85d1b7926c06ce180214bdfe19e059f2fdd38938d97275016dbea3a2389c.jpg'},
       {p: '/descend', b: '/img/0efbeb172d372829e597dcb2d602aa2c5a8fd831ba1e78669876f4032fc25642.png'},
-      {p: '/echolalia', b: '/img/23ca814cf4c078f2d0b5ed3b85e2af85b7850dfba1252e87733bffea8c980914.png'}
+      {p: '/echolalia', b: '/img/23ca814cf4c078f2d0b5ed3b85e2af85b7850dfba1252e87733bffea8c980914.png'},
+      {p: '/palilalia', b: ''},
+      {p: '/deny', b: '/img/d6d5ee2ecca50604be8dde8c0b9daf786bdfe3fba53672f3c0d1c4744160433d.png'},
     ],
     o: null,
     p: null,
     pk: false,
+    ew: false,
     api: api,
     msg: 'project uanon'
   }),
@@ -317,6 +375,20 @@ h2.login, h2.register {
   -ms-animation: mythos ease 160s;
   animation-iteration-count: infinite;
 }
+.season-item.restitution {
+  top: -215px;
+  background-size: contain;
+  min-width: 1500px;
+  max-width: 1500px;
+  height: 603px;
+  background-position: -3px 9px;
+  filter: sepia(1);
+  border-radius: 2em;
+}
+.season-item.restitution:hover, .season-item.restitution:hover * {
+  filter: none;
+  opacity: 1 !important;
+}
 #pk.base {
   width: 350px;
   height: auto;
@@ -377,11 +449,11 @@ h2.login, h2.register {
   border-left: 2px solid #100;
   border-right: 2px solid #100;
 }
-.n0 { -webkit-transform: rotate(90deg); }
-.n1 { -webkit-transform: rotate(162deg); }
-.n2 { -webkit-transform: rotate(234deg); }
-.n3 { -webkit-transform: rotate(306deg); }
-.n4 { -webkit-transform: rotate(378deg); }
+.n0 { transform: rotate(90deg); }
+.n1 { transform: rotate(162deg); }
+.n2 { transform: rotate(234deg); }
+.n3 { transform: rotate(306deg); }
+.n4 { transform: rotate(378deg); }
 section.penta {
   position: absolute;
   top: 125px;
@@ -494,7 +566,99 @@ section.penta {
   animation-iteration-count: infinite;
   animation-fill-mode: backwards;
 }
-
+div.season-item.cults {
+  position: relative;
+  top: -13em;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+.deadly-night .layer1,
+.deadly-night .layer1 * {
+  animation-name: spin-clockwise;
+  animation-duration: 150s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.82, 0.24, 0.25, 0.75);
+}
+.deadly-night .layer2,
+.deadly-night .layer2 * {
+  animation-name: spin-counter-clockwise, pulsate;
+  animation-duration: 150s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.82, 0.24, 0.25, 0.75);
+}
+.effect-wrapper {
+  position:relative;
+  width:400px;
+  height:400px;
+  top: 10vh;
+}
+.effect-wrapper .layer1,
+.effect-wrapper .layer2 {
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  display:-webkit-box;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+}
+.effect-wrapper .layer1,
+.effect-wrapper .layer1 * {
+  background:rgba(220,20,60,.1);
+  border-radius:10px;
+} 
+.effect-wrapper .layer2,
+.effect-wrapper .layer2 * {
+  background:rgba(220,20,60,.1);
+  border-radius:10px;
+} 
+.effect-wrapper .layer1 *,
+.effect-wrapper .layer2 * {
+  display:-webkit-box;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+  width:80%;
+  height:80%;
+}
+.effect-wrapper .layer1,
+.effect-wrapper .layer1 * {
+  -webkit-box-shadow:inset 0 0 10px rgba(255,255,255,0.3);
+}
+.effect-wrapper .layer2,
+.effect-wrapper .layer2 * {
+  -webkit-box-shadow:inset 0 0 10px rgba(255,255,255,0.3);
+}
+h2.season.nightfall {
+  left: -93px;
+}
+@keyframes spin-clockwise {
+  0%   { transform: rotate(0deg);   }
+  100% { transform: rotate(360deg); }
+}
+/* Animation: Counter counter clockwise */
+@keyframes spin-counter-clockwise {
+  0%   { transform: rotate(0deg);   } 
+  100% { transform: rotate(-360deg); }
+}
+/* Animation: Counter counter clockwise */
+@keyframes pulsate {
+  0%   { 
+    background:rgba(100,100,255,.1);
+  } 
+  25% {
+    background:rgba(220,20,60,.1);
+  }
+  50%   { 
+    background:rgba(100,100,255,.1);
+  }
+  75% {
+    background:rgba(220,20,60,.1);
+  }
+  100% { 
+    background:rgba(255,255,255,.1); 
+  }
+}
 @keyframes drip {
   0% { top: 70px; }
   100% { top: 600px; }

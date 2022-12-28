@@ -1,31 +1,49 @@
 <template>
-  <div class="spring-wrap console" v-if="rdy">
+  <div class="winter-wrap console" v-if="rdy">
 
-    <div class="content-s spring puzzle-content" v-if="p.id">
-      <Ubuntu
-        v-bind:i="i"
-        v-bind:m="c.DEFAULT_STORAGE_BASE+'/'+p.id+'/'+p.files[0]"
-        v-bind:r="def[0]"
-        v-bind:in="p.description"
-        v-bind:un="un"
-        v-if="un"
-        @proof="retain"
-      ></Ubuntu>
+    <div class="content-s winter puzzle-content" v-if="p.id">
+      <div class="reactionary" v-if="p.payload">
+        <iframe class="visionary content-i" :src="p.payloadRaw.value" title="Reactions Et Cetera"></iframe>
+      </div>
     </div>
 
     <div class="content-s danger no-access" v-if="!a && i > 0">
       <p class="no-access descr" v-html="w"></p>
-      <router-link to="/discover">Back</router-link>
+      <router-link to="/palilalia">Back</router-link>
     </div>
 
     <!-- Soulve -->
+    <div class="open-c inner">
+      <p class="helper-bar float-right" @click="handleCopen();" v-if="p.secret">
+        <span class="icon icon-terminal2"></span>
+      </p>
+      <p class="helper-bar float-right" @click="gopen();" v-if="p.secret">
+        <span class="icon icon-game"></span>
+      </p>
+    </div>
+    <Graphical 
+      v-bind:s="p.secret"
+      v-bind:r="def[0]"
+      v-bind:f="p.fields"
+      v-bind:o="gd"
+      v-bind:i="i"
+      v-bind:p="p"
+      v-bind:t="p.title"
+      v-bind:dd="false"
+      v-bind:tx="false"
+      v-bind:rst="true"
+      v-if="p.secret"
+      @proof="retain"
+      @gclose="gclose"
+    ></Graphical>
     <Console
       v-bind:s="p.secret"
       v-bind:d="cd"
       v-bind:i="i"
       v-bind:r="def[0]"
       v-bind:p="p"
-      v-bind:l="true"
+      v-bind:l="false"
+      v-bind:q="true"
       v-bind:un="un"
       v-if="p.secret && un"
       @proof="retain"
@@ -39,18 +57,17 @@
   import store from '../../../util/storage';
   import { verifyProof } from '../../../util/hasher';
   import * as Config from '../../../conf/constants';
-
+  
+  import Graphical from '../../children/soulve/Graphical.vue';
   import Console from '../../children/soulve/Console.vue';
-  import Ubuntu from '../../children/vms/Ubuntu.vue';
 
-  const CURRENT_I = 8;
+  const CURRENT_I = 1;
 
   export default {
-  name: 'Spring 8',
-  components: { Console, Ubuntu },
+  name: 'Winter 2',
+  components: { Console, Graphical },
   data: () => ({
     a: false,
-    c: Config,
     cd: false,
     gd: false,
     api: api,
@@ -66,14 +83,13 @@
     s: null,
     t: null,
     w: Config.notify.DEFAULT_PLAYER_WARNING,
-    fx: [Config.externals.tutorial3.audio],
     do: store,
     sl: null,
     sv: null,
     fi: null,
     un: null,
     str:{},
-    def: ['spring', 0],
+    def: ['winter', 4],
     rdy: false,
     argT: [false, false]
   }),
@@ -201,17 +217,13 @@
       this.p.secret = (m.secret) ? m.secret : null;
       this.p.operation = (m.operation) ? m.operation : null;
       this.p.previous = (m.previous) ? m.previous : null;
-      this.p.payload = (m.payload) ? m.payload : null;
+      this.p.payload = (m.payload) ? { value: '<a href="' + m.payload.value + '" target="_blank">' + m.payload.value + '</a>', format: m.payload.format }: null;
+      this.p.payloadRaw = (m.payload) ? m.payload : null;
+      this.p.format = (m.payload) ? m.payload.format : null;
       this.p.hint = (m.hint) ? m.hint : null;
       this.p.files = (m.files) ? m.files : null;
+      this.p.fields = (m.fields) ? m.fields : 1;
       this.p.template = (m.template) ? m.template : null;
-      if (m['email']) {
-        this.p.email = m.email;
-      }
-      if (m['einstein']) {
-        m.einstein.secret = m.secret;
-        this.p.einstein = m.einstein;
-      }
       if (Array.isArray(this.p.files)) {
         for (let i = 0; i < this.p.files.length; i++) {
           let f = this.p.files[i].split('/');
@@ -219,7 +231,7 @@
           this.p.files[i] = f;
         }
       }
-      // console.log('Current Puzzle =>', this.p);
+      console.log('Current Puzzle =>', this.p);
     },
     /**
      * @param {String} s : Public key
@@ -253,16 +265,69 @@
         return;
       }
       this.p.proof = s;
+      // console.log([this.p, this.def[0], CURRENT_I]);
       if (!this.do.store.update(this.p, this.def[0], CURRENT_I)) {
         console.warn("Failed updating storage, your solution has not been saved");
       }
     },
+    handleCopen: function () {
+      document.dispatchEvent(new KeyboardEvent('keypress',{'key':'`'}));
+    },
     copen: function (b) {
       this.co = b;
-    }
+    },
+    gopen: function () {
+      this.gd = true;
+      let b = document.getElementsByTagName('body');
+      b[0].style.overflow = 'hidden';
+    },
+    gclose: function () {
+      this.gd = false;
+      let b = document.getElementsByTagName('body');
+      b[0].style.overflow = '';
+    },
   }
 }
 </script>
 
 <style scoped>
+.helper-bar {
+  position: fixed;
+  bottom: 30px;
+  left: 2em;
+  border-radius: 20%;
+  background-color: rgba(148,49,91,0.1);
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  padding: 0.25em;
+  cursor: pointer;
+  border: 1px solid rgba(255,112,112,0.25);
+  font-size: 1.5em;
+}
+.helper-bar:nth-of-type(2n) {
+  left: calc(2em + 75px);
+}
+.helper-bar:hover {
+  box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);
+  text-shadow: 0 0 20px #eee, 0 0 30px #eee, 0 0 40px #ff7070, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff7070;
+}
+.helper-bar > .icon-game {
+  position: relative;
+  top: 2px;
+}
+.winter-wrap.copen {
+  margin-bottom: 70vh;
+}
+.content-i {
+  position: fixed; 
+  top: 0;
+  left: -2px;
+  bottom: 0;
+  width: 100.5%;
+  height: 101%; 
+  z-index: -1;
+  margin: 0;
+  padding: 0;
+}
 </style>

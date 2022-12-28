@@ -10,8 +10,10 @@ const SEASON_0_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_0;
 const SEASON_1_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_1;
 const SEASON_2_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_2;
 const SEASON_3_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_3;
-const DEPLOYED = [0,1,2,3];
-const defs = ['tutorial', 'spring', 'summer', 'autumn'];
+const SEASON_4_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_4;
+const SEASON_5_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_5;
+const DEPLOYED = [0,1,2,3,4,5];
+const defs = ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter'];
 
 /**
  * Gets an instance of Uanon Puzzle Oracle
@@ -45,6 +47,8 @@ async function getTruthShard(address, season) {
   const SPRING = 1;
   const SUMMER = 2;
   const AUTUMN = 3;
+  const WINTER = 4;
+  const CRYPTOWINTER = 5;
   if (!address) {
     return false;
   } else if (typeof address !== 'string') {
@@ -72,6 +76,17 @@ async function getTruthShard(address, season) {
       case 'autumn': {
         selectedContract = SEASON_3_NFT;
         realmOpts = ["ascended", "twisted", "diabolic", "exigent", "common2", "common1"];
+        break;
+      }
+      case 'winter': {
+        selectedContract = SEASON_4_NFT;
+        realmOpts = ["ascended", "self-transforming", "whetted", "crying", "common2", "common1"];
+        break;
+      }
+      case 'cryptowinter': {
+        selectedContract = SEASON_5_NFT;
+        realmOpts = ["ascended", "incandescent", "neuromorphic", "spurious", "common2", "common1"];
+        break;
       }
     }
     nftLen = 6;
@@ -166,6 +181,14 @@ async function getTruthShard(address, season) {
           sI = AUTUMN;
           break;
         }
+        case 'winter': {
+          sI = WINTER;
+          break;
+        }
+        case 'cryptowinter': {
+          sI = CRYPTOWINTER;
+          break;
+        }
       }
       truths.push({season: sI, asset: assets, metadata: m});
       return truths[0];
@@ -185,6 +208,8 @@ async function getTruthShardData(season, index) {
   const SPRING = ['ascended','lost','secret','cruel','common1','common2'];
   const SUMMER = ['ascended','medieval','kohathite','orthodox','common1','common2'];
   const AUTUMN = ['ascended','twisted','diabolic','exigent','common2','common1'];
+  const WINTER = ['ascended','self-transforming','whetted','crying','common2','common1'];
+  const CRYPTOWINTER = ['ascended','incandescent','neuromorphic','spurious','common2','common1'];
   if (typeof index !== 'number') {
     return false;
   } else if (typeof season !== 'string') {
@@ -209,6 +234,16 @@ async function getTruthShardData(season, index) {
       case 'autumn': {
         selectedContract = SEASON_3_NFT;
         sI = AUTUMN;
+        break;
+      }
+      case 'winter': {
+        selectedContract = SEASON_4_NFT;
+        sI = WINTER;
+        break;
+      }
+      case 'cryptowinter': {
+        selectedContract = SEASON_5_NFT;
+        sI = CRYPTOWINTER;
         break;
       }
     }
@@ -333,6 +368,44 @@ async function getTruths(address) {
           nftLen = 6;
           realmOpts = ["ascended", "twisted", "diabolic", "exigent", "common2", "common1"];
           ss = "autumn";
+          let requestList = [];
+          for (let n = 0; n < nftLen; n++) {
+            let a = {
+              owner: address,
+              token_id: String(n)
+            };
+            requestList.push(a);
+          }
+          let nftInstance = await Tezos.contract.at(selectedContract, tzip16);
+          addressBalance = await nftInstance.views.balance_of(requestList).read();
+          addressBalance = toJSON(addressBalance);
+          // console.log('addressBalance =>', addressBalance);
+          break;
+        }
+        case 4: {
+          selectedContract = SEASON_4_NFT;
+          nftLen = 6;
+          realmOpts = ["ascended", "self-transforming", "whetted", "crying", "common2", "common1"];
+          ss = "winter";
+          let requestList = [];
+          for (let n = 0; n < nftLen; n++) {
+            let a = {
+              owner: address,
+              token_id: String(n)
+            };
+            requestList.push(a);
+          }
+          let nftInstance = await Tezos.contract.at(selectedContract, tzip16);
+          addressBalance = await nftInstance.views.balance_of(requestList).read();
+          addressBalance = toJSON(addressBalance);
+          // console.log('addressBalance =>', addressBalance);
+          break;
+        }
+        case 5: {
+          selectedContract = SEASON_5_NFT;
+          nftLen = 6;
+          realmOpts = ["ascended", "incandescent", "neuromorphic", "spurious", "common2", "common1"];
+          ss = "cryptowinter";
           let requestList = [];
           for (let n = 0; n < nftLen; n++) {
             let a = {

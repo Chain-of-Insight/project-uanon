@@ -1,0 +1,461 @@
+#staff {
+  height: 500px;
+  width: 95%;
+  margin: 4em auto;
+  position: relative;
+}
+#staff .clef {
+  height: 250px;
+  width: 100%;
+  position: relative;
+  margin-bottom: 24px;
+}
+#staff .clef .beat {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  transition: background 200ms;
+}
+#staff .clef .beat.sus {
+  z-index: 1;
+}
+#staff .clef .beat.chord {
+  z-index: 2;
+  font-size: 10px;
+}
+#staff .clef .beat.chord .note {
+  transition: transform 500ms, background 100ms;
+  position: absolute;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0) scale(1);
+  background-color: #ffffff;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+#staff .clef .beat.chord .note.note-0 {
+  top: 0%;
+  background-color: #993333;
+}
+#staff .clef .beat.chord .note.note-1 {
+  top: 2.7777777778%;
+  background-color: #994433;
+}
+#staff .clef .beat.chord .note.note-2 {
+  top: 5.5555555556%;
+  background-color: #995533;
+}
+#staff .clef .beat.chord .note.note-3 {
+  top: 8.3333333333%;
+  background-color: #996633;
+}
+#staff .clef .beat.chord .note.note-4 {
+  top: 11.1111111111%;
+  background-color: #997733;
+}
+#staff .clef .beat.chord .note.note-5 {
+  top: 13.8888888889%;
+  background-color: #998833;
+}
+#staff .clef .beat.chord .note.note-6 {
+  top: 16.6666666667%;
+  background-color: #999933;
+}
+#staff .clef .beat.chord .note.note-7 {
+  top: 19.4444444444%;
+  background-color: #889933;
+}
+#staff .clef .beat.chord .note.note-8 {
+  top: 22.2222222222%;
+  background-color: #779933;
+}
+#staff .clef .beat.chord .note.note-9 {
+  top: 25%;
+  background-color: #669933;
+}
+#staff .clef .beat.chord .note.note-10 {
+  top: 27.7777777778%;
+  background-color: #559933;
+}
+#staff .clef .beat.chord .note.note-11 {
+  top: 30.5555555556%;
+  background-color: #449933;
+}
+#staff .clef .beat.chord .note.note-12 {
+  top: 33.3333333333%;
+  background-color: #339933;
+}
+#staff .clef .beat.chord .note.note-13 {
+  top: 36.1111111111%;
+  background-color: #339944;
+}
+#staff .clef .beat.chord .note.note-14 {
+  top: 38.8888888889%;
+  background-color: #339955;
+}
+#staff .clef .beat.chord .note.note-15 {
+  top: 41.6666666667%;
+  background-color: #339966;
+}
+#staff .clef .beat.chord .note.note-16 {
+  top: 44.4444444444%;
+  background-color: #339977;
+}
+#staff .clef .beat.chord .note.note-17 {
+  top: 47.2222222222%;
+  background-color: #339988;
+}
+#staff .clef .beat.chord .note.note-18 {
+  top: 50%;
+  background-color: #339999;
+}
+#staff .clef .beat.chord .note.note-19 {
+  top: 52.7777777778%;
+  background-color: #338899;
+}
+#staff .clef .beat.chord .note.note-20 {
+  top: 55.5555555556%;
+  background-color: #337799;
+}
+#staff .clef .beat.chord .note.note-21 {
+  top: 58.3333333333%;
+  background-color: #336699;
+}
+#staff .clef .beat.chord .note.note-22 {
+  top: 61.1111111111%;
+  background-color: #335599;
+}
+#staff .clef .beat.chord .note.note-23 {
+  top: 63.8888888889%;
+  background-color: #334499;
+}
+#staff .clef .beat.chord .note.note-24 {
+  top: 66.6666666667%;
+  background-color: #333399;
+}
+#staff .clef .beat.chord .note.note-25 {
+  top: 69.4444444444%;
+  background-color: #443399;
+}
+#staff .clef .beat.chord .note.note-26 {
+  top: 72.2222222222%;
+  background-color: #553399;
+}
+#staff .clef .beat.chord .note.note-27 {
+  top: 75%;
+  background-color: rebeccapurple;
+}
+#staff .clef .beat.chord .note.note-28 {
+  top: 77.7777777778%;
+  background-color: #773399;
+}
+#staff .clef .beat.chord .note.note-29 {
+  top: 80.5555555556%;
+  background-color: #883399;
+}
+#staff .clef .beat.chord .note.note-30 {
+  top: 83.3333333333%;
+  background-color: #993399;
+}
+#staff .clef .beat.chord .note.note-31 {
+  top: 86.1111111111%;
+  background-color: #993388;
+}
+#staff .clef .beat.chord .note.note-32 {
+  top: 88.8888888889%;
+  background-color: #993377;
+}
+#staff .clef .beat.chord .note.note-33 {
+  top: 91.6666666667%;
+  background-color: #993366;
+}
+#staff .clef .beat.chord .note.note-34 {
+  top: 94.4444444444%;
+  background-color: #993355;
+}
+#staff .clef .beat.chord .note.note-35 {
+  top: 97.2222222222%;
+  background-color: #993344;
+}
+#staff .clef .beat.chord .note.note-36 {
+  top: 100%;
+  background-color: #993333;
+}
+#staff .clef .beat.active {
+  transition-duration: 50ms;
+  z-index: 9;
+}
+#staff .clef .beat.active .note {
+  transform: translate3d(-50%, -50%, 0) scale(2);
+}
+#staff .clef .beat.active .note.note-0 {
+  background-color: #ff3333;
+}
+#staff .clef .beat.active .note.note-1 {
+  background-color: #ff5533;
+}
+#staff .clef .beat.active .note.note-2 {
+  background-color: #ff7733;
+}
+#staff .clef .beat.active .note.note-3 {
+  background-color: #ff9933;
+}
+#staff .clef .beat.active .note.note-4 {
+  background-color: #ffbb33;
+}
+#staff .clef .beat.active .note.note-5 {
+  background-color: #ffdd33;
+}
+#staff .clef .beat.active .note.note-6 {
+  background-color: #ffff33;
+}
+#staff .clef .beat.active .note.note-7 {
+  background-color: #ddff33;
+}
+#staff .clef .beat.active .note.note-8 {
+  background-color: #bbff33;
+}
+#staff .clef .beat.active .note.note-9 {
+  background-color: #99ff33;
+}
+#staff .clef .beat.active .note.note-10 {
+  background-color: #77ff33;
+}
+#staff .clef .beat.active .note.note-11 {
+  background-color: #55ff33;
+}
+#staff .clef .beat.active .note.note-12 {
+  background-color: #33ff33;
+}
+#staff .clef .beat.active .note.note-13 {
+  background-color: #33ff55;
+}
+#staff .clef .beat.active .note.note-14 {
+  background-color: #33ff77;
+}
+#staff .clef .beat.active .note.note-15 {
+  background-color: #33ff99;
+}
+#staff .clef .beat.active .note.note-16 {
+  background-color: #33ffbb;
+}
+#staff .clef .beat.active .note.note-17 {
+  background-color: #33ffdd;
+}
+#staff .clef .beat.active .note.note-18 {
+  background-color: #33ffff;
+}
+#staff .clef .beat.active .note.note-19 {
+  background-color: #33ddff;
+}
+#staff .clef .beat.active .note.note-20 {
+  background-color: #33bbff;
+}
+#staff .clef .beat.active .note.note-21 {
+  background-color: #3399ff;
+}
+#staff .clef .beat.active .note.note-22 {
+  background-color: #3377ff;
+}
+#staff .clef .beat.active .note.note-23 {
+  background-color: #3355ff;
+}
+#staff .clef .beat.active .note.note-24 {
+  background-color: #3333ff;
+}
+#staff .clef .beat.active .note.note-25 {
+  background-color: #5533ff;
+}
+#staff .clef .beat.active .note.note-26 {
+  background-color: #7733ff;
+}
+#staff .clef .beat.active .note.note-27 {
+  background-color: #9933ff;
+}
+#staff .clef .beat.active .note.note-28 {
+  background-color: #bb33ff;
+}
+#staff .clef .beat.active .note.note-29 {
+  background-color: #dd33ff;
+}
+#staff .clef .beat.active .note.note-30 {
+  background-color: #ff33ff;
+}
+#staff .clef .beat.active .note.note-31 {
+  background-color: #ff33dd;
+}
+#staff .clef .beat.active .note.note-32 {
+  background-color: #ff33bb;
+}
+#staff .clef .beat.active .note.note-33 {
+  background-color: #ff3399;
+}
+#staff .clef .beat.active .note.note-34 {
+  background-color: #ff3377;
+}
+#staff .clef .beat.active .note.note-35 {
+  background-color: #ff3355;
+}
+#staff .clef .beat.active .note.note-36 {
+  background-color: #ff3333;
+}
+
+.triggers {
+  width: 100%;
+  text-align: center;
+}
+.triggers a {
+  color: #ffffff;
+  font-weight: 100;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  text-transform: uppercase;
+  opacity: 0.9;
+  width: 100px;
+  transition: opacity 200ms;
+  font-size: 2em;
+}
+.triggers a.inactive {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.triggers a:hover, .triggers a:active {
+  opacity: 1;
+}
+.triggers a#play {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin-bottom: 12px;
+  position: relative;
+}
+.triggers a#play .play, .triggers a#play .stop {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+.triggers a#play .play {
+  border-left: 8px solid #ffffff;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  transform: translate3d(-40%, -50%, 0);
+}
+.triggers a#play .stop {
+  background-color: #ffffff;
+  height: 10px;
+  width: 10px;
+  transform: translate3d(-50%, -50%, 0);
+  display: none;
+}
+.triggers a#play.playing .play {
+  display: none;
+}
+.triggers a#play.playing .stop {
+  display: block;
+}
+.triggers a#new {
+  font-size: 0.875em;
+}
+
+.puzzle-content div {
+  /* font-family: "Special Elite", cursive; */
+  font-weight: 300;
+  color: #ffffff;
+}
+div.title, .puzzle-content article, #staff {
+  transition: opacity 300ms;
+}
+#staff {
+  opacity: 0.5;
+}
+
+div.title, .playing article {
+  opacity: 0.9;
+}
+.playing #staff {
+  opacity: 1;
+}
+
+pre {
+  font-family: "Special Elite", cursive;
+  font-size: 0.9em;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  padding: 12px;
+}
+pre em {
+  font-style: normal;
+  color: #4d4d4d;
+}
+
+code {
+  font-family: "Special Elite", cursive;
+  font-size: 0.9em;
+  padding: 6px;
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+h1, h2, h3 {
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.125em;
+}
+
+h1 {
+  margin-bottom: 0.25em;
+}
+
+h1 {
+  font-size: 1.4em;
+}
+
+h2 {
+  font-size: 1.1em;
+}
+
+h3 {
+  font-size: 0.9em;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+header {
+  text-align: center;
+  margin-top: 4em;
+}
+header h1, header p {
+  margin: 0;
+}
+header p {
+  margin-top: 0.5em;
+  color: #f0f0f0;
+}
+
+article {
+  width: 90%;
+  max-width: 600px;
+  margin: 8em auto;
+  line-height: 1.8;
+  text-align: justify;
+  text-justify: inter-word;
+}
+article h1, article h2 {
+  margin-top: 1em;
+}
+article h1, article h2, article h3 {
+  margin-bottom: 0;
+}
+article h1 + p, article h2 + p, article h3 + p {
+  margin-top: 0;
+}
+article a {
+  color: #ffffff;
+}
