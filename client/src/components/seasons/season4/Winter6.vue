@@ -140,6 +140,7 @@ hæthyoyo ndth abthabhw ovab ebyorthwabel rtut rtstabno?
       v-bind:i="i"
       v-bind:p="p"
       v-bind:t="p.title"
+      v-bind:l="true"
       v-bind:dd="false"
       v-bind:tx="false"
       v-bind:rst="false"

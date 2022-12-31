@@ -453,6 +453,10 @@ export default {
         u = a.slice(0,(a.length - 1)).join('/');
         if (this.r == 'tutorial') {
           u = u.replace(this.r, 'learn');
+        } else if (this.r == 'winter') {
+          u += '/so-i-can-feel-happier';
+        } else if (this.r == 'cryptowinter') {
+          u += '/sleep-paralysis';
         }
       } else {
         u = a.join('/');

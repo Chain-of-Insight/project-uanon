@@ -29,6 +29,7 @@
       v-bind:t="'$ix$ix$ix'"
       v-bind:dd="false"
       v-bind:fn="p.fieldNames"
+      v-bind:l="true"
       v-bind:tx="false"
       v-bind:rst="true"
       v-if="p.secret"
