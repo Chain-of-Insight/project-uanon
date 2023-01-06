@@ -97,11 +97,11 @@
                     <div class="descr-f">{{m.description}}</div>
                   </div>
                 </div>
-                <div class="ctrl" v-if="r !== 'tutorial' && r !== 'autumn' && r !== 'winter'">
+                <div class="ctrl" v-if="r !== 'tutorial' && r !== 'autumn' && r !== 'winter' && r !== 'cryptowinter'">
                   <button class="btn btn-primary ctrl 3d" @click="loadT();">Open in 3D Viewer</button>
                 </div>
                 <div class="ctrl" v-if="r !== 'tutorial' && r == 'cryptowinter'">
-                  <button class="btn btn-primary ctrl 2d" @click="loadT();" disabled>Open in 2D Viewer</button>
+                  <button class="btn btn-primary ctrl 2d" @click="loadT();">Open in 2D Viewer</button>
                 </div>
               </div>
             </div>
@@ -166,7 +166,8 @@ export default {
           if (this.n.asset['realm']) {
             switch(this.n.asset.realm) {
               case this.def[1]:
-              case this.def[2]: {
+              case this.def[2]:
+              case this.def[5]: {
                 let c = location.href, a = c.split('/'), b = a[(a.length - 1)], u;
                 let i = this.defs[this.n.asset.realm];
                 if (b == 'observer') {

@@ -37,7 +37,7 @@
                 </h3>
               </li>
               <li v-if="asc">
-                <h3><router-link class="asc li" :to="'/cryptowinter/gg'">View Ascension</router-link></h3>
+                <h3><router-link class="asc li" :to="'/cryptowinter/are-these-demons-real'">View Ascension</router-link></h3>
               </li>
             </ul>
             <ul class="cryptowinter-list ul" v-else>

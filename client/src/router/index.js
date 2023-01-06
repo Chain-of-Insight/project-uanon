@@ -133,7 +133,7 @@ const routes = [
   { path: '/deny', name: 'CryptoWinters', component: CryptoWinters, meta: { requiresAuth: true } },
   { path: '/cryptowinter/1', name: 'CryptoWinter1', component: CryptoWinter1, meta: { requiresAuth: true } },
   { path: '/cryptowinter/sleep-paralysis', name: 'CryptoWinterAscend', component: CryptoWinterAscend, meta: { requiresAuth: true } },
-  { path: '/cryptowinter/are-these-demons-real?', name: 'CryptoWinterGG', component: CryptoWinterGG, meta: { requiresAuth: true } },
+  { path: '/cryptowinter/are-these-demons-real', name: 'CryptoWinterGG', component: CryptoWinterGG, meta: { requiresAuth: true } },
   // Token
   { path: '/token/:contract/:type', name: 'Viewer3D', component: Viewer3D, meta: { requiresAuth: true } },
   // FAQ

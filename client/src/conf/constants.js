@@ -18,7 +18,7 @@ const TEAM_MAP = {
   '404': {id:'5ff7b6114650b50b77b641fb', name: '404', description: 'The known is finite, the unknown infinite; intellectually we stand on an islet in the midst of an illimitable ocean of inexplicability.'}
 };
 
-const tokens = [process.env.VUE_APP_TEZOS_NFT_SEASON_0,process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2];
+const tokens = [process.env.VUE_APP_TEZOS_NFT_SEASON_0,process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2,process.env.VUE_APP_TEZOS_NFT_SEASON_3,process.env.VUE_APP_TEZOS_NFT_SEASON_4,process.env.VUE_APP_TEZOS_NFT_SEASON_5];
 
 const notify = {
   DEFAULT_PLAYER_WARNING: "Careful Observer, you're missing the access key to view this Op",
@@ -154,14 +154,22 @@ const externals = {
         }
       },
       cryptowinter: {
-        path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/tmp/cryptowinter/',
+        path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/bafybeicjje6r5vrg25vddzcrywt6cyw6mvinej5vtauzbyxdbzfijal7da/',
         image: {
-          ascended: 'unrevealed.png',
-          incandescent: 'unrevealed.png',
-          neuromorphic: 'unrevealed.png',
-          spurious: 'unrevealed.png',
-          common2: 'unrevealed.png',
-          common1: 'unrevealed.png'
+          ascended: 'thumbnails/ascended.gif',
+          incandescent: 'thumbnails/incandescent.gif',
+          neuromorphic: 'thumbnails/neuromorphic.gif',
+          spurious: 'thumbnails/spurious.gif',
+          common2: 'thumbnails/common.gif',
+          common1: 'thumbnails/common.gif'
+        },
+        html: {
+          ascended: 'ascended/index.html',
+          incandescent: 'incandescent/index.html',
+          neuromorphic: 'neuromorphic/index.html',
+          spurious: 'spurious/index.html',
+          common2: 'common2/index.html',
+          common1: 'common1/index.html'
         }
       }
     }

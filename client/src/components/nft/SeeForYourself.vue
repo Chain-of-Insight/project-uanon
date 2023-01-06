@@ -2,11 +2,12 @@
 
 <div class="loading" v-if="ld"></div>
 
-<div class="pane-s token-wrap 3d sealed" v-if="!a && !ld">
+<div class="pane-s token-wrap 3d 2d sealed" v-if="!a && !ld">
   <h3 class="descr" alt="The token you are looking for does not Exist" title="The token you are looking for does not Exist">What is True?</h3>
 </div>
 
-<div class="pane-s token-wrap 3d" v-if="a && !ld">
+<div class="pane-s token-wrap 3d 2d" v-if="a && !ld">
+  <!-- 3D Viewer -->
   <div class="model" v-if="model">
     <model-viewer 
       class="mv"
@@ -18,6 +19,10 @@
       camera-controls
     ></model-viewer>
   </div>
+  <!-- 2D Viewer -->
+  <div class="active-x directory" v-if="activex">
+    <iframe class="2d" :src="activex"></iframe>
+  </div>
 </div>
 
 </template>
@@ -25,8 +30,9 @@
 <script>
 import * as api from '../../util/api';
 import { getTruthShardData } from '../../util/contract';
+import * as Config from '../../conf/constants';
 
-const DEPLOYED = [process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2];
+const DEPLOYED = [process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2,process.env.VUE_APP_TEZOS_NFT_SEASON_5];
 
 export default {
   data: () => ({
@@ -39,21 +45,25 @@ export default {
     bg: null,
     ld: true,
     api: api,
-    def: ['spring','summer'],
+    def: ['spring','summer','cryptowinter'],
     model: null,
+    activex: null,
     spring: ['ascended','lost','secret','cruel','common2','common1'],
-    summer: ['ascended','medieval','kohathite','orthodox','common2','common1']
+    summer: ['ascended','medieval','kohathite','orthodox','common2','common1'],
+    cryptowinter: ['ascended','incandescent','neuromorphic','spurious','common2','common1']
   }),
   mounted: async function () {
-    await this.loadComponent();
     if (this.$route.params) {
       if (this.$route.params.contract && this.$route.params.type) {
+        if (this.$route.params.contract !== DEPLOYED[2]) {
+          await this.loadComponent();
+        }
         let d = await this.getData(this.$route.params.contract, this.$route.params.type);
         if (d) {
           this.m = d;
           this.a = true;
           if (this.m['metadata']) {
-            if (this.m.metadata['formats']) {
+            if (this.m.metadata['formats'] && this.$route.params.contract !== DEPLOYED[2]) {
               this.setM(this.m.metadata.formats);
             }
           }
@@ -131,7 +141,6 @@ export default {
               case this.summer[0]: {
                 args.i = 0;
                 t = await getTruthShardData(args.s, args.i);
-                console.log('getTruthShardData', t);
                 this.ld = false;
                 return t;
               }
@@ -171,6 +180,60 @@ export default {
               }
             }
           }
+          // Cryptowinter
+          case DEPLOYED[2]: {
+            this.r = this.def[2]
+            args.s = this.r;
+            let base = Config.externals.images.nft.cryptowinter.path;
+            switch (this.t) {
+              case this.cryptowinter[0]: {
+                args.i = 0;
+                this.activex = base + Config.externals.images.nft.cryptowinter.html.ascended;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.cryptowinter[1]: {
+                args.i = 1;
+                this.activex = base + Config.externals.images.nft.cryptowinter.html.incandescent;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.cryptowinter[2]: {
+                args.i = 2;
+                this.activex = base + Config.externals.images.nft.cryptowinter.html.neuromorphic;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.cryptowinter[3]: {
+                args.i = 3;
+                this.activex = base + Config.externals.images.nft.cryptowinter.html.spurious;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.cryptowinter[4]: {
+                args.i = 4;
+                this.activex = base + Config.externals.images.nft.cryptowinter.html.common1;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              case this.cryptowinter[5]: {
+                args.i = 5;
+                this.activex = base + Config.externals.images.nft.cryptowinter.html.common2;
+                t = await getTruthShardData(args.s, args.i);
+                this.ld = false;
+                return t;
+              }
+              default: {
+                this.ld = false;
+                return false;
+              }
+            }
+          }
           default: {
             this.ld = false;
             return false;
@@ -186,7 +249,6 @@ export default {
      * @param {Object} f : Array of asset formats 
      */
     setM: function (f) {
-      console.log('setM', f);
       if (!Array.isArray(f)) {
         return;
       }
@@ -243,5 +305,13 @@ export default {
 }
 .mv.summer:not(.ascended) {
   background: linear-gradient(to right, #333333, #8B0000, #8B0000, #ff5743, #8B0000, #8B0000, #333333);
+}
+iframe {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  border: none;
+  width: 100vw;
+  height: 100vh;
 }
 </style>
