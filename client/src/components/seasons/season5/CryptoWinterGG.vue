@@ -38,7 +38,7 @@
         <h3>Your Truth lacks evidence</h3>
         <hr class="ruler">
       </div>
-      <p class="blood">Entrance requires holding <span class="italic">a Fractal from the Thousand Plateaus</span></p>
+      <p class="blood">Entrance requires holding <span class="italic">a Talisman from the Illuminated Penumbra</span></p>
     </div>
   </div>
   <div class="loading" v-if="ld"></div>
