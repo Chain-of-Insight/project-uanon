@@ -2,9 +2,6 @@ export default function() {
 
   // Context
   const canvas = document.getElementById('canvas');
-  // const black = 'rgba(0, 0, 0, 0.1)';
-  // const white = 'rgba(255, 0, 0, 0.1)';
-  // let fps = document.getElementById('fps');
   let ctx = canvas.getContext('2d');
   let W = canvas.width = innerWidth;
   let H = canvas.height = innerHeight;
@@ -47,7 +44,10 @@ export default function() {
   }
 
   // Evt.
-  document.onclick = function() {
+  const htmlElement = document.getElementsByTagName('html')[0];
+  document.onclick = function(e) {
+    e = e || window.event;
+    if (e.target !== htmlElement) return;
     if ((running = !running)) raf(loop);
   };
 

@@ -293,7 +293,7 @@ export default {
         this.log = [];
       } else if (cmd.substr(0, 4).toLowerCase() == "next") {
         if (!can.go && location.href.indexOf('rites-of-spring') == -1 && location.href.indexOf('the-land-vomits-ghosts') == -1 && location.href.indexOf('the-same-old-story') == -1) {
-          if (this.r !== 'autumn') {
+          if (this.r !== 'autumn' && this.r !== 'dawn') {
             if (!this.do.store.existsItem(this.p.secret, this.r)) {
               return Config.notify.DEFAULT_NO_ACCESS;
             }

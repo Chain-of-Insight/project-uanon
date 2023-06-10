@@ -112,6 +112,9 @@ export default {
     await this.truths();
     this.an.width = (window) ? window.innerWidth : null;
     this.an.height = (window) ? window.innerHeight : null;
+    setTimeout(() => {
+      this.ma();
+    },0);
   },
   methods: {
     getS: async function () {
@@ -134,7 +137,7 @@ export default {
             });
           }
         }
-        console.log('Season:', this.s);
+        // console.log('Season:', this.s);
       }
     },
     getU: async function () {
@@ -151,9 +154,6 @@ export default {
           }
         }
       }
-      setTimeout(() => {
-        this.ma();
-      },0);
     },
     truths: async function () {
       let s = this.do.store.get();

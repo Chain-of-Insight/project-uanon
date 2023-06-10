@@ -15,7 +15,6 @@ function out(l) {
     console.warn('Error resolving out', e, auth);
     return null;
   }
-  
 }
 
 export default { out };

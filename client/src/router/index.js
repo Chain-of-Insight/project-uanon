@@ -52,10 +52,21 @@ import Winter5 from '../components/seasons/season4/Winter5.vue';
 import Winter6 from '../components/seasons/season4/Winter6.vue';
 import WinterAscend from '../components/seasons/season4/WinterAscend.vue';
 import WinterGG from '../components/seasons/season4/WinterGG.vue';
+// Season 5
 import CryptoWinters from '../components/seasons/season5/CryptoWinterList.vue';
 import CryptoWinter1 from '../components/seasons/season5/CryptoWinter1.vue';
 import CryptoWinterAscend from '../components/seasons/season5/CryptoWinterAscend.vue';
 import CryptoWinterGG from '../components/seasons/season5/CryptoWinterGG.vue';
+// Season 6
+import Dawns from '../components/seasons/season6/DawnList.vue';
+import Dawn1 from '../components/seasons/season6/Dawn1.vue';
+import Dawn2 from '../components/seasons/season6/Dawn2.vue';
+import Dawn3 from '../components/seasons/season6/Dawn3.vue';
+import Dawn4 from '../components/seasons/season6/Dawn4.vue';
+import Dawn5 from '../components/seasons/season6/Dawn5.vue';
+import DawnAscend from '../components/seasons/season6/DawnAscend.vue';
+import DawnGG from '../components/seasons/season6/DawnGG.vue';
+
 // Token
 import Viewer3D from '../components/nft/SeeForYourself.vue';
 // Tools
@@ -134,6 +145,15 @@ const routes = [
   { path: '/cryptowinter/1', name: 'CryptoWinter1', component: CryptoWinter1, meta: { requiresAuth: true } },
   { path: '/cryptowinter/sleep-paralysis', name: 'CryptoWinterAscend', component: CryptoWinterAscend, meta: { requiresAuth: true } },
   { path: '/cryptowinter/are-these-demons-real', name: 'CryptoWinterGG', component: CryptoWinterGG, meta: { requiresAuth: true } },
+  // Dawn
+  { path: '/the-new-classic', name: 'Dawns', component: Dawns, meta: { requiresAuth: true } },
+  { path: '/dawn/1', name: 'Dawn1', component: Dawn1, meta: { requiresAuth: true } },
+  { path: '/dawn/2', name: 'Dawn2', component: Dawn2, meta: { requiresAuth: true } },
+  { path: '/dawn/3', name: 'Dawn3', component: Dawn3, meta: { requiresAuth: true } },
+  { path: '/dawn/4', name: 'Dawn4', component: Dawn4, meta: { requiresAuth: true } },
+  { path: '/dawn/5', name: 'Dawn5', component: Dawn5, meta: { requiresAuth: true } },
+  { path: '/dawn/future-histories', name: 'DawnAscend', component: DawnAscend, meta: { requiresAuth: true } },
+  { path: '/dawn/comprehension', name: 'DawnGG', component: DawnGG, meta: { requiresAuth: true } },
   // Token
   { path: '/token/:contract/:type', name: 'Viewer3D', component: Viewer3D, meta: { requiresAuth: true } },
   // FAQ

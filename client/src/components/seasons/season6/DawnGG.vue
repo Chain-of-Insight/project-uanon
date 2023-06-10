@@ -1,18 +1,20 @@
 <template>
-  <div class="cryptowinter-wrap gg" v-if="asc">
+  <div class="dawn-wrap gg" v-if="asc">
     <div class="video gg"></div>
     <div class="sealed jumbotron">
-      <p>THE MASKS WE WEAR WORN OFF</p>
-      <img class="callous" src="https://uanon.s3.amazonaws.com/nft/cryptowinter/masked.jpg" style="padding:1em;" alt="get" title="get" />
+      <p>THE DAWN'S EARLY PLIGHT</p>
       <div class="wehere today goneon tomorrow">
+        <div class="dawn-of-a-new-era">
+          <p>Return soon to read the Project Uanon essay</p>
+        </div>
         <div class="ctrlr">
           <button class="btn btn-primary tk" @click="k();">
-            <span class="icon-display"></span>&nbsp;<span>Somewehere just outside the fog...</span>
+            <span class="icon-display"></span>&nbsp;<span>Himalaya</span>
           </button>
         </div>
       </div>
     </div>
-    <div class="deafening ocean" v-if="sh">
+    <div class="quiet storm" v-if="sh">
       <transition name="modal">
         <div class="modal-mask">
           <div class="modal-wrapper">
@@ -39,7 +41,7 @@
         <h3>Your Truth lacks evidence</h3>
         <hr class="ruler">
       </div>
-      <p class="blood">Entrance requires holding <span class="italic">a Talisman from the Illuminated Penumbra</span></p>
+      <p class="blood">Entrance requires forging comprehension and the vision of future histories</p>
     </div>
   </div>
   <div class="loading" v-if="ld"></div>
@@ -52,9 +54,9 @@ import { getTruthShard } from '../../../util/contract';
 const YTB = "https://www.youtube.com/embed/";
 
 export default {
-  name: 'Cryptowinter Ascend',
+  name: 'Dawn Ascend',
   data: () => ({
-    r: 'cryptowinter',
+    r: 'dawn',
     v: null,
     ld: false,
     sh: false,
@@ -63,6 +65,8 @@ export default {
   }),
   mounted: async function () {
     await this.verify();
+    // COMING SOON
+    this.v = YTB + "iSbfM2xRcT8"; // PLACEHOLDER
   },
   methods: {
     k: function () {
@@ -72,7 +76,7 @@ export default {
       } else {
         this.sh = !this.sh;
         let b;
-        if (this.sh){
+        if (this.sh) {
           b = document.getElementsByTagName('body');
           b[0].style.overflow = 'hidden';
         } else {
@@ -99,9 +103,6 @@ export default {
           if (t['metadata']) {
             if (t.metadata.externalUri) {
               this.asc = true;
-              let y = t.metadata.externalUri.split('/');
-              y = YTB + y[y.length-1];
-              this.v = y;
             }
           }
         }
@@ -223,11 +224,6 @@ iframe {
   -webkit-box-shadow: inset 0 0 10px #000000;
   box-shadow: inset 0 0 10px #000000;
   border-radius: 0.5em;
-}
-img.callous {
-  display: block;
-  width: 570px;
-  margin: auto;
 }
 @keyframes mythos {
   0% {filter: hue-rotate(0deg);}

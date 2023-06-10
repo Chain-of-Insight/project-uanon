@@ -10,7 +10,7 @@
   <div class="content-s home season-content" v-if="a && p">
     <router-link :to="l[i].p" v-for="(s, i) in d" :key="i">
 
-      <div class="season-item" :class="{'pyramidscheme': (i==2), 'restitution': (i==5)}" v-if="l[i] && i!==3 && i!==4" :style="'background-image: url(' + l[i].b + ');'">
+      <div class="season-item" :class="{'pyramidscheme': (i==2), 'restitution': (i==5)}" v-if="l[i] && i!==3 && i!==4 && i!==6" :style="'background-image: url(' + l[i].b + ');'">
         <div v-if="i==1" class="season 991" :id="'si-'+i">
           <h2 class="season 991">Season {{s}}</h2>
         </div>
@@ -100,6 +100,11 @@
         <h2 class="season nightfall" @mouseover="ew=true" @mouseout="ew=false" :class="{'active':ew==true}">Season {{s}}</h2>
       </div>
 
+      <div class="season-item epochs" v-if="l[i] && i==6" @mouseover="ew=true" @mouseout="ew=false" :class="{'mercantile':ew==true}">
+        <div class="cross"></div>
+        <h2 class="season reposed" @mouseover="ew=true" @mouseout="ew=false" :class="{'active':ew==true}">Season {{s}}</h2>
+      </div>
+
     </router-link>
   </div>
   <div class="content-s home season-content" v-if="a && !p">
@@ -141,7 +146,7 @@ import * as api from '../../util/api';
 
 import { isLoggedIn } from 'axios-jwt';
 
-const DEPLOYED = [0,1,2,3,4,5];
+const DEPLOYED = [0,1,2,3,4,5,6];
 
 export default {
   name: 'Home',
@@ -155,6 +160,7 @@ export default {
       {p: '/echolalia', b: '/img/23ca814cf4c078f2d0b5ed3b85e2af85b7850dfba1252e87733bffea8c980914.png'},
       {p: '/palilalia', b: ''},
       {p: '/deny', b: '/img/d6d5ee2ecca50604be8dde8c0b9daf786bdfe3fba53672f3c0d1c4744160433d.png'},
+      {p: '/the-new-classic', b: ''},
     ],
     o: null,
     p: null,
@@ -311,6 +317,13 @@ h2.in-decay {
   width: 100%;
   top: 1.75em;
   left: -15px;
+}
+h2.reposed {
+  display: block;
+  text-align: center;
+  font-size: 2.5em;
+  width: 100%;
+  top: -8.25em;
 }
 div.season-item > div.float-left {
   background-image: url('https://uanon.s3.amazonaws.com/backgrounds/cf3c6f0f3163a1c4b2aa788af8c88a0c1e9a3c3378e9178e2060ae8707d10898.png');
@@ -631,6 +644,46 @@ div.season-item.cults {
 }
 h2.season.nightfall {
   left: -93px;
+}
+.epochs {
+  border: none;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  background: transparent !important;
+  margin-top: 0 !important;
+  width: 300px;
+}
+.epochs .cross {
+  margin: 20px auto;
+  width: 40px;
+  height: 320px;
+  position:relative;
+  background-color: #fff;
+  border-radius: 3px;
+}
+.epochs .cross:before { 
+  content: '';
+  background-color: #fff;
+  border-radius: 3px;
+  color: #fff;
+  position: absolute;
+  top: 100px;
+  left: -100px;
+  padding: 0px 0px;
+  line-height: 0px;
+  margin: 0px;
+  width: 240px;
+  height: 40px;
+}
+.epochs .cross:after{
+  content: '';
+  border: 40px solid #fff;
+  width: 170px;
+  height: 170px;
+  position: absolute;
+  border-radius: 50%;
+  top: 36px;
+  left: -66px;
 }
 @keyframes spin-clockwise {
   0%   { transform: rotate(0deg);   }

@@ -211,6 +211,10 @@ export default {
           this.x.id = String(501);
           break;
         }
+        case 'dawn+': {
+          this.x.id = String(605);
+          break;
+        }
         default: {
           break;
         }
@@ -453,10 +457,18 @@ export default {
         u = a.slice(0,(a.length - 1)).join('/');
         if (this.r == 'tutorial') {
           u = u.replace(this.r, 'learn');
+        } else if (this.r == 'spring') {
+          u += '/rites-of-spring';
+        } else if (this.r == 'summer') {
+          u += '/the-land-vomits-ghosts';
+        } else if (this.r == 'autumn') {
+          u += '/the-same-old-story';
         } else if (this.r == 'winter') {
           u += '/so-i-can-feel-happier';
         } else if (this.r == 'cryptowinter') {
           u += '/sleep-paralysis';
+        } else if (this.r == 'dawn') {
+          u += '/future-histories';
         }
       } else {
         u = a.join('/');

@@ -23,6 +23,10 @@
   <div class="active-x directory" v-if="activex">
     <iframe class="2d" :src="activex"></iframe>
   </div>
+  <!-- Audio Player -->
+  <div class="comprehension preview" v-if="r=='dawn'">
+    <iframe class="dawn" style="border: 0; width: 700; height: 620;" src="https://bandcamp.com/EmbeddedPlayer/album=906699725/size=large/bgcol=333333/linkcol=e32c14/transparent=true/" seamless><a href="https://sharing.bandcamp.com/album/project-uanon-original-soundtrack">Project Uanon Original Soundtrack by Sharing</a></iframe>
+  </div>
 </div>
 
 </template>
@@ -32,7 +36,7 @@ import * as api from '../../util/api';
 import { getTruthShardData } from '../../util/contract';
 import * as Config from '../../conf/constants';
 
-const DEPLOYED = [process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2,process.env.VUE_APP_TEZOS_NFT_SEASON_5];
+const DEPLOYED = [process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2,process.env.VUE_APP_TEZOS_NFT_SEASON_5,process.env.VUE_APP_TEZOS_NFT_SEASON_6];
 
 export default {
   data: () => ({
@@ -45,17 +49,18 @@ export default {
     bg: null,
     ld: true,
     api: api,
-    def: ['spring','summer','cryptowinter'],
+    def: ['spring','summer','cryptowinter', 'dawn'],
     model: null,
     activex: null,
     spring: ['ascended','lost','secret','cruel','common2','common1'],
     summer: ['ascended','medieval','kohathite','orthodox','common2','common1'],
-    cryptowinter: ['ascended','incandescent','neuromorphic','spurious','common2','common1']
+    cryptowinter: ['ascended','incandescent','neuromorphic','spurious','common2','common1'],
+    dawn: ['ascended','fragile','future','classic','common2','common1']
   }),
   mounted: async function () {
     if (this.$route.params) {
       if (this.$route.params.contract && this.$route.params.type) {
-        if (this.$route.params.contract !== DEPLOYED[2]) {
+        if (this.$route.params.contract !== DEPLOYED[2] && this.$route.params.contract !== DEPLOYED[3]) {
           await this.loadComponent();
         }
         let d = await this.getData(this.$route.params.contract, this.$route.params.type);
@@ -63,7 +68,7 @@ export default {
           this.m = d;
           this.a = true;
           if (this.m['metadata']) {
-            if (this.m.metadata['formats'] && this.$route.params.contract !== DEPLOYED[2]) {
+            if (this.m.metadata['formats'] && this.$route.params.contract !== DEPLOYED[2] && this.$route.params.contract !== DEPLOYED[3]) {
               this.setM(this.m.metadata.formats);
             }
           }
@@ -234,6 +239,14 @@ export default {
               }
             }
           }
+          // Dawn
+          case DEPLOYED[3]: {
+            this.r = this.def[3]
+            this.ld = false;
+            this.a = true;
+            console.log('here?', this.r, this.ld);
+            return false;
+          }
           default: {
             this.ld = false;
             return false;
@@ -241,7 +254,7 @@ export default {
         }
       } catch(e) {
         this.ld = false;
-        console.warn("Error loading 3D model", e);
+        console.warn("Error loading token data", e);
         return false;
       }
     },
@@ -306,12 +319,23 @@ export default {
 .mv.summer:not(.ascended) {
   background: linear-gradient(to right, #333333, #8B0000, #8B0000, #ff5743, #8B0000, #8B0000, #333333);
 }
-iframe {
+iframe.2d {
   position: absolute;
   top: 50px;
   left: 0;
   border: none;
   width: 100vw;
   height: 100vh;
+}
+iframe.dawn {
+  position: relative;
+  border: none;
+  width: 700px;
+  height: 90vh;
+}
+div.comprehension.preview {
+  display: block;
+  margin: auto;
+  width: 700px;
 }
 </style>

@@ -1,22 +1,28 @@
 <template>
-  <div id="uterm" class="console" :class="{'open': open, 'closed': !open, 'sm': (ss == 35), 'x-sm': (ss == 25), 'xx-sm': (ss == 15), pentagram: (r == 'autumn' && i == 3)}">
-    <div class="disp" v-if="(r == 'autumn' && i == 3)"></div>
+  <div id="uterm" class="console open">
     <div class="console-inner">
       <p class="title-bar">
         <span class="ws"></span>
         <span class="icon icon-terminal1"></span>
-        <span class="float-right close-x" @click="close();">&times;</span>
-        <span class="float-right plus-s" @click="plusS();" v-if="ss">&#43;</span>
-        <span class="float-right plus-s greyed" v-if="!ss">&#43;</span>
-        <span class="float-right minus-s" @click="minusS();" v-if="ss !== 15">&#8722;</span>
-        <span class="float-right minus-s greyed" v-if="ss == 15">&#8722;</span>
       </p>
       <div class="uwrapper">
         <div id="log">
           <p class="log-item" v-for="(l, i) in log" :key="i" v-html="l"></p>
         </div>
-        <div class="cli-input">
-          <span class="cyan">{{uni}}</span>@{{r}}:<span class="jaundice">~/{{((r == 'summer' || r == 'autumn' || r == 'winter' || r == 'cryptowinter' || r == 'dawn') ? (i+1) : i)}}</span><span> $ </span>
+        <div class="cli-input" v-if="!dollhouse.started">
+          <span class="cyan">{{uni}}</span>@{{r}}:<span class="jaundice">~/{{((r == 'summer') ? (i+1) : i)}}</span><span> $ </span>
+          <input 
+            type="search" 
+            id="cli"
+            class="input" 
+            ref="cli"
+            @keydown="cliP($event)"
+            v-model="input"
+            autocomplete="off"
+          />
+        </div>
+        <div class="cli-input" v-if="dollhouse.started">
+          <span class="cyan" v-if="dollhouse.started == true">{{uni}}</span>@{{r}}:<span class="jaundice">~/HOLLOWEARTH</span><span> $ </span>
           <input 
             type="search" 
             id="cli"
@@ -45,6 +51,29 @@ import * as api from '../../../util/api';
 import store from '../../../util/storage';
 import { generateProofAsString, verifyProof } from '../../../util/hasher';
 
+import * as aes from '../../../util/cipher/aes';
+const AES = aes.default.AES;
+
+// Hollow Earth
+import Doors from './dollhouse/core/doors';
+import Globals from './dollhouse/core/globals';
+import Lore from './dollhouse/core/lore';
+import { Levels, Rooms } from './dollhouse/core/rooms';
+import Tiles from './dollhouse/core/tiles';
+import Treasures from './dollhouse/core/treasures';
+import * as Util from './dollhouse/core/util';
+
+const DollhouseCore = { 
+  doors: Doors.Doors,
+  globals: Globals.Globals,
+  lore: Lore.Lore,
+  levels: Levels,
+  rooms: Rooms,
+  tiles: Tiles.Tiles,
+  treasures: Treasures.Treasures,
+  util: Util
+};
+
 export default {
   props: {
     s: String,
@@ -71,6 +100,7 @@ export default {
     iu: false,
     ss: null,
     si: [35,25,15],
+    aes: aes,
     api: api,
     cmd: ['info', 'download', 'submit', 'next', 'prev', 'clear', 'help'],
     uni: null,
@@ -79,7 +109,21 @@ export default {
     open: false,
     clog: [],
     clogs: null,
-    input: null
+    input: null,
+    dollhouse: {
+      core: DollhouseCore,
+      started: false,
+      room: null,
+      level: null,
+      madness: 0,
+      fatigue: 0,
+      godlike: false,
+      inventory: {
+        chests: [],
+        keys: [],
+        spells: {}
+      },
+    }
   }),
   mounted: function () {
     if (!this.un) {
@@ -87,6 +131,15 @@ export default {
     } else {
       this.uni = this.un;
     }
+    // Autofocus event
+    this.$refs.cli.focus();
+    document.getElementById('uterm').addEventListener('click', (e) => {
+      if (e.target) {
+        if (e.target.id == 'uterm' || e.target.classList.contains('title-bar')) {
+          this.$refs.cli.focus();
+        }
+      }
+    });
     // Listen for console display
     document.onkeypress = (e) => {
       e = e || window.event;
@@ -196,12 +249,520 @@ export default {
         }
       }
       if (k === 'enter') {
-        this.log.push(this.cp(this.input));
+        if (this.dollhouse.started) this.log.push(this.dollhouseCp(this.input));
+        else this.log.push(this.cp(this.input));
         this.input = '';
         this.$nextTick(() => {
           t.scrollTop = t.scrollHeight;
         });
       }
+    },
+    /**
+     * @param {String} cmd: Command to parse
+     */
+    dollhouseCp: function (cmd) {
+      // console.log('Dollhouse', cmd, DollhouseCore);
+      this.log.push('<span class="cyan">' + this.uni + '</span>@' + this.r + ':<span class="jaundice">~/HOLLOWEARTH/</span><span> $ </span> ' + cmd);
+      let invalidMsg = Config.notify.DEFAULT_CLI_ERROR;
+      // Cmd
+      if (typeof cmd !== 'string') return invalidMsg;
+      else cmd = cmd.toUpperCase();
+      let msg;
+      switch (cmd.charAt(0)) {
+        case 'I': {
+          msg = this.dollhouseFmt(DollhouseCore.globals.about);
+          break;
+        }
+        case 'H': {
+          msg = this.dollhouseFmt(DollhouseCore.globals.help);
+          break;
+        }
+        case 'R': {
+          this.dollhouseRoom();
+          return;
+        }
+        case 'T': {
+          this.dollhouseSize();
+          return;
+        }
+        case 'K': {
+          this.dollhouseInventory(0);
+          return;
+        }
+        case 'C': {
+          this.dollhouseInventory(1);
+          return;
+        }
+        case 'Q': {
+          this.dollhouse.started = false;
+          setTimeout(() => {
+            this.$refs.cli.focus();
+          }, 0);
+          return;
+        }
+        case 'N':
+        case 'S':
+        case 'E':
+        case 'W': {
+          this.dollhouseMove(cmd.charAt(0));
+          return;
+        }
+        case 'F': {
+          this.dollhouseFeel(cmd);
+          return;
+        }
+        case 'D': {
+          this.dollhouseDig(cmd);
+          return;
+        }
+        case 'U': {
+          this.dollhouseUtter(cmd);
+          return;
+        }
+        case 'O': {
+          this.dollhouseOpen(cmd);
+          return;
+        }
+        case 'L': {
+          this.dollhouseLook(cmd);
+          return;
+        }
+      }
+      if (msg) {
+        this.log.push(msg);
+        this.log.push('<br/>');
+      }
+    },
+    dollhouseFmt: function (str) {
+      if (typeof str !== 'string') return '';
+      else return str.replaceAll('\n', '<br/>');
+    },
+    dollhouseMove: function (direction) {
+      this.log.push(DollhouseCore.globals.walk.attempt);
+      let room = DollhouseCore.rooms[this.dollhouse.room];
+      // Check is valid walking direction
+      if (room.options.indexOf(direction) == -1) {
+        // Direction invalid
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.walk.failure.length - 1));
+        let failedMsg = DollhouseCore.globals.walk.failure[rand];
+        this.log.push(failedMsg);
+        return;
+      }
+      
+      // Walk to new room
+      let fullDirection;
+      switch (direction) {
+        case 'N': {
+          fullDirection = 'NORTH';
+          break;
+        }
+        case 'S': {
+          fullDirection = 'SOUTH';
+          break;
+        }
+        case 'E': {
+          fullDirection = 'EAST';
+          break;
+        }
+        case 'W': {
+          fullDirection = 'WEST';
+          break;
+        }
+      }
+      let previous = JSON.stringify(this.dollhouse.room);
+      this.dollhouse.prev = JSON.parse(previous);
+      this.dollhouse.room = room.paths[direction];
+      let msg = DollhouseCore.globals.walk.success + ' ' + fullDirection;
+      this.log.push(msg);
+      this.dollhouseRoom();
+    },
+    dollhouseDig: function (cmd) {
+      let room = DollhouseCore.rooms[this.dollhouse.room];
+      let parts = (cmd.indexOf('DIG') > -1) ? cmd.replaceAll(" ", "").split('DIG') : cmd.replaceAll(" ", "").split('D');
+      let object = parts.pop();
+      let chest = DollhouseCore.treasures.chests['level' + room.level];
+      let tiles = DollhouseCore.tiles[room.tiles];
+
+      // console.log('dollhouseDig', cmd, object, tiles, chest);
+
+      let dimensions = object.split(',');
+      for (let i = 0; i < dimensions.length; i++) {
+        dimensions[i] = parseInt(dimensions[i]);
+      }
+
+      if (typeof dimensions[0] !== 'number' || typeof dimensions[1] !== 'number') {
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.dig.failure.length - 1));
+        let failedMsg = DollhouseCore.globals.dig.failure[rand];
+        this.log.push(failedMsg);
+        this.dollhouseFatigue();
+        return;
+      } else if (dimensions[0] > room.size.w || dimensions[0] < 1 || dimensions[1] > room.size.l || dimensions[1] < 1) {
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.dig.failure.length - 1));
+        let failedMsg = DollhouseCore.globals.dig.failure[rand];
+        this.log.push(failedMsg);
+        this.dollhouseFatigue();
+        return;
+      } else if (!chest) {
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.dig.failure.length - 1));
+        let failedMsg = DollhouseCore.globals.dig.failure[rand];
+        this.log.push(failedMsg);
+        this.dollhouseFatigue();
+        return;
+      }
+      try {
+        let tile = tiles.value[(dimensions[0]-1)][(dimensions[1]-1)];
+        let excavation = this.h.g(JSON.stringify([tile]), Config.DEFAULT_DEPTH + 1);
+        if (excavation.slice(2) !== chest.locked) {
+          let rand = this.getRandomInt(0, (DollhouseCore.globals.dig.failure.length - 1));
+          let failedMsg = DollhouseCore.globals.dig.failure[rand];
+          this.log.push(failedMsg);
+          this.dollhouseFatigue();
+          return;
+        }
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.dig.success.length - 1));
+        let successMsg = DollhouseCore.globals.dig.success[rand];
+        this.log.push(successMsg);
+        this.dollhouseStoreChest(chest, room.level);
+        this.log.push(DollhouseCore.globals.dig.completed);
+      } catch(e) {
+        console.log(e);
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.dig.failure.length - 1));
+        let failedMsg = DollhouseCore.globals.dig.failure[rand];
+        this.log.push(failedMsg);
+        this.dollhouseFatigue();
+        return;
+      }
+    },
+    dollhouseFeel: function (cmd) {
+      let room = DollhouseCore.rooms[this.dollhouse.room];
+      let parts = (cmd.indexOf('FEEL') > -1) ? cmd.replaceAll(" ", "").split('FEEL') : cmd.replaceAll(" ", "").split('F');
+      let object = parts.pop();
+      let keyLevel = this.dollhouse.level + 1;
+      let key = DollhouseCore.treasures.keys['level' + keyLevel];
+      // console.log('dollhouseFeel', cmd, object);
+      if (!room['keys']) {
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.feel.failure.length - 1));
+        let failedMsg = DollhouseCore.globals.feel.failure[rand];
+        this.log.push(failedMsg);
+        this.dollhouseDizzy();
+        return;
+      }
+      try {
+        let proof = this.h.g(JSON.stringify([object]), Config.DEFAULT_DEPTH);
+        key.dec = AES.decrypt('cbc', key.value, proof.slice(2));
+        if (!key.dec) {
+          let rand = this.getRandomInt(0, (DollhouseCore.globals.feel.failure.length - 1));
+          let failedMsg = DollhouseCore.globals.feel.failure[rand];
+          this.log.push(failedMsg);
+          this.dollhouseDizzy();
+          return;
+        }
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.feel.success.length - 1));
+        let successMsg = DollhouseCore.globals.feel.success[rand];
+        this.log.push(successMsg);
+        this.dollhouseStoreKey(key, keyLevel);
+        this.log.push(DollhouseCore.globals.feel.completed);
+      } catch(e) {
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.feel.failure.length - 1));
+        let failedMsg = DollhouseCore.globals.feel.failure[rand];
+        this.log.push(failedMsg);
+        this.dollhouseDizzy();
+        console.log(e);
+      }
+    },
+    // Game Lost
+    dollhouseGameover: function (type = 0) {
+      // Victorious players are immortal:
+      if (this.dollhouse.godlike) return;
+      // Display death message
+      let reason = (type) ? 'fatigue' : 'madness';
+      this.log.push(this.dollhouseFmt(DollhouseCore.globals.gameover.failure.msg));
+      this.log.push(DollhouseCore.globals.gameover.failure.state);
+      this.log.push('<span class="cyan">State</span>: Dead');
+      this.log.push('<span class="cyan">Reason</span>: ' + reason);
+      // Reset game state and quit to console
+      this.dollhouse = {
+        core: DollhouseCore,
+        started: false,
+        room: null,
+        level: null,
+        madness: 0,
+        fatigue: 0,
+        inventory: {
+          chests: [],
+          keys: []
+        }
+      };
+      setTimeout(() => {
+        this.$refs.cli.focus();
+      }, 0);
+    },
+    // Game Won
+    dollhouseVictory: function () {
+      this.dollhouse.godlike = true;
+      this.log.push(this.dollhouseFmt(DollhouseCore.globals.gameover.success.msg));
+      this.log.push(DollhouseCore.globals.gameover.success.state);
+      this.log.push('<span class="cyan">State</span>: Enlightened');
+      this.log.push('<span class="cyan">Reason</span>: Cunning');
+    },
+    dollhouseDizzy: function () {
+      let roll = DollhouseCore.util.iChing();
+      if (roll) {
+        ++this.dollhouse.madness;
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.feel.madness.length - 1));
+        let failedMsg = DollhouseCore.globals.feel.madness[rand];
+        this.log.push(failedMsg);
+      }
+      if (this.dollhouse.madness >= 3) this.dollhouseGameover(0);
+    },
+    dollhouseFatigue: function () {
+      let roll = DollhouseCore.util.iChing();
+      if (roll) {
+        ++this.dollhouse.fatigue;
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.dig.fatigue.length - 1));
+        let failedMsg = DollhouseCore.globals.dig.fatigue[rand];
+        this.log.push(failedMsg);
+      }
+      if (this.dollhouse.fatigue >= 3) this.dollhouseGameover(1);
+    },
+    dollhouseStoreKey: function (key, level) {
+      if (!key.dec || !key.name || typeof level !== 'number') return;
+      if (this.dollhouse.inventory.keys[level-2]) return;
+      let engraving = (level <= 3) ? key.dec : "\n" + DollhouseCore.util.b64ToUtf8(key.dec);
+      this.dollhouse.inventory.keys.push({
+        name: key.name, 
+        spell: key.value, 
+        engraving: this.dollhouseFmt(engraving)
+      });
+    },
+    dollhouseStoreChest: function (chest, level) {
+      if (!chest.name || typeof level !== 'number') return;
+      if (this.dollhouse.inventory.chests[level-1]) return;
+      this.dollhouse.inventory.chests.push({
+        name: chest.name, 
+        legend: chest.value,
+        engraving: "Unknown (this chest is locked)"
+      });
+    },
+    dollhouseStoreProof: function (secret, proof) {
+      this.dollhouse.inventory.spells[secret] = proof;
+    },
+    dollhouseUtter: function (cmd) {
+      let parts = (cmd.indexOf('UTTER') > -1) ? cmd.replaceAll(" ", "").split('UTTER') : cmd.replaceAll(" ", "").split('U');
+      let object = parts.pop();
+      // console.log('dollhouseUtter', cmd, object);
+      if (this.dollhouse.level >= 9) {
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.incantation.failure - 1));
+        let failedMsg = DollhouseCore.globals.incantation.failure[rand];
+        this.log.push(failedMsg);
+        return;
+      }
+      let nextLevelKey = 'level' + (this.dollhouse.level + 1);
+      let nextLevel = DollhouseCore.levels[nextLevelKey];
+      let nextText = DollhouseCore.lore[nextLevel[0].text];
+      // Verify Incantation
+      try {
+        let proof = this.h.g(JSON.stringify([object]), Config.DEFAULT_DEPTH);
+        let value = AES.decrypt('cbc', nextText.enc, proof.slice(2));
+        if (!value) {
+          let rand = this.getRandomInt(0, (DollhouseCore.globals.incantation.failure.length - 1));
+          let failedMsg = DollhouseCore.globals.incantation.failure[rand];
+          this.log.push(failedMsg);
+          return;
+        }
+        this.dollhouseStoreProof(nextText.secret, proof.slice(2));
+      } catch (e) {
+        console.log(e);
+        let rand = this.getRandomInt(0, (DollhouseCore.globals.incantation.failure.length - 1));
+        let failedMsg = DollhouseCore.globals.incantation.failure[rand];
+        this.log.push(failedMsg);
+        return;
+      }
+      this.dollhouse.madness = 0;
+      this.dollhouse.fatigue = 0;
+      let rand = this.getRandomInt(0, (DollhouseCore.globals.incantation.success.length - 1));
+      let successMsg = DollhouseCore.globals.incantation.success[rand];
+      this.log.push(successMsg);
+    },
+    dollhouseOpen: function (cmd) {
+      let parts = cmd.split(" ");
+      let password = parts.pop();
+      let chestName = parts.pop();
+      // console.log('dollhouseOpen', cmd, chestName, password);
+      let targetChest = this.dollhouse.inventory.chests.filter((chest) => {
+        return chest.name == chestName;
+      });
+      if (!targetChest.length) {
+        this.log.push(DollhouseCore.globals.open.chest.failure);
+        return;
+      }
+      try {
+        let chest = targetChest[0];
+        let proof = this.h.g(JSON.stringify([password]), Config.DEFAULT_DEPTH);
+        let legend = AES.decrypt('cbc', chest.legend, proof.slice(2));
+        for (let i = 0; i < this.dollhouse.inventory.chests.length; i++) {
+          if (this.dollhouse.inventory.chests[i].name == chestName) this.dollhouse.inventory.chests[i].engraving = legend;
+        }
+        this.log.push(DollhouseCore.globals.open.chest.success);
+        this.log.push('<span class="cyan">You uncover the following message inside</span>: <a href="https://'+ legend +'" target="_blank">'+ legend +'</a>');
+      } catch(e) {
+        console.log(e);
+        this.log.push(DollhouseCore.globals.open.chest.failure);
+        return;
+      }
+    },
+    dollhouseLook: function (cmd) {
+      let parts = (cmd.indexOf('LOOK') > -1) ? cmd.replaceAll(" ", "").split('LOOK') : cmd.replaceAll(" ", "").split('L');
+      let object = parts.pop();
+      let room = DollhouseCore.rooms[this.dollhouse.room];
+      // console.log('dollhouseLook', cmd, object);
+      if (object.indexOf('DOOR') > -1) {
+        let directions = {'N': 'NORTH', 'S': 'SOUTH', 'E': 'EAST', 'W': 'WEST'};
+        let char = object.charAt(0);
+        let facing = directions[char];
+        let doors = [];
+        room.doors.forEach((door) => {
+          doors.push(DollhouseCore.doors[door]);
+        });
+        let targetDoor = doors.filter((door)=> {
+          return door.facing == facing;
+        });
+        if (targetDoor.length) this.log.push(targetDoor[0].description);
+        else this.log.push(DollhouseCore.globals.look.unknown);
+      } else if (object.indexOf('CHEST') > -1) {
+        let chestName = object.replace("CHEST", "");
+        let targetChest = this.dollhouse.inventory.chests.filter((chest) => {
+          // console.log(chest, chestName);
+          if (chest['name']) {
+            if (chest.name.replaceAll(" ", "") == chestName) return chest;
+          }
+        });
+        if (!targetChest.length) return this.log.push(DollhouseCore.globals.look.unknown);
+        let chest = targetChest[0];
+        this.log.push('<span class="cyan">Name</span>: ' + chest.name);
+        this.log.push('<span class="cyan">Legend</span>: ' + chest.legend);
+        this.log.push('<span class="cyan">Engraving</span>: ' + chest.engraving);
+      } else if (object.indexOf('KEY') > -1) {
+        let targetKey = this.dollhouse.inventory.keys.filter((key) => {
+          if (key['name']) {
+            if (key.name.replaceAll(" ", "") == object) return key;
+          }
+        });
+        if (!targetKey.length) return this.log.push(DollhouseCore.globals.look.unknown);
+        let key = targetKey[0];
+        this.log.push('<span class="cyan">Name</span>: ' + key.name);
+        this.log.push('<span class="cyan">Spell Binding</span>: ' + key.spell);
+        this.log.push('<span class="cyan">Engraving</span>: ' + key.engraving);
+      } else {
+        this.log.push(DollhouseCore.globals.look.unknown);
+      }
+    },
+    dollhouseInventory: function (type = 0) {
+      // Keys
+      let n, msgs =[], item, i = 0;
+      if (!type) {
+        item = 'keys';
+        this.dollhouse.inventory.keys.forEach((key) => {
+          ++i;
+          msgs.push(i + ') <span class="cyan">Name</span>: ' + key.name + ', <span class="cyan">Engraving</span>: ' + key.engraving);
+        })
+        n = this.dollhouse.inventory.keys.length;
+        if (!n) {
+          this.log.push('<span class="blood" style="font-style:italic;">You don\'t have any keys</span>');
+          return;
+        }
+      // Chests
+      } else {
+        item = 'chests';
+        this.dollhouse.inventory.chests.forEach((chest) => {
+          ++i;
+          msgs.push(i + ') <span class="cyan">Name</span>: ' + chest.name + ', <span class="cyan">Engraving</span>: ' + chest.engraving);
+        });
+        n = this.dollhouse.inventory.chests.length;
+        if (!n) {
+          this.log.push('<span class="blood" style="font-style:italic;">You don\'t have any chests</span>');
+          return;
+        }
+      }
+      if (n > 0) {
+        this.log.push('<span class="cyan">You find the following '+ item +' in your inventory: </span>');
+        msgs.forEach((msg) => {
+          this.log.push(msg)
+        });
+      }
+    },
+    dollhouseSize: function () {
+      let room = DollhouseCore.rooms[this.dollhouse.room];
+      this.log.push('<span class="cyan">The size of this room is</span>: ' + room.size.w + ' x ' + room.size.l);
+    },
+    dollhouseProof: function (secret) {
+      let proof = this.dollhouse.inventory.spells[secret];
+      if (!proof) return false;
+      else return proof;
+    },
+    dollhouseRoom: function () {
+      if (!this.dollhouse.room) this.dollhouse.room = 0;
+      if (!this.dollhouse.level) this.dollhouse.level = 1;
+
+      // console.log(DollhouseCore);
+
+      // Load room data
+      let room = DollhouseCore.rooms[this.dollhouse.room];
+      let text = DollhouseCore.lore[room.text];
+      
+      // Guard room access
+      if (text.secret) {
+        let proof = this.dollhouseProof(text.secret);
+        if (!proof) {
+          this.log.push('<span class="blood" style="font-style:italic;">'+ DollhouseCore.globals.gate.msg +'</span>');
+          this.dollhouse.room = this.dollhouse.prev;
+          return;
+        } else {
+          // Decrypt lore
+          try {
+            // Decrypt AES
+            let b64value = AES.decrypt('cbc', text.enc, proof);
+            // Translate b64
+            text.value = DollhouseCore.util.b64ToUtf8(b64value);
+            text.dec = true;
+            this.dollhouse.level = room.level;
+          } catch (e) {
+            console.log(e);
+            this.log.push('<span class="blood" style="font-style:italic;">'+ DollhouseCore.globals.gate.msg +'</span>');
+            this.dollhouse.room = this.dollhouse.prev;
+            return;
+          }
+        }
+      }
+
+      // Display room status
+      this.log.push('<span class="jaundice" style="font-style:italic;">' + this.dollhouseFmt(text.value) + '</span>');
+      this.log.push('<span class="cyan">You are located in</span>: ' + room.title);
+      this.log.push('<span class="cyan">There are '+ room.objects.length +' objects here:</span> ' + String(room.objects));
+
+      // Victory to those who reach the final room
+      if (room.level == 9 && !this.dollhouse.godlike) this.dollhouseVictory();
+    },
+    dollhouseInit: function () {
+      const greeting = this.dollhouseFmt(DollhouseCore.globals.welcome);
+      const about = this.dollhouseFmt(DollhouseCore.globals.about);
+      this.log.push(greeting);
+      this.log.push(about);
+      this.dollhouse.room = 0;
+      // Print first room
+      this.dollhouseRoom();
+    },
+    /**
+     * Returns a random integer between min (inclusive) and max (inclusive).
+     * The value is no lower than min (or the next integer greater than min
+     * if min isn't an integer) and no greater than max (or the next integer
+     * lower than max if max isn't an integer).
+     * Using Math.round() will give you a non-uniform distribution!
+     */
+    getRandomInt: function (min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     /**
      * @param {String} cmd: Command to parse
@@ -212,6 +773,12 @@ export default {
       // Cmd
       if (typeof cmd !== 'string') {
         return invalidMsg;
+      } else if (cmd.substr(0, 5).toUpperCase() == "START") {
+        this.dollhouse.started = true;
+        setTimeout(() => {
+          this.$refs.cli.focus();
+        }, 0);
+        this.dollhouseInit();
       } else if (cmd.substr(0, 4).toLowerCase() == "info") {
         this.clog.push(cmd);
         let infoArray = this.ig();
@@ -534,7 +1101,8 @@ export default {
             });
           } else {
             if (typeof this.p.payload.value == 'object') {
-              ig.push(' <span class="cyan-bg">Payload:</span><pre class="wrapme">'+JSON.stringify(this.p.payload.value)+'</pre>');
+              // ig.push(' <span class="cyan-bg">Payload:</span><pre class="wrapme">'+JSON.stringify(this.p.payload.value)+'</pre>');
+              ig.push(' <span class="cyan-bg">Payload:</span> See attachments');
             } else {
               ig.push(' <span class="cyan-bg">Payload:</span>                                 ' + this.p.payload.value);
             }
@@ -658,15 +1226,15 @@ export default {
 <style scoped>
   .console {
     position: fixed;
+    top: 51px;
     bottom: 0;
     left: 0;
     right: 0;
-    min-height: 55vh;
-    max-height: 55vh;
+    min-height: calc(100vh - 51px);
+    max-height: calc(100vh - 51px);
     overflow-y: auto;
     width: auto;
     background-color: rgba(0,0,0,0.9);
-    z-index: 3000;
   }
   .console.sm {
     min-height: 35vh;
@@ -736,7 +1304,7 @@ export default {
   .log-item {
     margin: 0;
     margin-left: 0.25em;
-    word-break: break-word;
+    word-wrap: break-word;
   }
   .uwrapper {
     position: relative;
@@ -759,20 +1327,10 @@ export default {
     box-shadow: 0 0 5px 10px rgba(230,0,115,0.3);
     text-shadow: 0 0 20px #eee, 0 0 30px #eee, 0 0 40px #ff7070, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff7070;
   }
-  #uterm.pentagram {
-    background: #000;
-  }
-  #uterm.pentagram > .disp {
-    background-image: url('https://uanon.s3.amazonaws.com/backgrounds/759c787169ec7c0df64171b088b44c8f9936a4ed9934a8e5b8f57a7f6a47b32a.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    filter: hue-rotate(-75deg) brightness(2.07) contrast(2.53) saturate(2.82) sepia(0.35);
-    opacity: 0.1;
-    display: block;
-    position: absolute;
-    top: -25px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
+</style>
+<style>
+.wrapme {
+  max-width: 100%;
+  word-wrap: break-all;
+}
 </style>

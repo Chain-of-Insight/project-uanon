@@ -6,7 +6,7 @@ const DEFAULT_FIELD_SIZE = 1;
 const DEFAULT_VISIBLE_PROPS = ['title','description','secret','previous','payload','hint','files'];
 const DEFAULT_STORAGE_BASE = process.env.VUE_APP_STORAGE_BASE;
 const DEFAULT_STORAGE_DOWNLOAD = 'index.zip';
-const deployed = ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter'];
+const deployed = ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter', 'dawn'];
 const TEAMS = {
   '5ff7b2944650b50b77b641f9': {id:'5ff7b2944650b50b77b641f9', name: 'Nation', description: 'So he that can find no other way for correcting the errors of his people but by taking from them the conveniences of life, shows that he knows not what it is to govern a free nation.'},
   '5ff7b3204650b50b77b641fa': {id:'5ff7b3204650b50b77b641fa', name: 'Rebel', description: 'As soon as it is possible to disobey with impunity, disobedience is legitimate.'},
@@ -18,10 +18,18 @@ const TEAM_MAP = {
   '404': {id:'5ff7b6114650b50b77b641fb', name: '404', description: 'The known is finite, the unknown infinite; intellectually we stand on an islet in the midst of an illimitable ocean of inexplicability.'}
 };
 
-const tokens = [process.env.VUE_APP_TEZOS_NFT_SEASON_0,process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2,process.env.VUE_APP_TEZOS_NFT_SEASON_3,process.env.VUE_APP_TEZOS_NFT_SEASON_4,process.env.VUE_APP_TEZOS_NFT_SEASON_5];
+const tokens = [process.env.VUE_APP_TEZOS_NFT_SEASON_0,process.env.VUE_APP_TEZOS_NFT_SEASON_1,process.env.VUE_APP_TEZOS_NFT_SEASON_2,process.env.VUE_APP_TEZOS_NFT_SEASON_3,process.env.VUE_APP_TEZOS_NFT_SEASON_4,process.env.VUE_APP_TEZOS_NFT_SEASON_5,process.env.VUE_APP_TEZOS_NFT_SEASON_6];
 
 const notify = {
   DEFAULT_PLAYER_WARNING: "Careful Observer, you're missing the access key to view this Op",
+  DAWN_PLAYER_WARNING: [
+    "Entrance to this puzzle requires the <span class=\"blood\" style=\"font-style: italic;\">Tome of the Princess Caraboo</span>. Complete <a target=\"_blank\" href=\"https://uanon.observer/discover\">Spring</a> to unlock this puzzle.",
+    "Entrance to this puzzle requires the <span class=\"blood\" style=\"font-style: italic;\">Ark of the Revenant</span>. Complete <a target=\"_blank\" href=\"https://uanon.observer/descend\">Summer</a> to unlock this puzzle.",
+    "Entrance to this puzzle requires <span class=\"blood\" style=\"font-style: italic;\">Anima from the Vine of Noology</span>. Complete <a target=\"_blank\" href=\"https://uanon.observer/echolalia\">Autumn</a> to unlock this puzzle.",
+    "Entrance to this puzzle requires a <span class=\"blood\" style=\"font-style: italic;\">Fraction from the Thousand Plateaus</span>. Complete <a target=\"_blank\" href=\"https://uanon.observer/palilalia\">Winter</a> to unlock this puzzle.",
+    "Entrance to this puzzle requires a <span class=\"blood\" style=\"font-style: italic;\">Talisman from the Illuminated Penumbra</span>. Complete <a target=\"_blank\" href=\"https://uanon.observer/deny\">Cryptowinter</a> to unlock this puzzle.",
+    "Entrance to this ascension requires completing the puzzles 1-5 of Dawn."
+  ],
   DEFAULT_CLI_ERROR: "Error processing command",
   DEFAULT_VERIFICATION_SUCCESS: "Use the command `next` to load the next puzzle",
   DEFAULT_VERIFICATION_SUCCESS_GRAPHICAL: "Solution has been verified",
@@ -170,6 +178,17 @@ const externals = {
           spurious: 'spurious/index.html',
           common2: 'common2/index.html',
           common1: 'common1/index.html'
+        }
+      },
+      dawn: {
+        path: process.env.VUE_APP_STORAGE_BASE + '/ipfs/himalaya/',
+        image: {
+          ascended: 'QmXhLauyzcHV481AFhe9JfDFz1zLumQ6TppXDi6UXeuLHd/cover.jpg',
+          fragile: 'QmQbTdU1yktXDN3snZRsWUEBMc1SzCkrKGoBoiMSb7hAty/cover.jpg',
+          future: 'QmZayVhafxCkf6MTXm24xbj1yJqwLcXAiNDTWjUaMrAooc/cover.jpg',
+          classic: 'QmPuQG55Y6dRDV4WjrYFqH1JDnh3M4cxRvpMuartvhhdgW/cover.jpg',
+          common2: 'QmRof1tZYTVWomhLc4AvwS7wHt63WokqAh1CVZc5eRLiRQ/cover.jpg',
+          common1: 'Qmak5P3ybpdcea2zehSAty4rioNSJZcpU7bpjPskkKod9E/cover.jpg'
         }
       }
     }

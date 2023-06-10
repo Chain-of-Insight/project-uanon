@@ -12,8 +12,9 @@ const SEASON_2_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_2;
 const SEASON_3_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_3;
 const SEASON_4_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_4;
 const SEASON_5_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_5;
-const DEPLOYED = [0,1,2,3,4,5];
-const defs = ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter'];
+const SEASON_6_NFT = process.env.VUE_APP_TEZOS_NFT_SEASON_6;
+const DEPLOYED = [0,1,2,3,4,5,6];
+const defs = ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter', 'dawn'];
 
 /**
  * Gets an instance of Uanon Puzzle Oracle
@@ -49,6 +50,7 @@ async function getTruthShard(address, season) {
   const AUTUMN = 3;
   const WINTER = 4;
   const CRYPTOWINTER = 5;
+  const DAWN = 6;
   if (!address) {
     return false;
   } else if (typeof address !== 'string') {
@@ -86,6 +88,11 @@ async function getTruthShard(address, season) {
       case 'cryptowinter': {
         selectedContract = SEASON_5_NFT;
         realmOpts = ["ascended", "incandescent", "neuromorphic", "spurious", "common2", "common1"];
+        break;
+      }
+      case 'dawn': {
+        selectedContract = SEASON_6_NFT;
+        realmOpts = ["ascended", "fragile", "future", "classic", "common2", "common1"];
         break;
       }
     }
@@ -189,6 +196,10 @@ async function getTruthShard(address, season) {
           sI = CRYPTOWINTER;
           break;
         }
+        case 'dawn': {
+          sI = DAWN;
+          break;
+        }
       }
       truths.push({season: sI, asset: assets, metadata: m});
       return truths[0];
@@ -285,6 +296,94 @@ async function getTruthShardData(season, index) {
   } catch (e) {
     console.warn('Error mounting wallet at NFT', e);
   }
+}
+
+async function getComprehension(address) {
+  if (!address) return false;
+  else if (typeof address !== 'string') return false;
+  
+  // use alice key
+  await importKey(Tezos, 'edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq');
+
+  const selectedContract = SEASON_6_NFT;
+  const nftLen = 6;
+  const realmOpts = ["ascended", "fragile", "future", "classic", "common2", "common1"];
+
+  let ss = "dawn", requestList = [], tokenIndexes = [];
+  for (let n = 0; n < nftLen; n++) {
+    let a = {
+      owner: address,
+      token_id: String(n)
+    };
+    requestList.push(a);
+  }
+  let nftInstance = await Tezos.contract.at(selectedContract, tzip16);
+  let addressBalance = await nftInstance.views.balance_of(requestList).read();
+  addressBalance = toJSON(addressBalance);
+
+  for (let a = 0; a < addressBalance.length; a++) {
+    let balance = (addressBalance[a]['balance']) ? addressBalance[a]['balance'] : 0;
+    if (balance) {
+      if (!isNaN(balance)) {
+        balance = Number(balance);
+        if (balance > 0) {
+          tokenIndexes.push(a);
+        }
+      }
+    }
+  }
+
+  let contractInstance = await Tezos.wallet.at(selectedContract);
+  let storage = await contractInstance.storage();
+  // console.log('tokenIndexes', tokenIndexes);
+  // console.log('NFT =>', [contractInstance, storage]);
+  // console.log('Player =>', address);
+  let assets = {}, m = {};
+  for (let j = 0; j < tokenIndexes.length; j++) {
+    try {
+      let cIndex = tokenIndexes[j];
+      // console.log('[cIndex, tokenIndexes]', [cIndex, tokenIndexes]);
+      let asset = await storage.assets.ledger.get({
+        0: address,
+        1: String(cIndex)
+      });
+      if (isNaN(Number(asset))) {
+        continue;
+      }
+      
+      let metadata = await storage.assets.token_metadata.get(String(cIndex));
+      let entries = metadata.token_info.entries();
+      // console.log('[metadata, entries]', [metadata, entries]);
+      
+      for (let entry of entries) {
+        if (entry[0] == 'attributes') {
+          let attributes = Buffer.from(entry[1], "hex").toString();
+          m[entry[0]] = JSON.parse(attributes);
+        } else {
+          m[entry[0]] = Buffer.from(entry[1], "hex").toString();
+        }
+      }
+      let c = await Tezos.contract.at(selectedContract, compose(tzip16, tzip12));
+      m = await c.tzip12().getTokenMetadata(cIndex);
+      let m2 = await c.tzip16().getMetadata();
+      if (m2['metadata']) {
+        if (m2.metadata['description']) {
+          m.description = m2.metadata['description'];
+        }
+      }
+      assets = {
+        id: String(cIndex), 
+        value: Number(asset),
+        realm: ss,
+        type: realmOpts[cIndex]
+      };
+    } catch(e) {
+      console.warn('Error', e);
+      continue;
+    }
+  }
+  let BigPicture = {season: 6, asset: assets, metadata: m};
+  return BigPicture;
 }
 
 /**
@@ -513,5 +612,6 @@ export {
   getOracle,
   getTruthShard,
   getTruthShardData,
-  getTruths
+  getTruths,
+  getComprehension
 };

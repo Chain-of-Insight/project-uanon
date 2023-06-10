@@ -87,6 +87,7 @@
                     </p>
                     <p class="descr descr-t" v-if="m.externalUri">
                       <label v-if="r == 'spring' || r == 'summer' || r == 'autumn' || r == 'winter' || r == 'cryptowinter'">Video:&nbsp;</label>
+                      <label v-if="r == 'dawn'">Video:&nbsp;</label>
                       <span v-if="r !== 'tutorial'">
                         <a :href="m.externalUri" target="_blank">{{m.externalUri}}</a>
                       </span>
@@ -97,11 +98,14 @@
                     <div class="descr-f">{{m.description}}</div>
                   </div>
                 </div>
-                <div class="ctrl" v-if="r !== 'tutorial' && r !== 'autumn' && r !== 'winter' && r !== 'cryptowinter'">
+                <div class="ctrl" v-if="r !== 'tutorial' && r !== 'autumn' && r !== 'winter' && r !== 'cryptowinter' && r !== 'dawn'">
                   <button class="btn btn-primary ctrl 3d" @click="loadT();">Open in 3D Viewer</button>
                 </div>
                 <div class="ctrl" v-if="r !== 'tutorial' && r == 'cryptowinter'">
                   <button class="btn btn-primary ctrl 2d" @click="loadT();">Open in 2D Viewer</button>
+                </div>
+                <div class="ctrl" v-if="r !== 'tutorial' && r == 'dawn'">
+                  <button class="btn btn-primary ctrl 2d" @click="loadT();">Open in Audio Player</button>
                 </div>
               </div>
             </div>
@@ -130,14 +134,15 @@ export default {
     z: false,
     td: false,
     api: api,
-    def: ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter'],
+    def: ['tutorial', 'spring', 'summer', 'autumn', 'winter', 'cryptowinter', 'dawn'],
     defs: {
       tutorial: 0,
       spring: 1,
       summer: 2,
       autumn: 3,
       winter: 4,
-      cryptowinter: 5
+      cryptowinter: 5,
+      dawn: 6
     }
   }),
   mounted: async function () {
@@ -167,7 +172,8 @@ export default {
             switch(this.n.asset.realm) {
               case this.def[1]:
               case this.def[2]:
-              case this.def[5]: {
+              case this.def[5]:
+              case this.def[6]: {
                 let c = location.href, a = c.split('/'), b = a[(a.length - 1)], u;
                 let i = this.defs[this.n.asset.realm];
                 if (b == 'observer') {
@@ -444,6 +450,19 @@ div.ctrl, div.accum {
   max-width: 450px;
   padding: 2em;
 }
+.img-wr.lg.dawn {
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/8.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em;
+  max-width: 450px;
+  padding: 2em;
+}
 .img-wr.lg img, .img-wr.lg {
   position: relative;
   margin-right: 0.5%;
@@ -537,6 +556,19 @@ div.ctrl, div.accum {
   box-shadow: inset 0 0 10px #000000;
   border-radius: 1em 1em 0 0;
 }
+.bg-dawn {
+  width: 425px;
+  height: 250px;
+  background-image: url('https://uanon.s3.amazonaws.com/c0803faba13d2380a83881e26dd7328fd28cbec9bdca34ca6ac273e5540080ca/8.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #333333;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+  border-radius: 1em 1em 0 0;
+}
 .bg-summer .card-img, .summer .card-img {
   max-width: 375px;
   position: relative;
@@ -565,7 +597,9 @@ div.ctrl, div.accum {
   padding-top: 1em;
 }
 .bg-cryptowinter .card-img,
-.cryptowinter .card-img {
+.cryptowinter .card-img,
+.bg-dawn .card-img,
+.dawn .card-img,{
   padding: 1em;
 }
 .summer.ascended .card-img:not(.active),

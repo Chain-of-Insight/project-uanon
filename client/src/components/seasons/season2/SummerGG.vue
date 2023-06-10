@@ -199,7 +199,7 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  cursor: pointer;
+  pointer-events: none;
 }
 .sealed {
   animation: mythos ease 160s;
