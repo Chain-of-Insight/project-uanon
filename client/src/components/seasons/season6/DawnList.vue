@@ -177,7 +177,7 @@ export default {
             });
           }
         }
-        console.log('Season:', this.s);
+        // console.log('Season:', this.s);
       }
     },
     getU: async function () {

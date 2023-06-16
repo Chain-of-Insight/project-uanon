@@ -409,7 +409,7 @@ export default {
             if (this.o['agentName']) {
               this.un = this.o.agentName.replace(/\s/g, '');
             }
-            console.log('Observer', this.o);
+            // console.log('Observer', this.o);
           }
         }
       }
@@ -458,7 +458,7 @@ export default {
           }
         }
         this.p.bundle = a;
-        console.log('Current Puzzle =>', this.p);
+        // console.log('Current Puzzle =>', this.p);
       }
     },
     /**
@@ -740,7 +740,7 @@ export default {
       };
       let resp = await this.api.request.post('/comprehension/submit', req);
       if (resp.status == 200) {
-        console.log('attemptSubmitComprehension', resp);
+        // console.log('attemptSubmitComprehension', resp);
         ++this.s;
       } else {
         this.error = true;

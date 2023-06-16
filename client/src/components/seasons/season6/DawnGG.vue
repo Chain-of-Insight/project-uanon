@@ -51,7 +51,7 @@
 import { getActiveAccount } from '../../../util/tezos';
 import { getTruthShard } from '../../../util/contract';
 
-const YTB = "https://www.youtube.com/embed/";
+const YTB = "https://www.youtube.com/embed/aQsl9YN83_4";
 
 export default {
   name: 'Dawn Ascend',
@@ -65,8 +65,7 @@ export default {
   }),
   mounted: async function () {
     await this.verify();
-    // COMING SOON
-    this.v = YTB + "iSbfM2xRcT8"; // PLACEHOLDER
+    this.v = YTB;
   },
   methods: {
     k: function () {

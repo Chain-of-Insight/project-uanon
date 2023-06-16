@@ -402,7 +402,7 @@ async function getTruths(address) {
   let realmOpts, ss;
   // use alice key
   await importKey(Tezos, 'edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq');
-  for (let i = 0; i < DEPLOYED.length; i++) {
+  for (let i = 0; i < (DEPLOYED.length - 1); i++) {
     try {
       switch (DEPLOYED[i]) {
         case 0: {
@@ -601,7 +601,7 @@ async function getTruths(address) {
     } catch (e) {
       console.warn('Error mounting wallet at NFT', e);
     }
-    if (i == (DEPLOYED.length - 1)) {
+    if (i == (DEPLOYED.length - 2)) {
       // console.log('Truths', truths);
       return truths;
     }
