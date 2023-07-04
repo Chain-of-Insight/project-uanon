@@ -29,7 +29,7 @@
         I stopped seeing hatred<br/>
       </div>
       <h1 class="nachtmusik">
-        <strong>n ↑ n ↓ ↑ ↑</strong>
+        <strong>n ↑ ↑ n ↓ ↑ ↑</strong>
       </h1>
       <div class="wehere today goneon tomorrow">
         <div class="ctrlr">
