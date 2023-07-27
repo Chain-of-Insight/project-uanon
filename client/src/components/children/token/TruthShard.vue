@@ -87,7 +87,7 @@
                     </p>
                     <p class="descr descr-t" v-if="m.externalUri">
                       <label v-if="r == 'spring' || r == 'summer' || r == 'autumn' || r == 'winter' || r == 'cryptowinter'">Video:&nbsp;</label>
-                      <label v-if="r == 'dawn'">Video:&nbsp;</label>
+                      <label v-if="r == 'dawn'">Audio:&nbsp;</label>
                       <span v-if="r !== 'tutorial'">
                         <a :href="m.externalUri" target="_blank">{{m.externalUri}}</a>
                       </span>

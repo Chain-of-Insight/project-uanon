@@ -5,7 +5,9 @@
       <p>THE DAWN'S EARLY PLIGHT</p>
       <div class="wehere today goneon tomorrow">
         <div class="dawn-of-a-new-era">
-          <p>Return soon to read the Project Uanon essay</p>
+          <p>
+            <a href="https://medium.com/@richgirlonlsd/project-uanon-17bdaeaaa87d" target="_blank">Read the Project Uanon essay</a>
+          </p>
         </div>
         <div class="ctrlr">
           <button class="btn btn-primary tk" @click="k();">
@@ -51,7 +53,7 @@
 import { getActiveAccount } from '../../../util/tezos';
 import { getTruthShard } from '../../../util/contract';
 
-const YTB = "https://www.youtube.com/embed/aQsl9YN83_4";
+const YTB = "https://www.youtube.com/embed/qradqoZZCP0";
 
 export default {
   name: 'Dawn Ascend',

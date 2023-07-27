@@ -168,6 +168,7 @@ export default {
     p: null,
     t: null,
     ld: false,
+    ldb: null,
     cd: {brain: "Logical prowess", ruler: "Will to power", dither: "The rest is silence", openmind: "To be is to be perceived", paranoid: "I'm not a conspiracy theorist, I'm a conspiracy analyst", optimist: "In a cooperative society there's no jealousy because there's no need for jealousy", sage: "Welcome Pilgrim, to the great journey", skeptic: "A lot of things about the way we're all living now ... are completely insane", cracker: "Mess with the best WannaCry like the rest"},
     dl: process.env.VUE_APP_DISCORD_INVITE,
     api: api,

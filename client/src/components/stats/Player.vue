@@ -37,7 +37,7 @@
               </div>
             </div>
           </div>
-          <div class="skills" v-if="p">
+          <div class="skills" v-if="p && !comprehension.picture && !ldb">
             <div v-if="p.skills">
               <h3 id="skill-title">Skills:</h3>
               <div class="uskill">
@@ -93,6 +93,37 @@
               </div>
             </div>
           </div>
+          <!-- Himalaya -->
+          <div class="comprehension" v-if="!ldb && comprehension.picture">
+            <div class="big-picture" style="clear:both;">
+              <h3 id="truths-title big-picture">The Big Picture:</h3>
+              <div class="truth big-picture">
+                <TruthShard
+                  v-bind:r="comprehension.picture.asset.realm"
+                  v-bind:n="comprehension.picture"
+                >
+                </TruthShard>
+              </div>
+            </div>
+            <div class="stories-of-himalaya" v-if="comprehension.stories.length">
+              <!-- VOID-9 -->
+              <div class="story one" v-if="comprehension.stories[2]">
+                <h3 class="blood" id="himalaya1">What is the VOID-9 virus really?</h3>
+                <p>{{comprehension.stories[2]}}</p>
+              </div>
+              <!-- Project Uanon -->
+              <div class="story two" v-if="comprehension.stories[3]">
+                <h3 class="blood" id="himalaya2">What is the point of Project Uanon?</h3>
+                <p>{{comprehension.stories[3]}}</p>
+              </div>
+              <!-- Learnings -->
+              <div class="story three" v-if="comprehension.stories[4]">
+                <h3 class="blood" id="himalaya3">What have I learned?</h3>
+                <p>{{comprehension.stories[4]}}</p>
+              </div>
+            </div>
+          </div>
+          <!-- Lessor Victories -->
           <div class="truths" style="clear:both;" v-if="t && !ld">
             <h3 id="truths-title">Truths:</h3>
             <div class="truth" v-for="(truth, i) in t" :key="i">
@@ -117,7 +148,7 @@
 import * as Config from '../../conf/constants';
 import * as api from '../../util/api';
 import * as Auth from '../../util/auth';
-import { getTruths } from '../../util/contract';
+import { getTruths, getComprehension } from '../../util/contract';
 
 import TruthShard from '../children/token/TruthShard.vue';
 
@@ -133,11 +164,17 @@ export default {
     p: null,
     t: null,
     ld: false,
+    ldb: null,
     cd: {brain: "Logical prowess", ruler: "Will to power", dither: "The rest is silence", openmind: "To be is to be perceived", paranoid: "I'm not a conspiracy theorist, I'm a conspiracy analyst", optimist: "In a cooperative society there's no jealousy because there's no need for jealousy", sage: "Welcome Pilgrim, to the great journey", skeptic: "A lot of things about the way we're all living now ... are completely insane", cracker: "Mess with the best WannaCry like the rest"},
-    api: api
+    api: api,
+    comprehension: {
+      picture: null,
+      stories: []
+    },
   }),
   mounted: async function () {
     await this.get();
+    await this.theBigPicture();
     await this.truths();
   },
   computed: {
@@ -166,6 +203,20 @@ export default {
                     }
                   }
                 }
+                if (this.o['comprehension']) {
+                  const r2 = {
+                    tzAddress: this.$route.params.id,
+                    $embed: 'comprehension'
+                  };
+                  let resp = await this.api.request.get('/user', r2);
+                  console.log('resp?', resp);
+                  if (!resp.data.docs.length) return;
+                  if (!resp.data.docs[0]['comprehension']) return;
+                  if (!resp.data.docs[0].comprehension['answers']) return;
+                  let m = resp.data.docs[0].comprehension.answers;
+                  if (typeof m == 'string') m = JSON.parse(m);
+                  if (m.length == 5) this.comprehension.stories = m;
+                }
               } else {
                 let c = location.href, a = c.split('/'), b;
                 a.pop();
@@ -176,6 +227,18 @@ export default {
             }
           }
         }
+      }
+    },
+    theBigPicture: async function () {
+      this.ldb = true;
+      let b;
+      if (!this.$route.params) return;
+      if (!this.$route.params.id) return;
+      try {
+        b = await getComprehension(this.$route.params.id);
+      } finally {
+        this.ldb = false;
+        if (b.asset['id']) this.comprehension.picture = b;
       }
     },
     truths: async function () {
@@ -326,9 +389,6 @@ div.truth {
 /***
  * BADGES
  */
-.badges {
-  padding-top: 1em;
-}
 .ribbon {
   font-size: 10px;
   top: -25px;
@@ -373,5 +433,15 @@ div.truth {
 .ribbon .ribbon-content:after {
   right: 0;
   border-width: 1em 1em 0 0;
+}
+.story {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.story p {
+  font-style: italic;
+}
+div.comprehension > div.big-picture {
+  margin-top: 2em;
 }
 </style>
